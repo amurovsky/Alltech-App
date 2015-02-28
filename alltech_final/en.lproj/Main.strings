@@ -1,0 +1,48 @@
+
+/* Class = "IBUILabel"; text = "6"; ObjectID = "2MA-fU-JN1"; */
+"2MA-fU-JN1.text" = "6";
+
+/* Class = "IBUIButton"; normalTitle = "Olvide mi contraseña"; ObjectID = "5pv-9g-aHv"; */
+"5pv-9g-aHv.normalTitle" = "Olvide mi contraseña";
+
+/* Class = "IBUILabel"; text = "Manejo de Minerales"; ObjectID = "ISb-ns-bJN"; */
+"ISb-ns-bJN.text" = "Manejo de Minerales";
+
+/* Class = "IBUIButton"; normalTitle = "Login"; ObjectID = "KxL-V9-HKy"; */
+"KxL-V9-HKy.normalTitle" = "Login";
+
+/* Class = "IBUISegmentedControl"; Mvo-8a-SJ7.segmentTitles[0] = "Todas"; ObjectID = "Mvo-8a-SJ7"; */
+"Mvo-8a-SJ7.segmentTitles[0]" = "Todas";
+
+/* Class = "IBUISegmentedControl"; Mvo-8a-SJ7.segmentTitles[1] = "Mis álbums"; ObjectID = "Mvo-8a-SJ7"; */
+"Mvo-8a-SJ7.segmentTitles[1]" = "Mis álbums";
+
+/* Class = "IBUIButton"; normalTitle = "   Regresar"; ObjectID = "SOi-mH-EMW"; */
+"SOi-mH-EMW.normalTitle" = "   Regresar";
+
+/* Class = "IBUILabel"; text = "Aquí se muestra como el pelaje cambió favorablemente cabo de 35 días de alimento."; ObjectID = "Tmk-7b-8Oy"; */
+"Tmk-7b-8Oy.text" = "Aquí se muestra como el pelaje cambió favorablemente cabo de 35 días de alimento.";
+
+/* Class = "IBUILabel"; text = "Bioplex®  -  Ganado de Carne"; ObjectID = "W05-dJ-MUG"; */
+"W05-dJ-MUG.text" = "Bioplex®  -  Ganado de Carne";
+
+/* Class = "IBUITextField"; placeholder = "Username"; ObjectID = "XQK-aB-MPp"; */
+"XQK-aB-MPp.placeholder" = "Username";
+
+/* Class = "IBUILabel"; text = "SE HA ENVIADO UN CORRE  CON TU CONTRASEÑA A:"; ObjectID = "biu-DK-zRc"; */
+"biu-DK-zRc.text" = "SE HA ENVIADO UN CORRE  CON TU CONTRASEÑA A:";
+
+/* Class = "IBUILabel"; text = "Ingresa tu correo electronico para recuperar tu contraseña."; ObjectID = "byU-dQ-dQF"; */
+"byU-dQ-dQF.text" = "Ingresa tu correo electronico para recuperar tu contraseña.";
+
+/* Class = "IBUILabel"; text = "Roberto.lo@alltech.com"; ObjectID = "dpe-4B-QpG"; */
+"dpe-4B-QpG.text" = "Roberto.lo@alltech.com";
+
+/* Class = "IBUIButton"; normalTitle = "Recuperar"; ObjectID = "npI-Ah-tz3"; */
+"npI-Ah-tz3.normalTitle" = "Recuperar";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "vFg-Gv-4Ip"; */
+"vFg-Gv-4Ip.placeholder" = "Password";
+
+/* Class = "IBUITextField"; placeholder = "robert.lo@alltech.com"; ObjectID = "vub-JD-neK"; */
+"vub-JD-neK.placeholder" = "robert.lo@alltech.com";
