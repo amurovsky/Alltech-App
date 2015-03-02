@@ -108,7 +108,7 @@ MPMoviePlayerController *moviePlayer;
         [_recuperarButton.titleLabel setFont:[UIFont fontWithName:@"Aileron-Bold" size:30.0]];
         
         
-        imageView.frame = CGRectMake(0, 80, screenWidth, 80);
+        imageView.frame = CGRectMake(0, 20, screenWidth, 80);
     }
     
     // iphone 6
@@ -116,13 +116,13 @@ MPMoviePlayerController *moviePlayer;
     
         //backgroundImage = [UIImage imageNamed:@"fondo_iphone_conLogo"];
     
-        imageView.frame = CGRectMake(0, 80, screenWidth, 40);
+        imageView.frame = CGRectMake(0, 0, screenWidth, 40);
     }
     
     // iphone 5, 5c, 5s, touch 5
     else if (screenWidth == 320 && screenHeight == 568){
         
-        imageView.frame = CGRectMake(0, 80, screenWidth, 30);
+        imageView.frame = CGRectMake(0, 20, screenWidth, 30);
         
         
     }
@@ -130,7 +130,7 @@ MPMoviePlayerController *moviePlayer;
     // iphone 4, 4s, touch 4
     else if (screenWidth == 320 && screenHeight == 480){
         
-        imageView.frame = CGRectMake(0, 80, screenWidth, 20);
+        imageView.frame = CGRectMake(0, 20, screenWidth, 20);
         
         
     }

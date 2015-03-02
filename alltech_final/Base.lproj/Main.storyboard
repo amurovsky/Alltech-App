@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -11,10 +11,11 @@
             <string>Aileron-Bold</string>
             <string>Aileron-Bold</string>
             <string>Aileron-Bold</string>
-            <string>Aileron-Bold</string>
-            <string>Aileron-Bold</string>
-            <string>Aileron-Bold</string>
-            <string>Aileron-Bold</string>
+        </mutableArray>
+        <mutableArray key="Aileron-Regular.otf">
+            <string>Aileron-Regular</string>
+            <string>Aileron-Regular</string>
+            <string>Aileron-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -264,11 +265,11 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" background="campo_texto_2x.png" translatesAutoresizingMaskIntoConstraints="NO" id="vFg-Gv-4Ip">
                                         <rect key="frame" x="20" y="68" width="200" height="40"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="Aileron-Bold" family="Aileron" pointSize="20"/>
+                                        <fontDescription key="fontDescription" name="Aileron-Regular" family="Aileron" pointSize="20"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
-                                                <color key="value" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -278,11 +279,11 @@
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="center" minimumFontSize="17" background="campo_texto_2x.png" translatesAutoresizingMaskIntoConstraints="NO" id="XQK-aB-MPp">
                                         <rect key="frame" x="20" y="20" width="200" height="40"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="Aileron-Bold" family="Aileron" pointSize="20"/>
+                                        <fontDescription key="fontDescription" name="Aileron-Regular" family="Aileron" pointSize="20"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
-                                                <color key="value" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
@@ -360,11 +361,11 @@
                                             </constraint>
                                         </constraints>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="Aileron-Bold" family="Aileron" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="Aileron-Regular" family="Aileron" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
-                                                <color key="value" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </textField>
@@ -398,13 +399,21 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Roberto.lo@alltech.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpe-4B-QpG">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpe-4B-QpG">
                                         <rect key="frame" x="203" y="220" width="194" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="500" id="M4a-qE-jsw"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="Aileron-Bold" family="Aileron" pointSize="17"/>
-                                        <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Roberto.lo@alltech.com">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="17" name="Aileron-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                    <integer key="NSUnderline" value="1"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <nil key="highlightedColor"/>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -647,7 +656,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="104" height="104"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="njB-mV-tzL">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="njB-mV-tzL" userLabel="photo">
+                                                    <rect key="frame" x="0.0" y="0.0" width="104" height="104"/>
+                                                </imageView>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="selectedFrame" translatesAutoresizingMaskIntoConstraints="NO" id="tVj-89-PK6" userLabel="SelectedFrame">
                                                     <rect key="frame" x="0.0" y="0.0" width="104" height="104"/>
                                                 </imageView>
                                             </subviews>
@@ -662,6 +674,7 @@
                                         <size key="customSize" width="104" height="104"/>
                                         <connections>
                                             <outlet property="photoImageView" destination="njB-mV-tzL" id="m67-x0-PqL"/>
+                                            <outlet property="selectedFrame" destination="tVj-89-PK6" id="Fr8-IG-mBd"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -1353,7 +1366,7 @@
                                     </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HeaderView" id="jhH-co-NIF" customClass="CustomHeaderView">
-                                    <rect key="frame" x="0.0" y="0.0" width="560" height="100"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="560" height="130"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999998807907104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Álbum:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DGN-82-K92">
@@ -1475,6 +1488,7 @@
         <image name="numeroDeFotos.png" width="85" height="85"/>
         <image name="return.png" width="25" height="43"/>
         <image name="returnOlvide.png" width="12" height="21"/>
+        <image name="selectedFrame" width="122" height="122"/>
         <image name="separatorCell.png" width="687" height="2"/>
         <image name="separatorSideMenu.png" width="128" height="2"/>
         <image name="sideMenu1.png" width="74" height="59"/>

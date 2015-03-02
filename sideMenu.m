@@ -81,7 +81,24 @@
     //poner fondo al view
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fondoSideMenu"]];
+    
+
 }
+
+-(void)viewDidAppear:(BOOL)animated{
+
+ //[[UIApplication sharedApplication] setStatusBarHidden:YES];
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+
+ //[[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [self hideStatusBar];
+
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -140,13 +157,29 @@
 }
 
 
-//Cambiamos a blanco el color de la status Bar
+////Cambiamos a blanco el color de la status Bar
+//
+//- (UIStatusBarStyle)preferredStatusBarStyle
+//{
+//    return UIStatusBarStyleLightContent;
+//}
+#pragma mark - Hide statusbar
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
+-(void)hideStatusBar {
+    
+    [self setNeedsStatusBarAppearanceUpdate];
+
+    //[[UIApplication sharedApplication] setStatusBarHidden:NO];
+
 }
 
+- (BOOL)prefersStatusBarHidden {
+
+    if (self.isViewLoaded) {
+        return YES;
+    }return NO;
+    
+}
 
 /*
 #pragma mark - Navigation

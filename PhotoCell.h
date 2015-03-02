@@ -17,6 +17,7 @@
 
 @property(nonatomic, strong) NSMutableArray *selectedAssets;
 
+@property (weak, nonatomic) IBOutlet UIImageView *selectedFrame;
 
 
 @end

@@ -59,7 +59,7 @@
     
     //Cambiamos color del fondo de la view y del collectionview
     self.view.backgroundColor = [UIColor orangeColor];
-    self.collectionView.backgroundColor = [UIColor orangeColor];
+    self.collectionView.backgroundColor = [UIColor blackColor];
     self.collectionView.allowsMultipleSelection = YES;
     
     
@@ -150,9 +150,9 @@
     NSLog(@"este es el array en Selected: %@",_selectedAssets);
     NSLog(@"este es el index en Selected: %@",indexPath);
     //collectionView.allowsMultipleSelection = YES;
-    UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
-    UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
-    selectedImg.hidden=NO;
+//    UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
+//    UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
+//    selectedImg.hidden=NO;
     
 }
 
@@ -168,9 +168,9 @@
     [_selectedAssets removeObject:asset];
     NSLog(@"este es el array en Deselected: %@",_selectedAssets);
     NSLog(@"este es el index en Deselected: %@",indexPath);
-    UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
-    UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
-    selectedImg.hidden=YES;
+//    UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
+//    UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
+//    selectedImg.hidden=YES;
 
 }
 

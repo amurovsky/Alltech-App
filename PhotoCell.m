@@ -39,7 +39,13 @@
     //[super setSelected:selected animated:animated];
     [super setSelected:(BOOL)selected];
     
+    if (selected == YES) {
+        self.selectedFrame.hidden = NO;
+    }self.selectedFrame.hidden = YES;
+    
+    
 }
+
 
 
 @end
