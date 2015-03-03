@@ -7,6 +7,7 @@
 //
 
 #import "sideMenu.h"
+#import "SWRevealViewController.h"
 
 @interface sideMenu ()
 
@@ -18,10 +19,13 @@
     CGSize screenSize;
     CGFloat screenWidth;
     CGFloat screenHeight;
+    BOOL hidden;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    hidden = YES;
 
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
@@ -82,20 +86,35 @@
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fondoSideMenu"]];
     
+    SWRevealViewController *revealViewController = [self revealViewController];
+    [revealViewController panGestureRecognizer];
+    [revealViewController tapGestureRecognizer];
+    
 
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+
+    [self.revealViewController.frontViewController.view setUserInteractionEnabled:NO];
+    [self.revealViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
 
  //[[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
+    
 
 }
 
+-(void)viewDidDisappear:(BOOL)animated{
+    [self.revealViewController.frontViewController.view setUserInteractionEnabled:YES];
+}
 -(void)viewWillDisappear:(BOOL)animated{
 
  //[[UIApplication sharedApplication] setStatusBarHidden:NO];
-    [self hideStatusBar];
-
+   // [self hideStatusBar];
+    
 }
 
 
@@ -158,28 +177,28 @@
 
 
 ////Cambiamos a blanco el color de la status Bar
-//
+
 //- (UIStatusBarStyle)preferredStatusBarStyle
 //{
 //    return UIStatusBarStyleLightContent;
 //}
 #pragma mark - Hide statusbar
 
--(void)hideStatusBar {
-    
-    [self setNeedsStatusBarAppearanceUpdate];
-
-    //[[UIApplication sharedApplication] setStatusBarHidden:NO];
-
-}
-
-- (BOOL)prefersStatusBarHidden {
-
-    if (self.isViewLoaded) {
-        return YES;
-    }return NO;
-    
-}
+//-(void)hideStatusBar {
+//    
+//    [self setNeedsStatusBarAppearanceUpdate];
+//
+//    //[[UIApplication sharedApplication] setStatusBarHidden:NO];
+//
+//}
+//
+//- (BOOL)prefersStatusBarHidden {
+//
+//    if ([self isViewLoaded]) {
+//        return YES;
+//    }return NO;
+//    
+//}
 
 /*
 #pragma mark - Navigation

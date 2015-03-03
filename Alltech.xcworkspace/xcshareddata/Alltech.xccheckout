@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>563B24C9-5A21-476C-A73F-DCFC91D0B388</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Alltech</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>A5A2695F40B8D4E2E7EEDAEDDEEDCB20F835054A</key>
+		<string>https://github.com/amurovsky/Alltech-App.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Alltech.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>A5A2695F40B8D4E2E7EEDAEDDEEDCB20F835054A</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/amurovsky/Alltech-App.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>A5A2695F40B8D4E2E7EEDAEDDEEDCB20F835054A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>A5A2695F40B8D4E2E7EEDAEDDEEDCB20F835054A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Alltech-App</string>
+		</dict>
+	</array>
+</dict>
+</plist>

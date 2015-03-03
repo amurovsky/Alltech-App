@@ -402,7 +402,7 @@
     
     // cambiamos el color de la celda a transparente
     cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.font=[UIFont fontWithName:@"Aileron-Regular" size:20.0];
+    cell.textLabel.font=[UIFont fontWithName:@"Aileron-Light" size:20.0];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     
     return cell;

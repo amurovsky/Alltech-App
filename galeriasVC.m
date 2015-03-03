@@ -179,8 +179,8 @@
     photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ejemplo2" ofType:@"png"]]];
     photo.caption = @"Fotografías de Gerardo Torres. \n \n Notar el pelaje del ejemplar al frente, ahí podemos notar mejor la mejora";
     [photos addObject:photo];
-    photo = [MWPhoto photoWithURL:[NSURL URLWithString:@"http://global.alltech.com/sites/default/files/styles/flexslider_country/public/images/country/slideshow/2305-What-if-you-could-get-more-milk-ad.gif?itok=l7TuToB0"]];
-    //photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ejemplo3" ofType:@"png"]]];
+    //photo = [MWPhoto photoWithURL:[NSURL URLWithString:@"http://global.alltech.com/sites/default/files/styles/flexslider_country/public/images/country/slideshow/2305-What-if-you-could-get-more-milk-ad.gif?itok=l7TuToB0"]];
+    photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ejemplo3" ofType:@"png"]]];
     photo.caption = @"Fotografías de Gerardo Torres. \n \n Aquí se muestra como el pelaje cambió favorablemente cabo de 35 días de alimento.";
     [photos addObject:photo];
     photo = [MWPhoto photoWithURL:[NSURL URLWithString:@"http://ag.alltech.com/sites/default/files/styles/flexslider_full/public/Profitability-On-The-Farm.png?itok=HiRCm7v2"]];

@@ -162,8 +162,46 @@
 #pragma mark - nuevoAlbum
 
 @implementation nuevoAlbum
+UIPickerView *pickerView1;
+UIPickerView *pickerView2;
+UIPickerView *pickerView3;
+NSArray *programas;
+NSMutableArray *productos;
+NSArray *especies;
+
+NSArray * productosMinerales;
+NSArray * productosSaludIntestinal;
+NSArray * productosMicotoxinas;
+NSArray * productosEficienciaAlimenticia;
+NSArray * productosAlgas;
+NSArray * productosProteinas;
+NSArray * productosotros;
+NSInteger renglon;
 
 -(void)viewDidLoad{
+    
+    programas = [NSArray arrayWithObjects:@"Manejo de Minerales",@"Manejo de Salud Intestinal",@"Manejo de Micotoxinas",@"Manejo de Eficiencia Alimenticia",@"Manejo de Algas",@"Manejo de Proteinas",@"Otros productos",nil];
+    especies =@[@"Acuicultura",@"Ganado de Carne",@"Ganado de Leche",@"Mascotas",@"Ponedoras",@"Brokers",@"Cerdos"];
+    
+    
+    productosMinerales = @[@"Bioplex",@"Selplex",@"Elonomase"];
+    productosSaludIntestinal = @[@"Actigen",@"Bio-Mos",@"Acid Pak",@"Yea-Sacc"];
+    productosMicotoxinas = @[@"Mycosorb"];
+    productosEficienciaAlimenticia = @[@"Allzyme SSF",@"Allzyme VegPro"];
+    productosAlgas = @[@"All-G-Rich",@"LG Max"];
+    productosProteinas =@[@"NuPRO",@"Optigen"];
+    productosotros = @[@"Advantage Packs",@"Yea-Sacc"];
+    
+//    productos = [[NSMutableArray alloc] init];
+//    
+//    
+//    [productos addObject:productosMinerales];
+//    [productos addObject:productosSaludIntestinal];
+//    [productos addObject:productosMicotoxinas];
+//    [productos addObject:productosEficienciaAlimenticia];
+//    [productos addObject:productosAlgas];
+//    [productos addObject:productosProteinas];
+//    [productos addObject:productosotros];
     
     
     //ponemos fondo al View y a la barra de navegacion
@@ -175,14 +213,137 @@
     UIView *statusBarView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 22)];
     statusBarView.backgroundColor  =  [UIColor orangeColor];
     [self.view addSubview:statusBarView];
+    
+    pickerView1 = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+//    pickerView2 = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 254, 0)];
+//    pickerView3 = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 254, 0)];
+    pickerView1.delegate = self;
+    pickerView1.dataSource = self;
+    _programaPV.delegate = self;
+    _productoPV.delegate = self;
+    _especiePV.delegate = self;
+//    pickerView2.delegate = self;
+//    pickerView2.dataSource = self;
+//    pickerView3.delegate = self;
+//    pickerView3.dataSource = self;
+    pickerView1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fondo"]];
+    _programaPV.inputView = pickerView1;
+    _productoPV.inputView = pickerView1;
+    _especiePV.inputView = pickerView1;
+    
+
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+
+    return 1;
+
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+
+    if ([_programaPV isFirstResponder]) {
+        return [programas count];
+    }else if ([_productoPV isFirstResponder]){
+        if (renglon == 0) {
+           return [productosMinerales count];
+        }else if (renglon == 1) {
+            return [productosSaludIntestinal count];
+        }else if (renglon == 2) {
+            return [productosMicotoxinas count];
+        }else if (renglon == 3) {
+            return [productosEficienciaAlimenticia count];
+        }else if (renglon == 4) {
+            return [productosAlgas count];
+        }else if (renglon == 5) {
+            return [productosProteinas count];
+        }else if (renglon == 6) {
+            return [productosotros count];
+        }
+        
+    }else if ([_especiePV isFirstResponder]){
+        return [especies count];
+    } return 0;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+
+    if ([_programaPV isFirstResponder]) {
+        return programas[row];
+    }else if ([_productoPV isFirstResponder]){
+        if (renglon == 0) {
+            return productosMinerales[row];
+        }else if (renglon == 1) {
+            return productosSaludIntestinal[row];
+        }else if (renglon == 2) {
+            return productosMicotoxinas[row];
+        }else if (renglon == 3) {
+            return productosEficienciaAlimenticia[row];
+        }else if (renglon == 4) {
+            return productosAlgas[row];
+        }else if (renglon == 5) {
+            return productosProteinas[row];
+        }else if (renglon == 6) {
+            return productosotros[row];
+        }
+
+    }else if ([_especiePV isFirstResponder]){
+        return especies[row];
+    }
+    return @"Error al cargar los programas";
+
 
 
 }
 
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+
+
+    if ([_programaPV isFirstResponder]) {
+        _programaPV.text = programas[row];
+        renglon = [pickerView1 selectedRowInComponent:0];
+        NSLog(@"este es el renglon seleccionado %li",(long)renglon);
+        _productoPV.enabled = YES;
+        _productoPV.text = @"";
+        [_programaPV resignFirstResponder];
+    }else if ([_productoPV isFirstResponder]){
+        NSString *nombredelProducto = [self pickerView:pickerView1 titleForRow:row forComponent:0];
+        _productoPV.text = nombredelProducto;
+        [_productoPV resignFirstResponder];
+    }else if ([_especiePV isFirstResponder]){
+        _especiePV.text = especies[row];
+        [_especiePV resignFirstResponder];
+    }
+
+
+}
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+
+    [textField isFirstResponder];
+   
+    [pickerView1 reloadAllComponents];
+    
+    return YES;
+
+}
+
+//-(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+//
+//
+//}
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+
+    
+
+
+}
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
     [self.tituloTextField resignFirstResponder];
     [self.descripcionTextField resignFirstResponder];
+    [self.programaPV resignFirstResponder];
+    [self.productoPV resignFirstResponder];
+    [self.especiePV resignFirstResponder];
     
 }
 
@@ -190,6 +351,9 @@
     
     [self.tituloTextField resignFirstResponder];
     [self.descripcionTextField resignFirstResponder];
+    [self.programaPV resignFirstResponder];
+    [self.productoPV resignFirstResponder];
+    [self.especiePV resignFirstResponder];
     return YES;
     
 }
@@ -202,7 +366,7 @@
 
 - (IBAction)returnButton:(id)sender {
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+   [self.navigationController popViewControllerAnimated:TRUE];
     
 }
 
@@ -213,10 +377,7 @@
 
 @implementation CustomHeaderView
 
--(void)viewDidLoad{
 
-
-}
 
 @end
 

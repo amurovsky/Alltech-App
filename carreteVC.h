@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
+@property (weak, nonatomic) IBOutlet UINavigationBar *carreteNav;
 
 
 - (IBAction)camaraButton:(id)sender;

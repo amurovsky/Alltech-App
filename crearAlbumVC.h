@@ -40,9 +40,13 @@
 
 
 
-@interface nuevoAlbum : UIViewController <UITextFieldDelegate>
+@interface nuevoAlbum : UIViewController <UITextFieldDelegate, UIPickerViewDataSource,UIPickerViewDelegate>
 
 @property (nonatomic,weak) IBOutlet UINavigationBar * nuevoAlbumNav;
+@property (weak, nonatomic) IBOutlet UITextField *programaPV;
+@property (weak, nonatomic) IBOutlet UITextField *productoPV;
+@property (weak, nonatomic) IBOutlet UITextField *especiePV;
+
 @property (weak, nonatomic) IBOutlet UITextField *tituloTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descripcionTextField;
 @property (strong, nonatomic) NSArray *tituloDescripcionAlbum;

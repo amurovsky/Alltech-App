@@ -58,8 +58,9 @@
     screenHeight = screenSize.height;
     
     //Cambiamos color del fondo de la view y del collectionview
-    self.view.backgroundColor = [UIColor orangeColor];
-    self.collectionView.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor colorWithRed:27/255.0f green:27/255.0f blue:29/255.0f alpha:1.0f]; /*#1b1b1d*/
+    self.carreteNav.barTintColor = [UIColor colorWithRed:27/255.0f green:27/255.0f blue:29/255.0f alpha:1.0f]; /*#1b1b1d*/
+    self.collectionView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
     self.collectionView.allowsMultipleSelection = YES;
     
     
@@ -67,7 +68,6 @@
     
     
     [self loadAssets];
-  
     
 }
 
@@ -87,12 +87,14 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    [self scrollToBottom];
+    //[self scrollToBottom];
     
     [self loadAssets];
     
     
 }
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -116,7 +118,14 @@
     ALAsset *asset = self.assets[indexPath.row];
     cell.asset = asset;
     cell.backgroundColor = [UIColor whiteColor];
-    collectionView.allowsMultipleSelection = YES;
+    
+    if (cell.selected) {
+        cell.selectedFrame.hidden = NO;
+    }
+    else
+    {
+        cell.selectedFrame.hidden = YES;
+    }
     return cell;
 }
 
@@ -132,12 +141,7 @@
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    UIImageView *selected =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"selectedFrame"]];
-//    UICollectionViewCell *celda=[self.collectionView cellForItemAtIndexPath:indexPath];
-//    [celda addSubview:selected];
     
-   
-
     
     ALAsset *asset = self.assets[indexPath.row];
     ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
@@ -149,11 +153,10 @@
     [_selectedAssets addObject:asset];
     NSLog(@"este es el array en Selected: %@",_selectedAssets);
     NSLog(@"este es el index en Selected: %@",indexPath);
-    //collectionView.allowsMultipleSelection = YES;
-//    UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
-//    UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
-//    selectedImg.hidden=NO;
     
+    cell = (PhotoCell *) [collectionView cellForItemAtIndexPath:indexPath];
+    cell.selectedFrame.hidden = NO;
+
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -168,14 +171,27 @@
     [_selectedAssets removeObject:asset];
     NSLog(@"este es el array en Deselected: %@",_selectedAssets);
     NSLog(@"este es el index en Deselected: %@",indexPath);
-//    UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
-//    UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
-//    selectedImg.hidden=YES;
+
+    cell = (PhotoCell *) [collectionView cellForItemAtIndexPath:indexPath];
+    cell.selectedFrame.hidden = YES;
+
 
 }
 
 
-
+- (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    if (screenWidth == 768) {
+        return UIEdgeInsetsMake(10, 60, 0, 60); // top, left, bottom, right
+    }   // iphone 6
+    else if (screenWidth == 375){
+        return UIEdgeInsetsMake(10, 0, 0, 0);
+    }   // iphone 5, 5c, 5s, touch 5
+    else if (screenWidth == 320){
+        
+        return UIEdgeInsetsMake(10, 20, 0, 20);
+        
+    }return UIEdgeInsetsMake(10, 0, 0, 0);
+}
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -200,10 +216,10 @@
     [self.collectionView reloadData];
     
 
-    NSInteger section = [_collectionView numberOfSections] - 1 ;
-    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
-    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
-    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
+//    NSInteger section = [_collectionView numberOfSections] - 1 ;
+//    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
+//    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
+//    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
 
     
 }
@@ -241,9 +257,10 @@
     // 1
     ALAssetsLibrary *assetsLibrary = [carreteVC defaultAssetsLibrary];
     // 2
+    
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-            if(result)
+            if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto])
             {
                 // 3
                 [tmpAssets addObject:result];

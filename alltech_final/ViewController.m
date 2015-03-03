@@ -11,9 +11,9 @@
 #import "productosVC.h"
 
 
-@interface ViewController ()
+@interface ViewController () <UIGestureRecognizerDelegate, SWRevealViewControllerDelegate>
 
-
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 
 @end
@@ -131,6 +131,7 @@
     //Slide-out right Menu
     
     SWRevealViewController * revealViewController = self.revealViewController;
+    
     if (revealViewController) {
         
         
@@ -140,14 +141,28 @@
         [self.rightMenu setAction: @selector( rightRevealToggle:)];
         revealViewController.rightViewRevealWidth= resultadoPorcentaje;
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-
+        
+//        self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.revealViewController action:@selector(rightRevealToggle:)];
+//        [self.view addGestureRecognizer:self.tapGestureRecognizer];
+//        self.tapGestureRecognizer.enabled = NO;
+//
+//        [self.view addGestureRecognizer:revealViewController.panGestureRecognizer];
         
     }
     
     
     }
 
+-(void)viewWillAppear:(BOOL)animated{
 
+    
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    
+    
+
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
