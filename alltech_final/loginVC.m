@@ -9,7 +9,9 @@
 #import "loginVC.h"
 #import "CSAnimationView.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import <AVFoundation/AVFoundation.h>
+#import <AFNetworking.h>
+#import "SWRevealViewController.h"
+#import "session.h"
 
 
 @interface loginVC ()
@@ -31,18 +33,18 @@ MPMoviePlayerController *moviePlayer;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
-    
     // find movie file
-    NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"m4v"];
+    NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"backgroundVideo" ofType:@"mp4"];
     NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
-    
+    UIImageView *gradient =[[UIImageView alloc]initWithFrame:self.view.frame];
+    gradient.image = [UIImage imageNamed:@"gradient23"];
     moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
     moviePlayer.controlStyle = MPMovieControlStyleNone;
     moviePlayer.view.frame = self.view.frame;
     moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
     [self.view addSubview:moviePlayer.view];
     [self.view sendSubviewToBack:moviePlayer.view];
+    [self.view insertSubview:gradient aboveSubview:moviePlayer.view];
     [moviePlayer play];
     
     // loop movie
@@ -135,14 +137,6 @@ MPMoviePlayerController *moviePlayer;
         
     }
 
-        
-    
-
-    
-    
-    //UIImageView *backgroundImageView=[[UIImageView alloc]initWithFrame:self.view.frame];
-    //backgroundImageView.image=backgroundImage;
-    
     
     //Animacion de logo Alltech
     
@@ -151,31 +145,11 @@ MPMoviePlayerController *moviePlayer;
     animationView.duration = 1;
     animationView.delay    = 0;
     animationView.type     = CSAnimationTypeFadeIn;
-    [self.view insertSubview:animationView aboveSubview:moviePlayer.view];
+    [self.view insertSubview:animationView aboveSubview:gradient];
     // Add your subviews into animationView
     [animationView addSubview:imageView];
     // Kick start the animation immediately
     [animationView startCanvasAnimation];
-    
-
-    
-    
-    
-
-   
-    
-   
-//    Evento que detecta cuando se hizo tap en el background
-//    UITapGestureRecognizer *reconoceTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleBackgroundTap:)];
-//    
-//    reconoceTap.cancelsTouchesInView = NO;
-//    [self.view addGestureRecognizer:reconoceTap];
-    
-    
-//    //Accion mover hacia arriba UIview cuando el teclado este activo
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-
- //   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
     
 }
@@ -205,25 +179,6 @@ MPMoviePlayerController *moviePlayer;
 }
 
 
-// implementacion del metodo tap en el background
-//-(void)handleBackgroundTap:(UITapGestureRecognizer *)sender
-//{
-//    [_userName resignFirstResponder];
-//    [_password resignFirstResponder];
-//    [_correoTexField resignFirstResponder];
-//
-//    if (flagDown == 0) {
-//
-//        _loginConteiner.duration = 0.6;
-//        _loginConteiner.delay    = 0;
-//        _loginConteiner.type     = CSAnimationTypeSlideDown;
-//    
-//        [_loginConteiner startCanvasAnimation];
-//        flagDown++;
-//        flagUp = 0;
-//
-//    }
-//}
 
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -277,102 +232,15 @@ MPMoviePlayerController *moviePlayer;
 
 
 
-
-//////////////////////////////    Funciones que detectan cuando Aparece y desaparece el teclado /////////////////////////////////////////////
-//- (void)keyboardDidShow:(NSNotification *)notification {
-//    
-//    
-//    if ([[UIScreen mainScreen] bounds].size.height == 568) {
-//        
-//        
-//        /*
-//        
-//        [UIView animateWithDuration:0.3
-//                         animations:^{ [_userName setFrame:CGRectMake(60, 190, 200, 40)]; } ];
-//        
-//        [UIView animateWithDuration:0.3
-//                         animations:^{ [_password setFrame:CGRectMake(60, 240, 200, 40)]; } ];
-//        
-//        [UIView animateWithDuration:0.3
-//                         animations:^{ [_loginButton setFrame:CGRectMake(60, 290, 200, 40)]; } ];
-//        
-//         */
-//        
-////        [UIView animateWithDuration:2.0
-////                         animations:^{ [self.view setFrame:CGRectMake(0, 0, 320, 380)]; } ];
-//        
-//        
-//        
-//
-//    
-//    }
-//    
-//    else {
-//        
-////            [UIView animateWithDuration:2.0
-////                             animations:^{ [self.view setFrame:CGRectMake(0, 0, 375, 460)]; } ];
-//        
-//        //[self.loginConteiner setFrame:CGRectMake(0, 0, 375, 460)];
-//        
-//        
-////        CGRect myFrame = [self.loginConteiner frame];
-////        NSLog(@"height = %f", myFrame.size.height);
-////        NSLog(@"width = %f", myFrame.size.width);
-////        NSLog(@"x = %f", myFrame.origin.x);
-////        NSLog(@"y = %f", myFrame.origin.y);
-////        
-////        //_loginConteiner.backgroundColor = [UIColor whiteColor];
-////        
-////        _loginConteiner.duration = 0.6;
-////        _loginConteiner.delay    = 0;
-////        _loginConteiner.type     = CSAnimationTypeSlideDownReverse;
-////        
-////        
-////        // Add your subviews into animationView
-////        //[animationView addSubview:_loginConteiner];
-////        
-////        // Kick start the animation immediately
-////        [_loginConteiner startCanvasAnimation];
-//        
-//        }
-//    
-//}
-//
-//
-//
-//-(void)keyboardDidHide:(NSNotification *)notification{
-//
-//    _loginConteiner.duration = 0.6;
-//    _loginConteiner.delay    = -3;
-//    _loginConteiner.type     = CSAnimationTypeSlideDown;
-//    
-//    [_loginConteiner startCanvasAnimation];
-//    flagUp = 0;
-//    
-//    }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 - (IBAction)loginButton:(id)sender {
     
-    /*
-     
-     NSString *admin =@"admin";
-     NSString *password =@"password";
-     
-     
-     if(_userName.text != admin && _password.text != password){
-     
-     UIAlertView * alerta = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Usuario o Contraseña Incorrecto.!" delegate:nil cancelButtonTitle:@"Aceptar" otherButtonTitles: nil];
-     [alerta show];
-     }
-     
-    */
+    //recogemos los datos ingresados por el usuario para despues mandarlos al servidor
+    NSString *username = _userName.text;
+    NSString *password = _password.text;
     
-    [moviePlayer stop];
+   
     
+    //regresamos los campos a su posicion por defecto
     if (flagDown == 0) {
         
         _loginConteiner.duration = 0.6;
@@ -385,45 +253,58 @@ MPMoviePlayerController *moviePlayer;
         
     }
     
+    if (_userName.text.length == 0 || _password.text.length ==0) {
+        
+        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Los Campos Usuario y Contraseña no pueden estar vacios" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alerta show];
+        
+    }else{
+    
+    
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"username"    : username,
+                                     @"password"    : password
+                                 
+                                     };
+        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+        [manager.requestSerializer setValue:@"login" forHTTPHeaderField:@"opt"];
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:@"http://192.168.15.101:7000/ws" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+            NSLog(@"JSON: %@",responseObject);
+           
+        
+        if ([[responseObject objectForKey:@"error"]  isEqual: @"incorrect_access"]) {
+            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Usuario o Contraseña Invalido" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alerta show];
+            
+            
+        }else if ([responseObject objectForKey:@"sessid"]){
+             NSLog(@"Este es el session ID: %@",[responseObject objectForKey:@"sessid"]);
+            SWRevealViewController *reveal = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
+            [self presentViewController:reveal animated:YES completion:nil];
+            //terminamos la reproduccion del video
+            [moviePlayer stop];
+            
+            
+        }
+        
+        }
+     
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No se puede establecer conexion con el servidor intentelo mas tarde" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+              [alerta show];
+              
+          }];
+    
+    }
+
+    
 }
-
-//////////////////////////////// Metodo que captura la pantalla para despues hacer un fondo con efecto blur en otro view.////////////////////////////////
-
-//- (void) captureBlur {
-//    
-//    /*
-//    //Get a UIImage from the UIView
-//    NSLog(@"blur capture");
-//    UIGraphicsBeginImageContext(self.view.bounds.size);
-//    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-//    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    */
-//    
-//    UIImage *backgroundImage = [UIImage imageNamed:@"fondo_iphone_conLogo"];
-//    
-//    UIImageView *backgroundImageView=[[UIImageView alloc]initWithFrame:self.view.frame];
-//    backgroundImageView.image=backgroundImage;
-//    
-//    //Blur the UIImage
-//    CIImage *imageToBlur = [CIImage imageWithCGImage:backgroundImage.CGImage];
-//    CIFilter *gaussianBlurFilter = [CIFilter filterWithName: @"CIGaussianBlur"];
-//    [gaussianBlurFilter setValue:imageToBlur forKey: @"inputImage"];
-//    [gaussianBlurFilter setValue:[NSNumber numberWithFloat: 10] forKey: @"inputRadius"];
-//    CIImage *resultImage = [gaussianBlurFilter valueForKey: @"outputImage"];
-//    
-//    //create UIImage from filtered image
-//    UIImage* blurrredImage = [[UIImage alloc] initWithCIImage:resultImage];
-//    
-//    //Place the UIImage in a UIImageView
-//    UIImageView *newView = [[UIImageView alloc] initWithFrame:CGRectMake(-15, -10, screenWidth+30, screenHeight+20)];
-//    newView.image = blurrredImage;
-//    
-//    //insert blur UIImageView below transparent view inside the blur image container
-//    [_olvideMiContrasenaBlurView insertSubview:newView atIndex:0];
-//}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -455,14 +336,7 @@ MPMoviePlayerController *moviePlayer;
     
     
     
-//    [self captureBlur];
-//    
-//    //[self dismissViewControllerAnimated:YES completion:nil];
-//    [UIView animateWithDuration:0.3 animations:^{
-//        _olvideMiContrasenaBlurView.alpha = 1.0;
-//       
-//    }];
-    
+
     
     
 }

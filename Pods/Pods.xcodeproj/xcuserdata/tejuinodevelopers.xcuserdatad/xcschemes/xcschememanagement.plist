@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-AFNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Canvas.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,37 +47,42 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>082CB162031CB5ADAAFC485F</key>
+		<key>18CA428F2A9F15CD36FD91F7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0D5B6C69F807E56283AEA1FA</key>
+		<key>366F1D555C36D31C84D08D4A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2722CC45BC70717438B1A1DA</key>
+		<key>5C7DEBE3CDFEBAFC0A29D839</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>553B770EBF6F1BB9701FD387</key>
+		<key>8F2DAD6419D7C3F6441E9397</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9F39430ADA803D944FCA0381</key>
+		<key>ABA8A1B9DE75500F2AF23D49</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AE48CEF6C64E6D23AFF60F7A</key>
+		<key>B5EC477C382D0B32BCC40629</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E185AE614DEF7B081C4ECCBC</key>
+		<key>BDA11CB705C2C05D63B657DF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C28828EB87343001B2D6625B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

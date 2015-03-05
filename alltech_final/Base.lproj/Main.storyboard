@@ -22,7 +22,7 @@
         <!--Reveal View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SWRevealViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SWRevealViewController" id="BYZ-38-t0r" customClass="SWRevealViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -302,7 +302,6 @@
                                         </variation>
                                         <connections>
                                             <action selector="loginButton:" destination="UP5-aK-xKI" eventType="touchUpInside" id="Hpz-KT-19f"/>
-                                            <segue destination="BYZ-38-t0r" kind="show" id="tBX-hD-qKv"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -419,6 +418,9 @@
                                             <mask key="constraints">
                                                 <exclude reference="M4a-qE-jsw"/>
                                             </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="123" y="220" width="154" height="40"/>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular">
                                             <mask key="constraints">

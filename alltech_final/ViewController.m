@@ -9,12 +9,14 @@
 #import "ViewController.h"
 #import "SWRevealViewController.h"
 #import "productosVC.h"
+#import "session.h"
+#import <AFNetworking.h>
 
 
 @interface ViewController () <UIGestureRecognizerDelegate, SWRevealViewControllerDelegate>
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
-
+@property (nonatomic, strong) NSMutableArray *programas2;
 
 @end
 
@@ -36,6 +38,35 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"sessid"    : @"6cd36smnggp3efmeub0kfsrp51"
+                                
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"get_programs" forHTTPHeaderField:@"opt"];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:@"http://192.168.15.101:7000/ws" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        NSLog(@"JSON: %@",responseObject);
+        //_getprograms = [responseObject objectForKey:@"programs"];
+        for(_getprograms in [responseObject objectForKey:@"programs"])
+        {
+            [_programas2 addObject: @"fuck"];
+            NSLog(@"title es: %@", [_getprograms objectForKey:@"title"]);
+            
+        }NSLog(@"veamos si por fin: %@",_programas2);
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+            
+          }];
+    
+    
+    NSLog(@"veamos si por fin: %@",_programas2);
     
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
@@ -48,7 +79,7 @@
     
     // Arreglos de los programas con sus respectivas imagenes
     
-    programas = [NSArray arrayWithObjects:@"Manejo de Minerales",@"Manejo de Salud Intestinal",@"Manejo de Micotoxinas",@"Manejo de Eficiencia Alimenticia",@"Manejo de Algas",@"Manejo de Proteinas",@"Otros productos",nil];
+    //programas = [NSArray arrayWithObjects:@"Manejo de Minerales",@"Manejo de Salud Intestinal",@"Manejo de Micotoxinas",@"Manejo de Eficiencia Alimenticia",@"Manejo de Algas",@"Manejo de Proteinas",@"Otros productos",nil];
     imgProgramas =[NSArray arrayWithObjects:@"img1.png",@"img2.png",@"img3.png",@"img4.png",@"img5.png",@"img6.png",@"mas.png", nil];
     
     
@@ -152,6 +183,7 @@
     
     
     }
+
 
 -(void)viewWillAppear:(BOOL)animated{
 

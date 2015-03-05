@@ -58,9 +58,13 @@
     screenHeight = screenSize.height;
     
     //Cambiamos color del fondo de la view y del collectionview
+    //    self.view.backgroundColor = [UIColor orangeColor];
+    //    self.collectionView.backgroundColor = [UIColor orangeColor];
+    
     self.view.backgroundColor = [UIColor colorWithRed:27/255.0f green:27/255.0f blue:29/255.0f alpha:1.0f]; /*#1b1b1d*/
     self.carreteNav.barTintColor = [UIColor colorWithRed:27/255.0f green:27/255.0f blue:29/255.0f alpha:1.0f]; /*#1b1b1d*/
     self.collectionView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+    
     self.collectionView.allowsMultipleSelection = YES;
     
     
@@ -69,17 +73,18 @@
     
     [self loadAssets];
     
+    
 }
 
 
 
 -(void)viewDidLayoutSubviews{
-
     
-//    NSInteger section = [_collectionView numberOfSections] - 1 ;
-//    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
-//    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
-//    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
+    
+    //    NSInteger section = [_collectionView numberOfSections] - 1 ;
+    //    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
+    //    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
+    //    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
     
     
     
@@ -87,14 +92,12 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    //[self scrollToBottom];
+    [self scrollToBottom];
     
     [self loadAssets];
     
     
 }
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -114,11 +117,9 @@
     
     cell = (PhotoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoCell" forIndexPath:indexPath];
     
-
     ALAsset *asset = self.assets[indexPath.row];
     cell.asset = asset;
     cell.backgroundColor = [UIColor whiteColor];
-    
     if (cell.selected) {
         cell.selectedFrame.hidden = NO;
     }
@@ -126,6 +127,7 @@
     {
         cell.selectedFrame.hidden = YES;
     }
+    
     return cell;
 }
 
@@ -141,6 +143,11 @@
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    //    UIImageView *selected =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"selectedFrame"]];
+    //    UICollectionViewCell *celda=[self.collectionView cellForItemAtIndexPath:indexPath];
+    //    [celda addSubview:selected];
+    
+    
     
     
     ALAsset *asset = self.assets[indexPath.row];
@@ -148,19 +155,21 @@
     UIImage *image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
     // Do something with the image
     
-
-
+    
+    
     [_selectedAssets addObject:asset];
     NSLog(@"este es el array en Selected: %@",_selectedAssets);
     NSLog(@"este es el index en Selected: %@",indexPath);
+    NSLog(@"esta es la ruta de la imagen seleccionada: %@",asset.defaultRepresentation.url);
+    //collectionView.allowsMultipleSelection = YES;
+    UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
+    UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
+    selectedImg.hidden=NO;
     
-    cell = (PhotoCell *) [collectionView cellForItemAtIndexPath:indexPath];
-    cell.selectedFrame.hidden = NO;
-
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     ALAsset *asset = self.assets[indexPath.row];
     ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
     UIImage *image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
@@ -171,27 +180,14 @@
     [_selectedAssets removeObject:asset];
     NSLog(@"este es el array en Deselected: %@",_selectedAssets);
     NSLog(@"este es el index en Deselected: %@",indexPath);
-
-    cell = (PhotoCell *) [collectionView cellForItemAtIndexPath:indexPath];
-    cell.selectedFrame.hidden = YES;
-
-
+    UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
+    UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
+    selectedImg.hidden=YES;
+    
 }
 
 
-- (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    if (screenWidth == 768) {
-        return UIEdgeInsetsMake(10, 60, 0, 60); // top, left, bottom, right
-    }   // iphone 6
-    else if (screenWidth == 375){
-        return UIEdgeInsetsMake(10, 0, 0, 0);
-    }   // iphone 5, 5c, 5s, touch 5
-    else if (screenWidth == 320){
-        
-        return UIEdgeInsetsMake(10, 20, 0, 20);
-        
-    }return UIEdgeInsetsMake(10, 0, 0, 0);
-}
+
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -215,12 +211,12 @@
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
     [self.collectionView reloadData];
     
-
-//    NSInteger section = [_collectionView numberOfSections] - 1 ;
-//    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
-//    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
-//    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
-
+    
+    NSInteger section = [_collectionView numberOfSections] - 1 ;
+    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
+    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
+    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
+    
     
 }
 
@@ -230,7 +226,7 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 //- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//    
+//
 //    if ([segue.identifier isEqualToString:@"mandaFotos"]) {
 //        selecAlbumTV * selecAlbum = segue.destinationViewController;
 //        [self.navigationController pushViewController:selecAlbum animated:YES];
@@ -251,22 +247,21 @@
 
 
 -(void)loadAssets {
-
+    
     _assets = [@[] mutableCopy];
     __block NSMutableArray *tmpAssets = [@[] mutableCopy];
     // 1
     ALAssetsLibrary *assetsLibrary = [carreteVC defaultAssetsLibrary];
     // 2
-    
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-            if ([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto])
+            if([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto])
             {
                 // 3
                 [tmpAssets addObject:result];
             }
         }];
-       
+        
         // 4
         //NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
         //self.assets = [tmpAssets sortedArrayUsingDescriptors:@[sort]];
@@ -277,7 +272,7 @@
     } failureBlock:^(NSError *error) {
         NSLog(@"Error loading images %@", error);
     }];
-
+    
     
 }
 
@@ -292,51 +287,51 @@
     
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        {
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            [self presentViewController:picker animated:YES completion:nil];
-        }else{
+    {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:picker animated:YES completion:nil];
+    }else{
+        
+        NSLog(@"fuck it.! no hay camara...");
+    }
     
-            NSLog(@"fuck it.! no hay camara...");
-        }
-
-
     
-//    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
-//    picker.delegate = self;
-//    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//   
-//    [self presentViewController:picker animated:YES completion:nil];
+    
+    //    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+    //    picker.delegate = self;
+    //    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    //
+    //    [self presentViewController:picker animated:YES completion:nil];
     
     
 }
 
 - (void) scrollToBottom {
     
-  
-        _collectionView.contentInset = UIEdgeInsetsZero;
-  
-
-        static NSInteger section = 0;
-        NSInteger item = [self collectionView:_collectionView numberOfItemsInSection:section] - 1;
-        NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
-        [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
     
-   
+    _collectionView.contentInset = UIEdgeInsetsZero;
+    
+    
+    static NSInteger section = 0;
+    NSInteger item = [self collectionView:_collectionView numberOfItemsInSection:section] - 1;
+    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
+    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
+    
+    
 }
 
 //- (void)loadAssets {
-//    
+//
 //    // Initialise
 //    _assets = [NSMutableArray new];
 //    _assetLibrary = [[ALAssetsLibrary alloc] init];
-//    
+//
 //    // Run in the background as it takes a while to get all assets from the library
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        
+//
 //        NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
 //        NSMutableArray *assetURLDictionaries = [[NSMutableArray alloc] init];
-//        
+//
 //        // Process assets
 //        void (^assetEnumerator)(ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
 //            if (result != nil) {
@@ -348,18 +343,18 @@
 //                                       if (asset) {
 //                                           @synchronized(_assets) {
 //                                               [_assets addObject:asset];
-//                                               
+//
 //                                           }
 //                                       }
 //                                   }
 //                                  failureBlock:^(NSError *error){
 //                                      NSLog(@"operation was not successfull!");
 //                                  }];
-//                    
+//
 //                }
 //            }
 //        };
-//        
+//
 //        // Process groups
 //        void (^ assetGroupEnumerator) (ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *group, BOOL *stop) {
 //            if (group != nil) {
@@ -367,16 +362,16 @@
 //                [assetGroups addObject:group];
 //            }
 //        };
-//        
+//
 //        // Process!
 //        [self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll
 //                                         usingBlock:assetGroupEnumerator
 //                                       failureBlock:^(NSError *error) {
 //                                           NSLog(@"There is an error");
 //                                       }];
-//        
+//
 //    });
-//    
+//
 //
 //}
 
@@ -390,16 +385,16 @@
 
 - (IBAction)usarButton:(id)sender {
     
-//    crearAlbumVC *crearAlbum = [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
-//    crearAlbum.selectedImages=_selectedAssets;
-//    crearAlbum.stringdecarrete = @"Esto Fue lo que se le paso al CrearAlbumVC";
-//    NSLog(@"veamos el array: %@",_selectedAssets);
+    //    crearAlbumVC *crearAlbum = [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
+    //    crearAlbum.selectedImages=_selectedAssets;
+    //    crearAlbum.stringdecarrete = @"Esto Fue lo que se le paso al CrearAlbumVC";
+    //    NSLog(@"veamos el array: %@",_selectedAssets);
     
     selecAlbumTV *selecAlbum =  [self.storyboard instantiateViewControllerWithIdentifier:@"selecAlbumTV"];
     //selecAlbumTV *selecAlbum = [[selecAlbumTV alloc]initWithNibName:@"selecAlbumTV" bundle:nil];
     selecAlbum.selectedImages = _selectedAssets;
     [self.navigationController pushViewController:selecAlbum animated:YES];
-
+    
     
     
 }
