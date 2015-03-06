@@ -12,6 +12,7 @@
 
 
 @property(nonatomic,strong) NSString * nombreDelPrograma;
+@property(nonatomic,strong) NSString * programaID;
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *productosNav;
 
@@ -20,6 +21,9 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightMenu;
 
 @property (weak, nonatomic) IBOutlet UIImageView *segundaBarraImg;
+
+@property (weak, nonatomic) IBOutlet UILabel *programaLabel;
+
 
 - (IBAction)returnButton:(id)sender;
 

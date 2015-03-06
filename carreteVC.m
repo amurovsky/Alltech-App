@@ -389,12 +389,14 @@
     //    crearAlbum.selectedImages=_selectedAssets;
     //    crearAlbum.stringdecarrete = @"Esto Fue lo que se le paso al CrearAlbumVC";
     //    NSLog(@"veamos el array: %@",_selectedAssets);
-    
-    selecAlbumTV *selecAlbum =  [self.storyboard instantiateViewControllerWithIdentifier:@"selecAlbumTV"];
-    //selecAlbumTV *selecAlbum = [[selecAlbumTV alloc]initWithNibName:@"selecAlbumTV" bundle:nil];
-    selecAlbum.selectedImages = _selectedAssets;
-    [self.navigationController pushViewController:selecAlbum animated:YES];
-    
+    if ([_selectedAssets count] == 0) {
+        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:@"Selecciona por lo menos una fotografia" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alerta show];
+    }else{
+        selecAlbumTV *selecAlbum =  [self.storyboard instantiateViewControllerWithIdentifier:@"selecAlbumTV"];
+        selecAlbum.selectedImages = _selectedAssets;
+        [self.navigationController pushViewController:selecAlbum animated:YES];
+    }
     
     
 }

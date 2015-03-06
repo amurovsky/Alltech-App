@@ -8,9 +8,6 @@
 
 #import "galeriasVC.h"
 #import "SWRevealViewController.h"
-#import "myCustomCaptionView.h"
-
-
 
 @interface galeriasVC ()
 

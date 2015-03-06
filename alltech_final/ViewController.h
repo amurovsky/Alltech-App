@@ -12,9 +12,9 @@
 @interface ViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *programasTable;
 @property (weak, nonatomic) IBOutlet UINavigationBar *programasNav;
-
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightMenu;
-
+@property (strong, nonatomic) NSDictionary *getprograms;
+@property (strong, nonatomic) NSString *getSessionID;
 
 
 @end

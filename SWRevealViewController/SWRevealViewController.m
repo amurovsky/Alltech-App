@@ -561,7 +561,10 @@ static CGFloat scaledValue( CGFloat v1, CGFloat min2, CGFloat max2, CGFloat min1
     
     if (abs(nowPoint.x - _beginPoint.x) > kDirectionPanThreshold) _dragging = YES;
     else if (abs(nowPoint.y - _beginPoint.y) > kDirectionPanThreshold) self.state = UIGestureRecognizerStateFailed;
+    
 }
+
+
 
 @end
 
@@ -720,6 +723,7 @@ const int FrontViewPositionNone = 0xff;
     
     // now set the desired initial position
     [self _setFrontViewPosition:initialPosition withDuration:0.0];
+    
 }
 
 
@@ -1852,6 +1856,8 @@ NSString * const SWSegueRightIdentifier = @"sw_right";
     UIViewController *dvc = self.destinationViewController;
     [rvc pushFrontViewController:dvc animated:YES];
 }
+
+
 
 @end
 

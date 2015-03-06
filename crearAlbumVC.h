@@ -14,6 +14,8 @@
 @property(nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property(nonatomic, strong) IBOutlet UIImageView * previewImg;
 @property(nonatomic, strong) NSMutableArray *selectedImages;
+@property (strong, nonatomic) NSString *getTitulo;
+@property (strong, nonatomic) NSString *getDescripcion;
 - (IBAction)returnButton:(id)sender;
 
 
@@ -33,12 +35,14 @@
 @interface CustomHeaderView : UICollectionReusableView
 
 @property (strong, nonatomic) IBOutlet UILabel *tituloAlbumLabel;
-
 @property (strong, nonatomic) IBOutlet UILabel *descripcionLabel;
+
+
 
 @end
 
 
+#import "canvas.h"
 
 @interface nuevoAlbum : UIViewController <UITextFieldDelegate, UIPickerViewDataSource,UIPickerViewDelegate>
 
@@ -51,7 +55,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *descripcionTextField;
 @property (strong, nonatomic) NSArray *tituloDescripcionAlbum;
 
+@property (weak, nonatomic) IBOutlet CSAnimationView *conteiner;
 
 - (IBAction)returnButton:(id)sender;
+- (IBAction)crearButton:(id)sender;
 
 @end

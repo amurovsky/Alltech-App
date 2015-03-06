@@ -37,7 +37,7 @@
     
     CGRect frameIpad = CGRectMake(90, 25, 60, 60);
     CGRect frameIphone = CGRectMake(85, 15, 40, 40);
-    
+    CGRect frameIphoneCh = CGRectMake(85, 15, 30, 30);
     
     // ipad
     if (screenWidth == 768 && screenHeight == 1024) {
@@ -71,14 +71,23 @@
         
         // iphone 5, 5c, 5s, touch 5
     }else if (screenWidth == 320 && screenHeight == 568){
-        
-        [_separatorImg[0] setFrame:CGRectMake(75, 115, 90, 2)];
+    
         _camaraImg.frame = frameIphone;
         _idiomaImg.frame = frameIphone;
         _logoutImg.frame = frameIphone;
-        [_separatorImg[0] setFrame:CGRectMake(75, 72, 60, 1)];
-        [_separatorImg[1] setFrame:CGRectMake(75, 72, 60, 1)];
-        [_separatorImg[2] setFrame:CGRectMake(75, 72, 60, 1)];
+        [_separatorImg[0] setFrame:CGRectMake(75, 63, 60, 1)];
+        [_separatorImg[1] setFrame:CGRectMake(75, 63, 60, 1)];
+        [_separatorImg[2] setFrame:CGRectMake(75, 63, 60, 1)];
+    }// iphone 4, 4s, touch 4
+    else if (screenWidth == 320 && screenHeight == 480){
+        
+        _camaraImg.frame = frameIphoneCh;
+        _idiomaImg.frame = frameIphoneCh;
+        _logoutImg.frame = frameIphoneCh;
+        [_separatorImg[0] setFrame:CGRectMake(73, 53, 60, 1)];
+        [_separatorImg[1] setFrame:CGRectMake(73, 53, 60, 1)];
+        [_separatorImg[2] setFrame:CGRectMake(73, 53, 60, 1)];
+        
     }
   
     

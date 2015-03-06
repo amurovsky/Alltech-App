@@ -12,6 +12,8 @@
 #import <AFNetworking.h>
 #import "SWRevealViewController.h"
 #import "session.h"
+#import "ViewController.h"
+#import "AppDelegate.h"
 
 
 @interface loginVC ()
@@ -27,7 +29,6 @@ CGFloat screenHeight;
 int flagUp=0;
 int flagDown=1;
 MPMoviePlayerController *moviePlayer;
-
 
 
 - (void)viewDidLoad {
@@ -109,8 +110,13 @@ MPMoviePlayerController *moviePlayer;
         _correoTexField.font = [UIFont fontWithName:@"Aileron-Bold" size:30.0];
         [_recuperarButton.titleLabel setFont:[UIFont fontWithName:@"Aileron-Bold" size:30.0]];
         
-        
         imageView.frame = CGRectMake(0, 20, screenWidth, 80);
+        
+    }// iphone 6 plus
+    else if (screenWidth == 414 && screenHeight == 736) {
+        
+        imageView.frame = CGRectMake(0, 0, screenWidth, 40);
+        
     }
     
     // iphone 6
@@ -132,13 +138,12 @@ MPMoviePlayerController *moviePlayer;
     // iphone 4, 4s, touch 4
     else if (screenWidth == 320 && screenHeight == 480){
         
-        imageView.frame = CGRectMake(0, 20, screenWidth, 20);
-        
-        
+        imageView.frame = CGRectMake(0, -50, screenWidth, 30);
+ 
     }
 
     
-    //Animacion de logo Alltech
+    //Animacion Fade In de logo Alltech
     
     CSAnimationView *animationView = [[CSAnimationView alloc] initWithFrame:CGRectMake(0, 80, screenWidth, 40)];
     animationView.backgroundColor = [UIColor clearColor];
@@ -238,29 +243,14 @@ MPMoviePlayerController *moviePlayer;
     NSString *username = _userName.text;
     NSString *password = _password.text;
     
-   
-    
-    //regresamos los campos a su posicion por defecto
-    if (flagDown == 0) {
-        
-        _loginConteiner.duration = 0.6;
-        _loginConteiner.delay    = 0;
-        _loginConteiner.type     = CSAnimationTypeSlideDown;
-        
-        [_loginConteiner startCanvasAnimation];
-        flagDown++;
-        flagUp = 0;
-        
-    }
-    
+
     if (_userName.text.length == 0 || _password.text.length ==0) {
         
         UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Los Campos Usuario y Contraseña no pueden estar vacios" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alerta show];
         
     }else{
-    
-    
+
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         NSDictionary *parameters = @{
                                      @"username"    : username,
@@ -271,22 +261,42 @@ MPMoviePlayerController *moviePlayer;
         [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
         [manager.requestSerializer setValue:@"login" forHTTPHeaderField:@"opt"];
         [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
         [manager POST:@"http://192.168.15.101:7000/ws" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-            NSLog(@"JSON: %@",responseObject);
-           
-        
+
         if ([[responseObject objectForKey:@"error"]  isEqual: @"incorrect_access"]) {
             UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Usuario o Contraseña Invalido" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alerta show];
             
             
         }else if ([responseObject objectForKey:@"sessid"]){
-             NSLog(@"Este es el session ID: %@",[responseObject objectForKey:@"sessid"]);
+            
+            NSLog(@"Este es el session ID: %@",[responseObject objectForKey:@"sessid"]);
+            //mostramos la siguiente pantalla si la conexion fue exitosa
             SWRevealViewController *reveal = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
+            
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            appDelegate.userSession.sesionID = [responseObject valueForKey:@"sessid"];
+            appDelegate.userSession.lenguaje = [responseObject objectForKey:@"lang"];
+            NSLog(@"SessionID de la calse Session: %@",appDelegate.userSession.sesionID);
+            NSLog(@"Lenguaje de la calse Session: %@",appDelegate.userSession.lenguaje);
             [self presentViewController:reveal animated:YES completion:nil];
+            
             //terminamos la reproduccion del video
             [moviePlayer stop];
+            
+            //regresamos los campos a su posicion por defecto
+            if (flagDown == 0) {
+                
+                _loginConteiner.duration = 0.6;
+                _loginConteiner.delay    = 0;
+                _loginConteiner.type     = CSAnimationTypeSlideDown;
+                
+                [_loginConteiner startCanvasAnimation];
+                flagDown++;
+                flagUp = 0;
+                
+            }
             
             
         }
@@ -303,7 +313,8 @@ MPMoviePlayerController *moviePlayer;
     
     }
 
-    
+
+ 
 }
 
 

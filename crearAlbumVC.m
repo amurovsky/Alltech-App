@@ -10,6 +10,7 @@
 #import "previewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
+
 @interface crearAlbumVC ()
 
 @end
@@ -65,12 +66,9 @@
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 129, headerView.bounds.size.width, 1)];
         lineView.backgroundColor = [UIColor orangeColor];
         [headerView addSubview:lineView];
-        headerView.descripcionLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, headerView.bounds.size.width, 60)];
-        headerView.tituloAlbumLabel.text = @"Esto es una prueba";
-        headerView.descripcionLabel.text = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat erat massa, non dapibus turpis congue ut. Integer lorem libero, scelerisque et hendrerit ut, porta vel elit. Sed non bibendum felis. Etiam id vulputate sapien, id lacinia nisl. Aenean a purus nec massa faucibus interdum in sit amet leo. Sed sed enim odio. Praesent sollicitudin, tellus in ultricies vulputate, nisi tellus dictum sapien, eu ullamcorper tellus est eu quam.";
-        //headerView.descripcionLabel.frame = ;
-        
-        
+        headerView.tituloAlbumLabel.text = _getTitulo;
+        headerView.descripcionLabel.text = _getDescripcion;
+
     }
     
     
@@ -131,7 +129,6 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
- 
     
     
 }
@@ -161,6 +158,7 @@
 
 #pragma mark - nuevoAlbum
 
+
 @implementation nuevoAlbum
 UIPickerView *pickerView1;
 UIPickerView *pickerView2;
@@ -178,7 +176,20 @@ NSArray * productosProteinas;
 NSArray * productosotros;
 NSInteger renglon;
 
+CGRect screenBound;
+CGSize screenSize;
+CGFloat screenWidth;
+CGFloat screenHeight;
+
 -(void)viewDidLoad{
+    
+    //Inicializamos las variables para recoger las dimensiones de la pantalla
+    
+    screenBound = [[UIScreen mainScreen] bounds];
+    screenSize = screenBound.size;
+    screenWidth = screenSize.width;
+    screenHeight = screenSize.height;
+
     
     programas = [NSArray arrayWithObjects:@"Manejo de Minerales",@"Manejo de Salud Intestinal",@"Manejo de Micotoxinas",@"Manejo de Eficiencia Alimenticia",@"Manejo de Algas",@"Manejo de Proteinas",@"Otros productos",nil];
     especies =@[@"Acuicultura",@"Ganado de Carne",@"Ganado de Leche",@"Mascotas",@"Ponedoras",@"Brokers",@"Cerdos"];
@@ -191,17 +202,7 @@ NSInteger renglon;
     productosAlgas = @[@"All-G-Rich",@"LG Max"];
     productosProteinas =@[@"NuPRO",@"Optigen"];
     productosotros = @[@"Advantage Packs",@"Yea-Sacc"];
-    
-//    productos = [[NSMutableArray alloc] init];
-//    
-//    
-//    [productos addObject:productosMinerales];
-//    [productos addObject:productosSaludIntestinal];
-//    [productos addObject:productosMicotoxinas];
-//    [productos addObject:productosEficienciaAlimenticia];
-//    [productos addObject:productosAlgas];
-//    [productos addObject:productosProteinas];
-//    [productos addObject:productosotros];
+
     
     
     //ponemos fondo al View y a la barra de navegacion
@@ -222,6 +223,8 @@ NSInteger renglon;
     _programaPV.delegate = self;
     _productoPV.delegate = self;
     _especiePV.delegate = self;
+    _tituloTextField.delegate = self;
+    _descripcionTextField.delegate = self;
 //    pickerView2.delegate = self;
 //    pickerView2.dataSource = self;
 //    pickerView3.delegate = self;
@@ -231,7 +234,7 @@ NSInteger renglon;
     _productoPV.inputView = pickerView1;
     _especiePV.inputView = pickerView1;
     
-
+    [self pickerView:pickerView1 didSelectRow:0 inComponent:0];
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
@@ -322,19 +325,27 @@ NSInteger renglon;
     [textField isFirstResponder];
    
     [pickerView1 reloadAllComponents];
+
     
     return YES;
 
 }
 
-//-(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-//
-//
-//}
+
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
 
+    if (([_descripcionTextField isFirstResponder] || [_tituloTextField isFirstResponder]) && ( screenWidth == 320 )) {
+        [self animateTextField:textField up:YES];
+    }
     
 
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+
+    if (([_descripcionTextField resignFirstResponder] || [_tituloTextField resignFirstResponder]) && ( screenWidth == 320)) {
+        [self animateTextField:textField up:NO];
+    }
 
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -358,6 +369,22 @@ NSInteger renglon;
     
 }
 
+-(void)animateTextField:(UITextField*)textField up:(BOOL)up
+{
+    const int movementDistance = 150; // tweak as needed
+    const float movementDuration = 0.3f; // tweak as needed
+    
+    int movement = (up ? movementDistance : -movementDistance);
+    
+    [UIView beginAnimations: @"animateTextField" context: nil];
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    [UIView setAnimationDuration: movementDuration];
+    self.conteiner.bounds = CGRectOffset(self.conteiner.bounds, 0, movement);
+    [UIView commitAnimations];
+    
+}
+
+
 -(UIStatusBarStyle)preferredStatusBarStyle{
     
     return UIStatusBarStyleLightContent;
@@ -368,6 +395,14 @@ NSInteger renglon;
     
    [self.navigationController popViewControllerAnimated:TRUE];
     
+}
+
+- (IBAction)crearButton:(id)sender {
+    
+    crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
+    crear.getTitulo = _tituloTextField.text;
+    crear.getDescripcion = _descripcionTextField.text;
+    [self.navigationController  pushViewController:crear animated:YES];
 }
 
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "session.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -17,7 +18,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-
+@property (strong, nonatomic) session *userSession;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

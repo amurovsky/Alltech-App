@@ -9,6 +9,8 @@
 #import "productosVC.h"
 #import "especiesVC.h"
 #import "SWRevealViewController.h"
+#import <AFNetworking.h>
+#import "AppDelegate.h"
 
 
 @interface productosVC ()
@@ -17,29 +19,52 @@
 
 @implementation productosVC{
     
-    NSMutableArray * productos;
-    NSArray * productosMinerales;
-    NSArray * productosSaludIntestinal;
-    NSArray * productosMicotoxinas;
-    NSArray * productosEficienciaAlimenticia;
-    NSArray * productosAlgas;
-    NSArray * productosProteinas;
-    NSArray * productosotros;
+    NSMutableArray *productos;
+    NSMutableArray *productoID;
     CGRect screenBound;
     CGSize screenSize;
     CGFloat screenWidth;
     CGFloat screenHeight;
-
     CGFloat porcentaje;
     CGFloat resultadoPorcentaje;
+    AppDelegate *appDelegate;
     
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
 
+    productos = [[NSMutableArray alloc]init];
+    productoID = [[NSMutableArray alloc]init];
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"sessid"    : appDelegate.userSession.sesionID,
+                                 @"id_program": appDelegate.userSession.programaID
+                                 
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"get_products" forHTTPHeaderField:@"opt"];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:@"http://192.168.15.101:7000/ws" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        
+        for(NSDictionary *tempDic in [responseObject objectForKey:@"products"])
+        {
+            [productos addObject: [tempDic objectForKey:@"title"]];
+            [productoID addObject: [tempDic objectForKey:@"id"]];
+            NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+            
+        }[self.productosTable reloadData];
+        NSLog(@"JSON: %@",responseObject);
+        NSLog(@"array title: %@",productos);
+        NSLog(@"array ID: %@",productoID);
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              
+          }];
     
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
@@ -49,31 +74,29 @@
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
 
-    
-    
     NSLog(@"programas nos manda : %@",_nombreDelPrograma);
     
-    productosMinerales = @[@"Bioplex",@"Selplex",@"Elonomase"];
-    productosSaludIntestinal = @[@"Actigen",@"Bio-Mos",@"Acid Pak",@"Yea-Sacc"];
-    productosMicotoxinas = @[@"Mycosorb"];
-    productosEficienciaAlimenticia = @[@"Allzyme SSF",@"Allzyme VegPro"];
-    productosAlgas = @[@"All-G-Rich",@"LG Max"];
-    productosProteinas =@[@"NuPRO",@"Optigen"];
-    productosotros = @[@"Advantage Packs",@"Yea-Sacc"];
+//    productosMinerales = @[@"Bioplex",@"Selplex",@"Elonomase"];
+//    productosSaludIntestinal = @[@"Actigen",@"Bio-Mos",@"Acid Pak",@"Yea-Sacc"];
+//    productosMicotoxinas = @[@"Mycosorb"];
+//    productosEficienciaAlimenticia = @[@"Allzyme SSF",@"Allzyme VegPro"];
+//    productosAlgas = @[@"All-G-Rich",@"LG Max"];
+//    productosProteinas =@[@"NuPRO",@"Optigen"];
+//    productosotros = @[@"Advantage Packs",@"Yea-Sacc"];
+//    
+//    productos = [[NSMutableArray alloc] init];
+//    
+//    
+//    [productos addObject:productosMinerales];
+//    [productos addObject:productosSaludIntestinal];
+//    [productos addObject:productosMicotoxinas];
+//    [productos addObject:productosEficienciaAlimenticia];
+//    [productos addObject:productosAlgas];
+//    [productos addObject:productosProteinas];
+//    [productos addObject:productosotros];
     
-    productos = [[NSMutableArray alloc] init];
     
-    
-    [productos addObject:productosMinerales];
-    [productos addObject:productosSaludIntestinal];
-    [productos addObject:productosMicotoxinas];
-    [productos addObject:productosEficienciaAlimenticia];
-    [productos addObject:productosAlgas];
-    [productos addObject:productosProteinas];
-    [productos addObject:productosotros];
-    
-    
-    NSLog(@"Este es mi arreglo con arreglos Anidados: %@",productos);
+   // NSLog(@"Este es mi arreglo con arreglos Anidados: %@",productos);
     
     
     
@@ -153,24 +176,10 @@
     [self.productosNav setShadowImage:[UIImage new]];
     
     
-    //cambiar imagen de la segunda barra segun el programa seleccionado
     
-    if ([_nombreDelPrograma  isEqual: @"Manejo de Minerales"]) {
-        self.segundaBarraImg.image =[UIImage imageNamed:@"Manejo_Minerales-logo"];
-  
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Salud Intestinal"]){
-        self.segundaBarraImg.image =[UIImage imageNamed:@"Salud_Intestinal-logo"];
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Micotoxinas"]){
-        self.segundaBarraImg.image =[UIImage imageNamed:@"Manejo_Micotoxinas-logo"];
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Eficiencia Alimenticia"]){
-        self.segundaBarraImg.image =[UIImage imageNamed:@"Eficiencia_Alimenticia-logo"];
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Algas"]){
-        self.segundaBarraImg.image =[UIImage imageNamed:@"Manejo_Algas-logo"];
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Proteinas"]){
-        self.segundaBarraImg.image =[UIImage imageNamed:@"Manejo_Proteinas-logo"];
-    }else if ([_nombreDelPrograma  isEqual: @"Otros productos"]){
-        self.segundaBarraImg.image =[UIImage imageNamed:@"Manejo_Minerales-logo"];
-    }
+    //cambiamos el label de la segunda barra
+    
+    _programaLabel.text = [_nombreDelPrograma uppercaseString];
 
     
     //Slide-out right Menu
@@ -211,75 +220,9 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-    // Return the number of rows in the section.
-    
-    
-    
-    
-    
-    if ([_nombreDelPrograma  isEqual: @"Manejo de Minerales"]) {
-        
-        
-        
-        return [productos[0] count];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Salud Intestinal"]){
-        
-        
-        
-        return [productos[1] count];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Micotoxinas"]){
-        
-        
-        
-        return [productos[2] count];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Eficiencia Alimenticia"]){
-        
-        
-        
-        return [productos[3] count];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Algas"]){
-        
-        
-        
-        return [productos[4] count];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Proteinas"]){
-        
-        
-        
-        return [productos[5] count];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Otros productos"]){
-        
-        
-        
-        return [productos[6] count];
-        
-        
-        
-    }
-    
-    return [productos count];
-    
 
-    
+    return [productos count];
+
 }
 
 
@@ -305,69 +248,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         
     }
-    
-    
-    
-    if ([_nombreDelPrograma  isEqual: @"Manejo de Minerales"]) {
-        
-        
-        
-        cell.textLabel.text = [productos[0] objectAtIndex:indexPath.row];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Salud Intestinal"]){
-        
-        
-        
-        cell.textLabel.text = [productos[1] objectAtIndex:indexPath.row];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Micotoxinas"]){
-        
-        
-        
-        cell.textLabel.text = [productos[2] objectAtIndex:indexPath.row];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Eficiencia Alimenticia"]){
-        
-        
-        
-        cell.textLabel.text = [productos[3] objectAtIndex:indexPath.row];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Algas"]){
-        
-        
-        
-        cell.textLabel.text = [productos[4] objectAtIndex:indexPath.row];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Manejo de Proteinas"]){
-        
-        
-        
-        cell.textLabel.text = [productos[5] objectAtIndex:indexPath.row];
-        
-        
-        
-    }else if ([_nombreDelPrograma  isEqual: @"Otros productos"]){
-        
-        
-        
-        cell.textLabel.text = [productos[6] objectAtIndex:indexPath.row];
-        
-        
-        
-    }
+      cell.textLabel.text = [productos objectAtIndex:indexPath.row];
     
     // separador de celadas
-    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"separatorCell"]];
+    UIView *imgView = [[UIView alloc] init];
+    imgView.backgroundColor = [UIColor orangeColor];
 
     
     // ipad 2 , ipad mini, ipad retina
@@ -451,80 +336,23 @@
 }
 
 
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    // Configure the cell...
-    
-    return cell;
+    appDelegate.userSession.productoID = [productoID objectAtIndex:indexPath.row];
 }
-*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
+NSIndexPath *indexPath = [self.productosTable indexPathForSelectedRow];
     
-    // Set the title of navigation bar by using the menu items
-    NSIndexPath *indexPath = [self.productosTable indexPathForSelectedRow];
-   // UINavigationController *destViewController = (UINavigationController*)segue.destinationViewController;
-    //destViewController.title = [[productos objectAtIndex:indexPath.row] capitalizedString];
-    
-    /*
-     // Set the photo if it navigates to the PhotoView
-     if ([segue.identifier isEqualToString:@"mostrarProductos"]) {
-     UINavigationController *navController = segue.destinationViewController;
-     productosVC * photoController = [navController childViewControllers].firstObject;
-     NSString *photoFilename = [NSString stringWithFormat:@"%@", [programas objectAtIndex:indexPath.row]];
-     photoController.nombreDelPrograma = photoFilename;
-     }
-     
-     */
-    
-    // Set the photo if it navigates to the PhotoView
     if ([segue.identifier isEqualToString:@"mostrarEspecies"]) {
         //UINavigationController *navController = segue.destinationViewController;
         especiesVC * productosController = segue.destinationViewController;
-        NSString *photoFilename = [NSString stringWithFormat:@"%@", [productos objectAtIndex:indexPath.row]];
-        productosController.nombreDeLaEspecie = photoFilename;
+        NSString *nombreEspecie = [NSString stringWithFormat:@"%@", [productos objectAtIndex:indexPath.row]];
+        productosController.nombreDeLaEspecie = nombreEspecie;
     }
 
     

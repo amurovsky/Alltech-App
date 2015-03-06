@@ -8,29 +8,63 @@
 
 #import "especiesVC.h"
 #import "SWRevealViewController.h"
+#import "AppDelegate.h"
+#import <AFNetworking.h>
+#import "galeriasVC.h"
 
 @interface especiesVC ()
 
 @end
 
 @implementation especiesVC{
-
-    NSArray * especies;
-    NSArray * imgEspecies;
+    NSMutableArray *especieID;
+    NSMutableArray * especies;
+    NSMutableArray * imgEspecies;
     
     CGRect screenBound;
     CGSize screenSize;
     CGFloat screenWidth;
     CGFloat screenHeight;
-    
     CGFloat porcentaje;
     CGFloat resultadoPorcentaje;
-    
+    AppDelegate *appDelegate;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    especieID = [[NSMutableArray alloc]init];
+    especies = [[NSMutableArray alloc]init];
+    imgEspecies = [[NSMutableArray alloc]init];
+    
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"sessid"    : appDelegate.userSession.sesionID,
+                                 @"id_product": appDelegate.userSession.productoID
+                                 
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"get_animals" forHTTPHeaderField:@"opt"];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:@"http://192.168.15.101:7000/ws" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
+        {
+            [especies addObject:[tempDic objectForKey:@"title"]];
+            [imgEspecies addObject:[tempDic objectForKey:@"image"]];
+            [especieID addObject:[tempDic objectForKey:@"id"]];
+            NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+            
+        }[self.especiesTable reloadData];
+        NSLog(@"JSON: %@",responseObject);
+        NSLog(@"array title: %@",especies);
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              
+          }];
+
     
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
@@ -39,15 +73,6 @@
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
-
-    
-    //Llenamos el array de especies
-    
-    especies =@[@"Acuicultura",@"Ganado de Carne",@"Ganado de Leche",@"Mascotas",@"Ponedoras",@"Brokers",@"Cerdos"];
-    
-    imgEspecies =[NSArray arrayWithObjects:@"animal1.png",@"animal2.png",@"animal3.png",@"animal4.png",@"animal5.png",@"animal6.png",@"animal7.png", nil];
-    
-    
     
     // Poner logo de Altech en barra de navegacion
     
@@ -205,9 +230,7 @@
         
         imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(40, 15, 49, 49)];
         itemSize = CGSizeMake(80, 80);
-        
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
+        cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
         
         
     }
@@ -216,8 +239,7 @@
         
         imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 10, 40, 40)];
         itemSize = CGSizeMake(50, 50);
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
+        cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
 
         
     }
@@ -226,22 +248,14 @@
         
         imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
         itemSize = CGSizeMake(30, 30);
-        
-        if (indexPath.row >= 6) {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-SemiBold" size:17];
-            
-        }else {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
-        }
-        
+        cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
         
     }
     
     
-    imgView.image = [UIImage imageNamed:[imgEspecies objectAtIndex:indexPath.row] ];
-    imgView.contentMode = UIViewContentModeCenter;
+    //imgView.image = [UIImage imageNamed:[imgEspecies objectAtIndex:indexPath.row] ];
+    imgView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgEspecies objectAtIndex:indexPath.row]]]];
+    NSLog(@"imagen de la especie ruta: %@",[imgEspecies objectAtIndex:indexPath.row]);
     imgView.contentMode = UIViewContentModeScaleAspectFit;
     [cell addSubview:imgView];
     
@@ -300,18 +314,26 @@
     
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    appDelegate.userSession.especieID = [especieID objectAtIndex:indexPath.row];
+}
 
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+    
+NSIndexPath *indexPath = [self.especiesTable indexPathForSelectedRow];
+    
+    if ([segue.identifier isEqualToString:@"mostrarGalerias"]) {
+        galeriasVC * galeria = segue.destinationViewController;
+        NSString *nombreEspecie = [NSString stringWithFormat:@"%@", [especies objectAtIndex:indexPath.row]];
+        //productosController.nombreDeLaEspecie = nombreEspecie;
+    }
 
+}
 - (IBAction)returnButton:(id)sender {
     
     [self.navigationController popViewControllerAnimated:TRUE];

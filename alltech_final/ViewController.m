@@ -11,38 +11,41 @@
 #import "productosVC.h"
 #import "session.h"
 #import <AFNetworking.h>
+#import "AppDelegate.h"
 
 
 @interface ViewController () <UIGestureRecognizerDelegate, SWRevealViewControllerDelegate>
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
-@property (nonatomic, strong) NSMutableArray *programas2;
+@property (nonatomic, strong) NSMutableArray *programas;
 
 @end
 
 @implementation ViewController{
-    
-    
-    NSArray *imgProgramas;
-    NSArray *programas;
-    
+
+    NSMutableArray *imgProgramas;
+    NSMutableArray *programaID;
     CGRect screenBound;
     CGSize screenSize;
     CGFloat screenWidth;
     CGFloat screenHeight;
     CGFloat porcentaje;
     CGFloat resultadoPorcentaje;
+    AppDelegate *appDelegate;
 
 
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    
+    _programas = [[NSMutableArray alloc]init];
+    imgProgramas = [[NSMutableArray alloc]init];
+    programaID = [[NSMutableArray alloc]init];
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    _getSessionID = appDelegate.userSession.sesionID;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
-                                 @"sessid"    : @"6cd36smnggp3efmeub0kfsrp51"
+                                 @"sessid"    : _getSessionID
                                 
                                  };
     [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
@@ -50,23 +53,24 @@
     [manager.requestSerializer setValue:@"get_programs" forHTTPHeaderField:@"opt"];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:@"http://192.168.15.101:7000/ws" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        NSLog(@"JSON: %@",responseObject);
-        //_getprograms = [responseObject objectForKey:@"programs"];
         for(_getprograms in [responseObject objectForKey:@"programs"])
         {
-            [_programas2 addObject: @"fuck"];
-            NSLog(@"title es: %@", [_getprograms objectForKey:@"title"]);
+            [_programas addObject: [_getprograms objectForKey:@"title"]];
+            [imgProgramas addObject:[_getprograms valueForKey:@"image"]];
+            [programaID addObject:[_getprograms valueForKey:@"id"]];
+            NSLog(@"title es: %@", [_getprograms valueForKey:@"title"]);
+            NSLog(@"Imagen es: %@", [_getprograms valueForKey:@"Image"]);
             
-        }NSLog(@"veamos si por fin: %@",_programas2);
+        }[self.programasTable reloadData];
+        NSLog(@"JSON: %@",responseObject);
+        NSLog(@"array title: %@",_programas);
+        NSLog(@"array imagen: %@",imgProgramas);
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
               NSLog(@"Error: %@",error);
             
           }];
-    
-    
-    NSLog(@"veamos si por fin: %@",_programas2);
     
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
@@ -80,7 +84,7 @@
     // Arreglos de los programas con sus respectivas imagenes
     
     //programas = [NSArray arrayWithObjects:@"Manejo de Minerales",@"Manejo de Salud Intestinal",@"Manejo de Micotoxinas",@"Manejo de Eficiencia Alimenticia",@"Manejo de Algas",@"Manejo de Proteinas",@"Otros productos",nil];
-    imgProgramas =[NSArray arrayWithObjects:@"img1.png",@"img2.png",@"img3.png",@"img4.png",@"img5.png",@"img6.png",@"mas.png", nil];
+    //imgProgramas =[NSArray arrayWithObjects:@"img1.png",@"img2.png",@"img3.png",@"img4.png",@"img5.png",@"img6.png",@"mas.png", nil];
     
     
     // Poner logo de Altech en barra de navegacion
@@ -164,23 +168,12 @@
     SWRevealViewController * revealViewController = self.revealViewController;
     
     if (revealViewController) {
-        
-        
-       
-       
         [self.rightMenu setTarget: self.revealViewController];
         [self.rightMenu setAction: @selector( rightRevealToggle:)];
         revealViewController.rightViewRevealWidth= resultadoPorcentaje;
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
         
-//        self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.revealViewController action:@selector(rightRevealToggle:)];
-//        [self.view addGestureRecognizer:self.tapGestureRecognizer];
-//        self.tapGestureRecognizer.enabled = NO;
-//
-//        [self.view addGestureRecognizer:revealViewController.panGestureRecognizer];
-        
-    }
-    
+        }
     
     }
 
@@ -208,7 +201,8 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
-    return [programas count];
+    return [_programas count];
+    
 }
 
 
@@ -263,7 +257,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
     
-    cell.textLabel.text = [programas objectAtIndex:indexPath.row];
+    cell.textLabel.text = [_programas objectAtIndex:indexPath.row];
     cell.textLabel.textColor=[UIColor blackColor];
     cell.textLabel.numberOfLines=2;
 
@@ -365,9 +359,11 @@
 
     
     
-    imgView.image = [UIImage imageNamed:[imgProgramas objectAtIndex:indexPath.row] ];
-    imgView.contentMode = UIViewContentModeCenter;
+    //imgView.image = [UIImage imageNamed:[imgProgramas objectAtIndex:indexPath.row] ];
+    imgView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgProgramas objectAtIndex:indexPath.row]]]];
     imgView.contentMode = UIViewContentModeScaleAspectFit;
+    imgView.layer.cornerRadius = imgView.frame.size.width/2;
+    imgView.clipsToBounds = YES;
     [cell addSubview:imgView];
     
     
@@ -383,39 +379,26 @@
     // cambiamos el color de la celda a transparente
     cell.backgroundColor = [UIColor clearColor];
 
-    
+
     
     return cell;
 }
 
-
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    appDelegate.userSession.programaID = [programaID objectAtIndex:indexPath.row];
+}
 
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    // Set the title of navigation bar by using the menu items
     NSIndexPath *indexPath = [self.programasTable indexPathForSelectedRow];
-    //UINavigationController *destViewController = (UINavigationController*)segue.destinationViewController;
-    //destViewController.title = [[programas objectAtIndex:indexPath.row] capitalizedString];
-    
-    /*
-    // Set the photo if it navigates to the PhotoView
+
     if ([segue.identifier isEqualToString:@"mostrarProductos"]) {
-        UINavigationController *navController = segue.destinationViewController;
-        productosVC * photoController = [navController childViewControllers].firstObject;
-        NSString *photoFilename = [NSString stringWithFormat:@"%@", [programas objectAtIndex:indexPath.row]];
-        photoController.nombreDelPrograma = photoFilename;
-    }
-    
-    */
-    
-    // Set the photo if it navigates to the PhotoView
-    if ([segue.identifier isEqualToString:@"mostrarProductos"]) {
-        //UINavigationController *navController = segue.destinationViewController;
         productosVC * productosController = segue.destinationViewController;
-        NSString *nombreDelPrograma = [NSString stringWithFormat:@"%@", [programas objectAtIndex:indexPath.row]];
+        NSString *nombreDelPrograma = [NSString stringWithFormat:@"%@", [_programas objectAtIndex:indexPath.row]];
         productosController.nombreDelPrograma = nombreDelPrograma;
+        
     }
     
 }
