@@ -8,6 +8,7 @@
 
 #import "galeriasVC.h"
 #import "SWRevealViewController.h"
+#import "galeriaCell.h"
 
 @interface galeriasVC ()
 
@@ -45,9 +46,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.galeriasTable setDelegate:self];
-    [self.galeriasTable setDataSource:self];
-    [self cargarGaleria];
+    [self.collectionView setDelegate:self];
+    [self.collectionView setDataSource:self];
     
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
@@ -96,77 +96,40 @@
 }
 
 
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
-    
-    
-    // Return the number of sections.
-    
-    return 1;
-    
+    return 6;
+
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
 
 
-    return 3;
-}
+    galeriaCell *cell = (galeriaCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"galeriaCell" forIndexPath:indexPath];
+    
+    
 
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    tableView = _galeriasTable;
-
-    static NSString *simpleTableIdentifier = @"SimpleTableItem";
-    
-    UITableViewCell *cell = [_galeriasTable dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    
-//    if (cell == nil) {
-//        
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-//        
-//    }
-    
-    
-    
-    // cambiamos el color de la celda a transparente
     cell.backgroundColor = [UIColor clearColor];
     
-    
-    
-    //depende de la celda personalizamos contenido
-    NSLog(@"este es el indice: %li",(long)indexPath.row);
-   
-    
-    
+
     return cell;
     
-}
 
--(void)cargarGaleria{
-
-    
-    
-    
-    
-    
-    
-    
 
 
 }
 
+- (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    if (screenWidth == 768) {
+        return UIEdgeInsetsMake(10, 60, 0, 60); // top, left, bottom, right
+    }
+    return UIEdgeInsetsMake(10, 0, 0, 0);
+    
+}
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-//    slideShowVC * destinationController = [[slideShowVC alloc]init];
-//    //self.modalPresentationStyle = UIModalPresentationCurrentContext;
-//    [self presentViewController:destinationController animated:YES completion:nil];
-    
-    
-    //NSLog(@"Entramos a la seleccion de celda y este es el index: %ld",(long)indexPath.row);
-    
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+
     NSMutableArray *photos = [[NSMutableArray alloc] init];
     MWPhoto *photo;
     
@@ -210,20 +173,19 @@
     // Optionally set the current visible photo before displaying
     [browser setCurrentPhotoIndex:0];
     
-     //Present
-     //[self.navigationController pushViewController:browser animated:YES];
-
+    //Present
+    //[self.navigationController pushViewController:browser animated:YES];
+    
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
     nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:nc animated:YES completion:nil];
     
     
     // Deselect
-    [self.galeriasTable deselectRowAtIndexPath:indexPath animated:YES];
-    
- 
+    //[self.collectionView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
+
 
 
 
@@ -248,11 +210,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-//- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index {
-//    MWPhoto *photo = [self.photos objectAtIndex:index];
-//    myCustomCaptionView *captionView = [[myCustomCaptionView alloc] initWithPhoto:photo];
-//    return captionView;
-//}
+
 
 /*
 #pragma mark - Navigation

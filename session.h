@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSString *programaID;
 @property (nonatomic, strong) NSString *productoID;
 @property (nonatomic, strong) NSString *especieID;
-
+@property (nonatomic, strong) NSString *Url;
 
 @end

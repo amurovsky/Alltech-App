@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface crearAlbumVC : UIViewController <UICollectionViewDelegateFlowLayout,UICollisionBehaviorDelegate,UICollectionViewDataSource>
+@interface crearAlbumVC : UIViewController <UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>
 
 @property(nonatomic, weak) IBOutlet UINavigationBar *crearAlbumNav;
 @property(nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property(nonatomic, strong) IBOutlet UIImageView * previewImg;
 @property(nonatomic, strong) NSMutableArray *selectedImages;
 @property (strong, nonatomic) NSString *getTitulo;
 @property (strong, nonatomic) NSString *getDescripcion;

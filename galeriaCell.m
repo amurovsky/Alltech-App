@@ -12,18 +12,10 @@
 
 - (void)awakeFromNib {
     // Initialization code
-    _portadaAlbum.frame = CGRectMake(0, 0, 20, 20);
+    //_portadaAlbum.frame = CGRectMake(0, 0, 20, 20);
 }
 
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
-    
-    _numerodeFotos.text =@"7";
-    
-
-}
 
 @end

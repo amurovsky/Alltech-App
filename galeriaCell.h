@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface galeriaCell : UITableViewCell
+@interface galeriaCell : UICollectionViewCell
 
 @property (strong, nonatomic) IBOutlet UIImageView *portadaAlbum;
 @property (weak, nonatomic) IBOutlet UILabel *numerodeFotos;

@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
-#import "MWCaptionView.h"
 
-@interface galeriasVC : UIViewController <UITableViewDelegate, UITableViewDataSource,MWPhotoBrowserDelegate>
+@interface galeriasVC : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,MWPhotoBrowserDelegate>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *galeriasNav;
 
-@property (weak, nonatomic) IBOutlet UITableView *galeriasTable;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightMenu;
 

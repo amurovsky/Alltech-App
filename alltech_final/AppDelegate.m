@@ -21,6 +21,7 @@
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
     self.userSession = [[session alloc]init];
+    self.userSession.Url = @"http://alltech.tejuino.mx/ws";
     return YES;
 }
 

@@ -47,7 +47,7 @@
     [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
     [manager.requestSerializer setValue:@"get_animals" forHTTPHeaderField:@"opt"];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-    [manager POST:@"http://192.168.15.101:7000/ws" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
         {
             [especies addObject:[tempDic objectForKey:@"title"]];

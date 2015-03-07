@@ -29,6 +29,7 @@ CGFloat screenHeight;
 int flagUp=0;
 int flagDown=1;
 MPMoviePlayerController *moviePlayer;
+AppDelegate *appDelegate;
 
 
 - (void)viewDidLoad {
@@ -242,6 +243,7 @@ MPMoviePlayerController *moviePlayer;
     //recogemos los datos ingresados por el usuario para despues mandarlos al servidor
     NSString *username = _userName.text;
     NSString *password = _password.text;
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
 
     if (_userName.text.length == 0 || _password.text.length ==0) {
@@ -262,7 +264,7 @@ MPMoviePlayerController *moviePlayer;
         [manager.requestSerializer setValue:@"login" forHTTPHeaderField:@"opt"];
         [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
-        [manager POST:@"http://192.168.15.101:7000/ws" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         if ([[responseObject objectForKey:@"error"]  isEqual: @"incorrect_access"]) {
             UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Usuario o Contraseña Invalido" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

@@ -21,6 +21,7 @@
     CGSize screenSize;
     CGFloat screenWidth;
     CGFloat screenHeight;
+    previewCell *cell;
 
     
 }
@@ -48,8 +49,6 @@
     UIView *statusBarView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 22)];
     statusBarView.backgroundColor  =  [UIColor orangeColor];
     [self.view addSubview:statusBarView];
-
-    
 
 }
 
@@ -86,7 +85,7 @@
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath  {
     
-    previewCell *cell = (previewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
+    cell = (previewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
     
     
     ALAsset *asset = self.selectedImages[indexPath.row];
@@ -126,13 +125,10 @@
     
 }
 
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
     
-    
-    
+   
 }
-
 
 -(IBAction)guardarButton:(id)sender{
     
@@ -189,6 +185,7 @@ CGFloat screenHeight;
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
+    
 
     
     programas = [NSArray arrayWithObjects:@"Manejo de Minerales",@"Manejo de Salud Intestinal",@"Manejo de Micotoxinas",@"Manejo de Eficiencia Alimenticia",@"Manejo de Algas",@"Manejo de Proteinas",@"Otros productos",nil];
@@ -216,8 +213,6 @@ CGFloat screenHeight;
     [self.view addSubview:statusBarView];
     
     pickerView1 = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
-//    pickerView2 = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 254, 0)];
-//    pickerView3 = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 254, 0)];
     pickerView1.delegate = self;
     pickerView1.dataSource = self;
     _programaPV.delegate = self;
@@ -225,10 +220,6 @@ CGFloat screenHeight;
     _especiePV.delegate = self;
     _tituloTextField.delegate = self;
     _descripcionTextField.delegate = self;
-//    pickerView2.delegate = self;
-//    pickerView2.dataSource = self;
-//    pickerView3.delegate = self;
-//    pickerView3.dataSource = self;
     pickerView1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fondo"]];
     _programaPV.inputView = pickerView1;
     _productoPV.inputView = pickerView1;

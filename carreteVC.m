@@ -221,20 +221,6 @@
 }
 
 
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//
-//    if ([segue.identifier isEqualToString:@"mandaFotos"]) {
-//        selecAlbumTV * selecAlbum = segue.destinationViewController;
-//        [self.navigationController pushViewController:selecAlbum animated:YES];
-//
-//    }
-//}
-
-
 + (ALAssetsLibrary *)defaultAssetsLibrary
 {
     static dispatch_once_t pred = 0;
@@ -376,6 +362,17 @@
 //}
 
 
+#pragma mark - Navigation
+
+ //In a storyboard-based application, you will often want to do a little preparation before navigation
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//
+//    if ([segue.identifier isEqualToString:@"mostrarFoto"]) {
+//        selecAlbumTV * selecAlbum = segue.destinationViewController;
+//        [self.navigationController pushViewController:selecAlbum animated:YES];
+//
+//    }
+//}
 
 - (IBAction)returnButton:(id)sender {
     
