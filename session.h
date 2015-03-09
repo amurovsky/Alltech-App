@@ -11,10 +11,15 @@
 @interface session : NSObject
 
 @property (nonatomic, strong) NSString *sesionID;
+@property (nonatomic, strong) NSString *userID;
 @property (nonatomic, strong) NSString *lenguaje;
 @property (nonatomic, strong) NSString *programaID;
 @property (nonatomic, strong) NSString *productoID;
 @property (nonatomic, strong) NSString *especieID;
 @property (nonatomic, strong) NSString *Url;
 
+
 @end
+
+
+

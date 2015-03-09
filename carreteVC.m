@@ -64,13 +64,10 @@
     self.view.backgroundColor = [UIColor colorWithRed:27/255.0f green:27/255.0f blue:29/255.0f alpha:1.0f]; /*#1b1b1d*/
     self.carreteNav.barTintColor = [UIColor colorWithRed:27/255.0f green:27/255.0f blue:29/255.0f alpha:1.0f]; /*#1b1b1d*/
     self.collectionView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
-    
     self.collectionView.allowsMultipleSelection = YES;
-    
-    
+
     _selectedAssets = [NSMutableArray array];
-    
-    
+
     [self loadAssets];
     
     
@@ -92,12 +89,14 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    [self scrollToBottom];
-    
+    //[self scrollToBottom];
     [self loadAssets];
+    [self.collectionView reloadData];
     
     
 }
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -201,6 +200,7 @@
 {
     UIImage *image = (UIImage *) [info objectForKey:
                                   UIImagePickerControllerOriginalImage];
+    
     [self dismissViewControllerAnimated:YES completion:^{
         // Do something with the image
         
@@ -209,13 +209,12 @@
         
     }];
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-    [self.collectionView reloadData];
-    
-    
-    NSInteger section = [_collectionView numberOfSections] - 1 ;
-    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
-    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
-    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
+    //[self.collectionView reloadData];
+
+//    NSInteger section = [_collectionView numberOfSections] - 1 ;
+//    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
+//    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
+//    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
     
     
 }
@@ -240,7 +239,8 @@
     ALAssetsLibrary *assetsLibrary = [carreteVC defaultAssetsLibrary];
     // 2
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-        [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+        //[group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+        [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
             if([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto])
             {
                 // 3
@@ -381,11 +381,7 @@
 }
 
 - (IBAction)usarButton:(id)sender {
-    
-    //    crearAlbumVC *crearAlbum = [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
-    //    crearAlbum.selectedImages=_selectedAssets;
-    //    crearAlbum.stringdecarrete = @"Esto Fue lo que se le paso al CrearAlbumVC";
-    //    NSLog(@"veamos el array: %@",_selectedAssets);
+
     if ([_selectedAssets count] == 0) {
         UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:@"Selecciona por lo menos una fotografia" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alerta show];

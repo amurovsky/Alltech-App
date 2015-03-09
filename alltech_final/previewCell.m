@@ -46,7 +46,7 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField{
     if ([[UIScreen mainScreen] bounds].size.width != 768) {
-        [self animateTextField:textField up:YES];
+        [self animateTextField:textField up:NO];
     }
 }
 

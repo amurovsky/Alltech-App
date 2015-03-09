@@ -14,6 +14,7 @@
 #import "session.h"
 #import "ViewController.h"
 #import "AppDelegate.h"
+#import <MBProgressHUD.h>
 
 
 @interface loginVC ()
@@ -252,67 +253,77 @@ AppDelegate *appDelegate;
         [alerta show];
         
     }else{
-
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSDictionary *parameters = @{
-                                     @"username"    : username,
-                                     @"password"    : password
-                                 
-                                     };
-        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-        [manager.requestSerializer setValue:@"login" forHTTPHeaderField:@"opt"];
-        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-        manager.responseSerializer = [AFJSONResponseSerializer serializer];
-        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
-        if ([[responseObject objectForKey:@"error"]  isEqual: @"incorrect_access"]) {
-            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Usuario o Contraseña Invalido" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alerta show];
-            
-            
-        }else if ([responseObject objectForKey:@"sessid"]){
-            
-            NSLog(@"Este es el session ID: %@",[responseObject objectForKey:@"sessid"]);
-            //mostramos la siguiente pantalla si la conexion fue exitosa
-            SWRevealViewController *reveal = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
-            
-            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-            appDelegate.userSession.sesionID = [responseObject valueForKey:@"sessid"];
-            appDelegate.userSession.lenguaje = [responseObject objectForKey:@"lang"];
-            NSLog(@"SessionID de la calse Session: %@",appDelegate.userSession.sesionID);
-            NSLog(@"Lenguaje de la calse Session: %@",appDelegate.userSession.lenguaje);
-            [self presentViewController:reveal animated:YES completion:nil];
-            
-            //terminamos la reproduccion del video
-            [moviePlayer stop];
-            
-            //regresamos los campos a su posicion por defecto
-            if (flagDown == 0) {
-                
-                _loginConteiner.duration = 0.6;
-                _loginConteiner.delay    = 0;
-                _loginConteiner.type     = CSAnimationTypeSlideDown;
-                
-                [_loginConteiner startCanvasAnimation];
-                flagDown++;
-                flagUp = 0;
-                
-            }
-            
-            
-        }
         
-        }
-     
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              
-              NSLog(@"Error: %@",error);
-              UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No se puede establecer conexion con el servidor intentelo mas tarde" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-              [alerta show];
-              
-          }];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            // Do something...
+            sleep(1);
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            NSDictionary *parameters = @{
+                                         @"username"    : username,
+                                         @"password"    : password
+                                     
+                                         };
+            [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+            [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+            [manager.requestSerializer setValue:@"login" forHTTPHeaderField:@"opt"];
+            [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+            manager.responseSerializer = [AFJSONResponseSerializer serializer];
+            [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+            if ([[responseObject objectForKey:@"error"]  isEqual: @"incorrect_access"]) {
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Usuario o Contraseña Invalido" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alerta show];
+                
+                
+            }else if ([responseObject objectForKey:@"sessid"]){
+                
+                NSLog(@"Este es el session ID: %@",[responseObject objectForKey:@"sessid"]);
+                //mostramos la siguiente pantalla si la conexion fue exitosa
+                SWRevealViewController *reveal = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
+                
+                AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                appDelegate.userSession.sesionID = [responseObject valueForKey:@"sessid"];
+                appDelegate.userSession.userID = [responseObject objectForKey:@"userid"];
+                appDelegate.userSession.lenguaje = [responseObject objectForKey:@"lang"];
+                NSLog(@"SessionID de la calse Session: %@",appDelegate.userSession.sesionID);
+                NSLog(@"UserID de la calse Session: %@",appDelegate.userSession.userID);
+                NSLog(@"Lenguaje de la calse Session: %@",appDelegate.userSession.lenguaje);
+                [self presentViewController:reveal animated:YES completion:nil];
+                
+                //terminamos la reproduccion del video
+                [moviePlayer stop];
+                
+                //regresamos los campos a su posicion por defecto
+                if (flagDown == 0) {
+                    
+                    _loginConteiner.duration = 0.6;
+                    _loginConteiner.delay    = 0;
+                    _loginConteiner.type     = CSAnimationTypeSlideDown;
+                    
+                    [_loginConteiner startCanvasAnimation];
+                    flagDown++;
+                    flagUp = 0;
+                    
+                    }
+                
+                
+                }
+            
+            }
+         
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  
+                  NSLog(@"Error: %@",error);
+                  UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No se puede establecer conexion con el servidor intentelo mas tarde" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                  [alerta show];
+                  
+              }];
     
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        });
     }
 
 

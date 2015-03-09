@@ -228,6 +228,10 @@ CGFloat screenHeight;
     [self pickerView:pickerView1 didSelectRow:0 inComponent:0];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+    self.programaPV.text = [self pickerView:pickerView1 titleForRow:0 forComponent:0 ];
+}
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
 
     return 1;

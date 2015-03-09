@@ -21,6 +21,8 @@
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
     self.userSession = [[session alloc]init];
+    // 192.168.15.101:7000/ws
+    // alltech.tejuino.mx/ws
     self.userSession.Url = @"http://alltech.tejuino.mx/ws";
     return YES;
 }

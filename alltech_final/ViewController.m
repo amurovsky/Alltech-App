@@ -12,6 +12,7 @@
 #import "session.h"
 #import <AFNetworking.h>
 #import "AppDelegate.h"
+#import <MBProgressHUD.h>
 
 
 @interface ViewController () <UIGestureRecognizerDelegate, SWRevealViewControllerDelegate>
@@ -43,6 +44,7 @@
     programaID = [[NSMutableArray alloc]init];
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     _getSessionID = appDelegate.userSession.sesionID;
+
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
                                  @"sessid"    : _getSessionID
@@ -71,8 +73,8 @@
               NSLog(@"Error: %@",error);
             
           }];
-    
-    
+
+
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
     screenBound = [[UIScreen mainScreen] bounds];

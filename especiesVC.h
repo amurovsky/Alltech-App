@@ -14,7 +14,9 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *especiesTable;
 
-@property (nonatomic, strong) NSString * nombreDeLaEspecie;
+@property (nonatomic, strong) NSString * nombredelProducto;
+
+@property (nonatomic, strong) NSString * nombredelPrograma;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightMenu;
 

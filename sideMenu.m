@@ -21,6 +21,7 @@
     CGFloat screenWidth;
     CGFloat screenHeight;
     BOOL hidden;
+    UIView *statusbarBackground;
 }
 
 - (void)viewDidLoad {
@@ -107,6 +108,15 @@
 
     [self.revealViewController.frontViewController.view setUserInteractionEnabled:NO];
     [self.revealViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+//    statusbarBackground = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 600, 22)];
+//    statusbarBackground.backgroundColor = [UIColor blackColor];
+//    [self.revealViewController.view addSubview:statusbarBackground];
+//    statusbarBackground.alpha = 0;
+//    [UIView animateKeyframesWithDuration:0.5 delay:0 options:0 animations:^{
+//    
+//        statusbarBackground.alpha = 1;
+//        
+//    } completion:^(BOOL finished) { }];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -117,13 +127,24 @@
 
 }
 
+
 -(void)viewDidDisappear:(BOOL)animated{
+    
     [self.revealViewController.frontViewController.view setUserInteractionEnabled:YES];
+    
 }
 -(void)viewWillDisappear:(BOOL)animated{
 
- //[[UIApplication sharedApplication] setStatusBarHidden:NO];
-   // [self hideStatusBar];
+// [[UIApplication sharedApplication] setStatusBarHidden:NO];
+//    [self hideStatusBar];
+    
+//    statusbarBackground.alpha = 1;
+//    [UIView animateKeyframesWithDuration:0.5 delay:-3 options:0 animations:^{
+//        
+//        statusbarBackground.alpha = 0;
+//        
+//    } completion:^(BOOL finished) { }];
+//    //[statusbarBackground removeFromSuperview];
     
 }
 
@@ -192,19 +213,20 @@
 //{
 //    return UIStatusBarStyleLightContent;
 //}
+
 #pragma mark - Hide statusbar
 
 //-(void)hideStatusBar {
 //    
-//    [self setNeedsStatusBarAppearanceUpdate];
+//    //[self setNeedsStatusBarAppearanceUpdate];
 //
-//    //[[UIApplication sharedApplication] setStatusBarHidden:NO];
+//    [[UIApplication sharedApplication] setStatusBarHidden:NO];
 //
 //}
 //
 //- (BOOL)prefersStatusBarHidden {
 //
-//    if ([self isViewLoaded]) {
+//    if ([self.revealViewController.rightViewController isViewLoaded]) {
 //        return YES;
 //    }return NO;
 //    

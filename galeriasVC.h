@@ -11,12 +11,25 @@
 
 @interface galeriasVC : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,MWPhotoBrowserDelegate>
 
+- (IBAction)segmentedControl:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+
 @property (weak, nonatomic) IBOutlet UINavigationBar *galeriasNav;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightMenu;
+
+@property (weak, nonatomic) IBOutlet UILabel *nombredelPrograma;
+
+@property (weak, nonatomic) IBOutlet UILabel *nombreProductoyEspecie;
+
+@property (nonatomic, strong) NSString * nombrePrograma;
+
+@property (nonatomic, strong) NSString * nombreEspecie;
+
+@property (nonatomic, strong) NSString * nombreProducto;
 
 @property (nonatomic, strong) NSMutableArray *photos;
 

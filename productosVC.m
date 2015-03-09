@@ -351,8 +351,9 @@ NSIndexPath *indexPath = [self.productosTable indexPathForSelectedRow];
     if ([segue.identifier isEqualToString:@"mostrarEspecies"]) {
         //UINavigationController *navController = segue.destinationViewController;
         especiesVC * productosController = segue.destinationViewController;
-        NSString *nombreEspecie = [NSString stringWithFormat:@"%@", [productos objectAtIndex:indexPath.row]];
-        productosController.nombreDeLaEspecie = nombreEspecie;
+        NSString *nombredelProducto = [NSString stringWithFormat:@"%@", [productos objectAtIndex:indexPath.row]];
+        productosController.nombredelProducto = nombredelProducto;
+        productosController.nombredelPrograma = self.nombreDelPrograma;
     }
 
     

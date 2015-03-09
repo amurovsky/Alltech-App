@@ -13,7 +13,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *portadaAlbum;
 @property (weak, nonatomic) IBOutlet UILabel *numerodeFotos;
 @property (weak, nonatomic) IBOutlet UILabel *nombredelAlbum;
-@property (weak, nonatomic) IBOutlet UITextView *descripciondelAlbum;
+@property (weak, nonatomic) IBOutlet UILabel *descripciondelAlbum;
 @property (weak, nonatomic) IBOutlet UILabel *fechadelAlbum;
 @property (weak, nonatomic) IBOutlet UIView *marcoAlbum;
 

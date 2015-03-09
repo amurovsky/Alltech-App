@@ -330,7 +330,9 @@ NSIndexPath *indexPath = [self.especiesTable indexPathForSelectedRow];
     if ([segue.identifier isEqualToString:@"mostrarGalerias"]) {
         galeriasVC * galeria = segue.destinationViewController;
         NSString *nombreEspecie = [NSString stringWithFormat:@"%@", [especies objectAtIndex:indexPath.row]];
-        //productosController.nombreDeLaEspecie = nombreEspecie;
+        galeria.nombrePrograma = self.nombredelPrograma;
+        galeria.nombreProducto = self.nombredelProducto;
+        galeria.nombreEspecie = nombreEspecie;
     }
 
 }
