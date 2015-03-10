@@ -8,6 +8,7 @@
 
 #import "selecAlbumTV.h"
 #import "crearAlbumVC.h"
+#import "Albums.h"
 
 @interface selecAlbumTV ()
 
@@ -15,7 +16,7 @@
 
 @implementation selecAlbumTV{
 
-    NSArray *albums;
+    NSMutableArray *albums;
     NSArray *imgAlbums;
     CGRect screenBound;
     CGSize screenSize;
@@ -29,6 +30,8 @@
     [super viewDidLoad];
     
     
+    
+
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
     screenBound = [[UIScreen mainScreen] bounds];
@@ -36,12 +39,12 @@
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
     
-    albums=@[@"Pelaje bovino en Feria del ganado Guanajuato.",@"Alltech FEI World Equestrian Games™",@"Resultados en Avicultura",@"Eficencia Alimenticia Porcina",@"VIRBAC Bovinos Carne 2014",@"Congreso Mundial de Ganadería Tropical"];
+    albums = [[NSMutableArray alloc]initWithObjects:@"Pelaje bovino en Feria del ganado Guanajuato.",@"Alltech FEI World Equestrian Games™",@"Resultados en Avicultura",@"Eficencia Alimenticia Porcina",@"VIRBAC Bovinos Carne 2014",@"Congreso Mundial de Ganadería Tropical",nil];
     imgAlbums=@[@"img1",@"img2",@"img3",@"img4",@"img5",@"img6"];
     
     //ponemos fondo al View y a la barra de navegacion
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fondo"]];
+    self.view.backgroundColor = [UIColor colorWithRed:0.969 green:0.976 blue:0.98 alpha:1]; /*#f7f9fa*/
     self.selectAlbumNav.barTintColor = [UIColor orangeColor];
     
     //agregar view para poner color de fondo al status bar
@@ -50,6 +53,8 @@
     [self.view addSubview:statusBarView];
     
     NSLog(@"estas son las imagenes que el usuario selecciono en SelecAlbumTV: %@",self.selectedImages);
+    
+    [self.selectAlbumTable setTableFooterView:[UIView new]];
     
 }
 
@@ -91,7 +96,7 @@
         // ipad 2, ipad mini, ipad retina
         if (screenWidth == 768 && screenHeight == 1024) {
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 22, 69, 69)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 15, 69, 69)];
             itemSize = CGSizeMake(70, 70);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:25.0];
         }
@@ -99,7 +104,7 @@
         // iphone 6 plus
         if (screenWidth == 414 && screenHeight == 736) {
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 49, 49)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 15, 49, 49)];
             itemSize = CGSizeMake(40, 40);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
         }
@@ -107,27 +112,28 @@
         // iphone 6
         if (screenWidth == 375 && screenHeight == 667) {
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 49, 49)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 15, 49, 49)];
             itemSize = CGSizeMake(40, 40);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
         }
         // iphone 5, 5c, 5s, touch 5
         else if (screenWidth == 320 && screenHeight == 568){
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 10, 40, 40)];
             itemSize = CGSizeMake(30, 30);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
         }
         // iphone 4, 4s, touch 4
         else if (screenWidth == 320 && screenHeight == 480){
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 10, 40, 40)];
             itemSize = CGSizeMake(30, 30);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
         }
 
         imgView.image = [UIImage imageNamed:@"mas"];
-        cell.textLabel.text = @"Nuevo Álbum";
+        cell.textLabel.text = @"Crear nuevo álbum";
+        cell.imageView.image = [UIImage imageNamed:@"mas"];
 
     //CELDAS DINAMICAS
     }else{
@@ -141,7 +147,7 @@
         // ipad 2, ipad mini, ipad retina
         if (screenWidth == 768 && screenHeight == 1024) {
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 22, 69, 69)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 15, 69, 69)];
             itemSize = CGSizeMake(70, 70);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:25.0];
         }
@@ -149,7 +155,7 @@
         // iphone 6 plus
         if (screenWidth == 414 && screenHeight == 736) {
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 49, 49)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 15, 49, 49)];
             itemSize = CGSizeMake(40, 40);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
         }
@@ -157,34 +163,35 @@
         // iphone 6
         if (screenWidth == 375 && screenHeight == 667) {
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 49, 49)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(30, 15, 49, 49)];
             itemSize = CGSizeMake(40, 40);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
         }
         // iphone 5, 5c, 5s, touch 5
         else if (screenWidth == 320 && screenHeight == 568){
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 10, 40, 40)];
             itemSize = CGSizeMake(30, 30);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
         }
         // iphone 4, 4s, touch 4
         else if (screenWidth == 320 && screenHeight == 480){
             
-            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
+            imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 10, 40, 40)];
             itemSize = CGSizeMake(30, 30);
             cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
         }
 
         
-        imgView.image = [UIImage imageNamed:[imgAlbums objectAtIndex:indexPath.row] ];
+        imgView.image = [UIImage imageNamed:@"albumIcon"];
+        cell.backgroundColor = [UIColor colorWithRed:0.969 green:0.976 blue:0.98 alpha:1]; /*#f7f9fa*/
 
-
+        cell.imageView.image = [UIImage imageNamed:@"albumIcon"];
     }
-
+    
     imgView.contentMode = UIViewContentModeCenter;
     imgView.contentMode = UIViewContentModeScaleAspectFit;
-    [cell addSubview:imgView];
+    //[cell addSubview:imgView];
     
     
     UIGraphicsBeginImageContext(itemSize);
@@ -194,12 +201,29 @@
     UIGraphicsEndImageContext();
     //fondo transparente a la celda
     
-    [cell setBackgroundColor:[UIColor clearColor]];
+    
     
     return cell;
 }
 
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
 
+    if (indexPath.section == 0) {
+        return NO;
+    }return YES;
+
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+
+        [albums removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+    }
+
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Redimension de celdas respecto al tamaño del dispositivo

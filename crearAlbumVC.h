@@ -15,6 +15,7 @@
 @property(nonatomic, strong) NSMutableArray *selectedImages;
 @property (strong, nonatomic) NSString *getTitulo;
 @property (strong, nonatomic) NSString *getDescripcion;
+@property (weak, nonatomic) IBOutlet UIView *sendFrame;
 - (IBAction)returnButton:(id)sender;
 
 

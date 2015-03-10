@@ -49,6 +49,9 @@
     UIView *statusBarView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 22)];
     statusBarView.backgroundColor  =  [UIColor orangeColor];
     [self.view addSubview:statusBarView];
+    
+    self.sendFrame.layer.cornerRadius = self.sendFrame.frame.size.width /2;
+    self.sendFrame.clipsToBounds = YES;
 
 }
 

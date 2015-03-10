@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		54C4B0FCF4DA5E71CE99DFDA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE0BEAA64DDC88A706AB2C4 /* libPods.a */; };
+		5F3ACEC11AAEABCB00BCCA5E /* Albums.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3ACEC01AAEABCB00BCCA5E /* Albums.m */; };
+		5F3ACEC21AAEABCB00BCCA5E /* Albums.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3ACEC01AAEABCB00BCCA5E /* Albums.m */; };
 		5FA2E3AC1A834245009E1D89 /* especiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA2E3AB1A834245009E1D89 /* especiesVC.m */; };
 		5FFD6A6F1A85416500E053E1 /* menu_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFD6A6E1A85416500E053E1 /* menu_2.png */; };
 		EA0FA3971A8A8620002E6C57 /* numeroDeFotos.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0FA3961A8A8620002E6C57 /* numeroDeFotos.png */; };
@@ -125,6 +127,8 @@
 /* Begin PBXFileReference section */
 		48B9FA0FF3A613C82C6AE267 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		4C29EEC46AF0EFFF19CB2F0B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		5F3ACEBF1AAEABCB00BCCA5E /* Albums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Albums.h; sourceTree = "<group>"; };
+		5F3ACEC01AAEABCB00BCCA5E /* Albums.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Albums.m; sourceTree = "<group>"; };
 		5FA2E3AA1A834245009E1D89 /* especiesVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = especiesVC.h; path = ../especiesVC.h; sourceTree = "<group>"; };
 		5FA2E3AB1A834245009E1D89 /* especiesVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = especiesVC.m; path = ../especiesVC.m; sourceTree = "<group>"; };
 		5FFD6A6E1A85416500E053E1 /* menu_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu_2.png; path = IMG/menu_2.png; sourceTree = "<group>"; };
@@ -365,6 +369,8 @@
 				EA81B87E1A829E2500D77DEC /* Images.xcassets */,
 				EA81B8801A829E2500D77DEC /* LaunchScreen.xib */,
 				EA81B8751A829E2500D77DEC /* alltech_final.xcdatamodeld */,
+				5F3ACEBF1AAEABCB00BCCA5E /* Albums.h */,
+				5F3ACEC01AAEABCB00BCCA5E /* Albums.m */,
 				EA81B8D21A82C22700D77DEC /* IMG */,
 				EA81B8D11A82C21300D77DEC /* Font */,
 				EA81B86E1A829E2500D77DEC /* Supporting Files */,
@@ -721,6 +727,7 @@
 				EA81B8741A829E2500D77DEC /* AppDelegate.m in Sources */,
 				EA3F6BB01A968D0F00B4FC81 /* idiomaVC.m in Sources */,
 				EA43C80F1A9B9AB0007465AB /* crearAlbumVC.m in Sources */,
+				5F3ACEC11AAEABCB00BCCA5E /* Albums.m in Sources */,
 				EA81B8711A829E2500D77DEC /* main.m in Sources */,
 				EA81B89A1A829E6F00D77DEC /* SWRevealViewController.m in Sources */,
 				EA3349401A94F5AC0084FAFF /* PhotoCell.m in Sources */,
@@ -735,6 +742,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA81B88E1A829E2600D77DEC /* alltech_finalTests.m in Sources */,
+				5F3ACEC21AAEABCB00BCCA5E /* Albums.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
