@@ -30,6 +30,7 @@
     NSMutableArray *imgAlbums;
     NSMutableArray *descAlbums;
     NSMutableArray *albumID;
+    NSMutableArray *fechaPublicacion;
     AppDelegate *appDelegate;
     BOOL misAlbums;
 
@@ -42,6 +43,8 @@
     imgAlbums = [[NSMutableArray alloc]init];
     descAlbums = [[NSMutableArray alloc]init];
     albumID = [[NSMutableArray alloc]init];
+    fechaPublicacion = [[NSMutableArray alloc]init];
+
     
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self loadRequest];
@@ -112,7 +115,6 @@
         [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
         [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             NSLog(@"RESPUESTA: %@",responseObject);
-            
             for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
             {
                 if (misAlbums == YES) {
@@ -121,7 +123,7 @@
                         [imgAlbums addObject:[tempDic objectForKey:@"image"]];
                         [descAlbums addObject:[tempDic objectForKey:@"description"]];
                         [albumID addObject:[tempDic objectForKey:@"id"]];
-                        NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+                        [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
                     }
                         
                 }else{
@@ -130,14 +132,14 @@
                     [imgAlbums addObject:[tempDic objectForKey:@"image"]];
                     [descAlbums addObject:[tempDic objectForKey:@"description"]];
                     [albumID addObject:[tempDic objectForKey:@"id"]];
-                    NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+                    [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
                     
                 }
                 
                 
             }[self.collectionView reloadData];
             // NSLog(@"JSON: %@",responseObject);
-            // NSLog(@"array title: %@",especies);
+            
         }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   
@@ -174,9 +176,8 @@
     cell.portadaAlbum.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgAlbums objectAtIndex:indexPath.row]]]];
     cell.portadaAlbum.clipsToBounds = YES;
     cell.descripciondelAlbum.text = [descAlbums objectAtIndex:indexPath.row];
+    cell.fechadelAlbum.text = [fechaPublicacion objectAtIndex:indexPath.row];
     cell.backgroundColor = [UIColor clearColor];
-    
-
     return cell;
     
 

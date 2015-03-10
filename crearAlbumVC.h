@@ -17,6 +17,9 @@
 @property (strong, nonatomic) NSString *getDescripcion;
 @property (weak, nonatomic) IBOutlet UIView *sendFrame;
 - (IBAction)returnButton:(id)sender;
+- (IBAction)enviarButton:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *enviarButton;
+
 
 
 - (IBAction)guardarButton:(id)sender;
@@ -50,7 +53,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *programaPV;
 @property (weak, nonatomic) IBOutlet UITextField *productoPV;
 @property (weak, nonatomic) IBOutlet UITextField *especiePV;
-
+@property(nonatomic, strong) NSMutableArray *selectedImages;
 @property (weak, nonatomic) IBOutlet UITextField *tituloTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descripcionTextField;
 @property (strong, nonatomic) NSArray *tituloDescripcionAlbum;

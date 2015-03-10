@@ -9,7 +9,9 @@
 #import "crearAlbumVC.h"
 #import "previewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-
+#import <AFNetworking.h>
+#import "AppDelegate.h"
+#import <MBProgressHUD.h>
 
 @interface crearAlbumVC ()
 
@@ -22,6 +24,9 @@
     CGFloat screenWidth;
     CGFloat screenHeight;
     previewCell *cell;
+    AppDelegate *appDelegate;
+    NSString *galeriaID;
+    NSInteger tag;
 
     
 }
@@ -31,14 +36,13 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    //fotos =@[@"ejemplo1",@"ejemplo2",@"ejemplo3",@"ejemplo4",@"ejemplo5",@"ejemplo6",@"ejemplo7"];
-    
     //Inicializamos las variables para recoger las dimensiones de la pantalla
-    
+    tag = 0;
     screenBound = [[UIScreen mainScreen] bounds];
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     //ponemos fondo al View y a la barra de navegacion
     
@@ -52,7 +56,6 @@
     
     self.sendFrame.layer.cornerRadius = self.sendFrame.frame.size.width /2;
     self.sendFrame.clipsToBounds = YES;
-
 }
 
 
@@ -94,10 +97,15 @@
     ALAsset *asset = self.selectedImages[indexPath.row];
     ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
     cell.backgroundColor = [UIColor clearColor];
-
-    //cell.previewImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",fotos[indexPath.row]]];
     cell.previewImg.image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
     cell.previewImg.clipsToBounds = YES;
+//    if (tag < [self.selectedImages count]) {
+//        cell.piedeFotoTextField.tag = tag;
+//        NSLog(@"tag del TextField: %li",(long)cell.piedeFotoTextField.tag);
+//        tag++;
+//    }
+    cell.piedeFotoTextField.text = @"fuck it";
+    
     return cell;
     
     
@@ -134,7 +142,12 @@
 }
 
 -(IBAction)guardarButton:(id)sender{
-    
+    //previewCell * celda = [[previewCell alloc]init];
+    UITextField *txtField = (UITextField*)[cell viewWithTag:19];
+    UITextField *txtField2 = (UITextField*)[cell viewWithTag:20];
+    NSLog(@"esto es lo que contiene el textField: %@",[txtField text]);
+    NSLog(@"esto es lo que contiene el textField: %@",[txtField2 text]);
+   
     UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Su album fue enviado a revisíon" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alerta show];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -147,6 +160,78 @@
 
 }
 
+- (IBAction)enviarButton:(id)sender {
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        sleep(1);
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"sessid"          : appDelegate.userSession.sesionID,
+                                     @"title"           : self.getTitulo,
+                                     @"description"     : self.getDescripcion,
+                                     @"id_program"      : appDelegate.userSession.programaID,
+                                     @"id_product"      : appDelegate.userSession.productoID,
+                                     @"id_animal_type"  : appDelegate.userSession.especieID
+                                     };
+        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+        [manager.requestSerializer setValue:@"new_gallery" forHTTPHeaderField:@"opt"];
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        NSLog(@"RESPUESTA: %@",responseObject);
+        galeriaID = [responseObject objectForKey:@"id_gallery"];
+        NSLog(@"id de la galeria: %@",[responseObject objectForKey:@"id_gallery"]);
+        [self uploadImages];
+        }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  
+                  NSLog(@"Error: %@",error);
+                  
+              }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    });
+
+}
+
+
+-(void)uploadImages{
+    for (int i = 0; i < [self.selectedImages count]; i++) {
+    
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"sessid"          : appDelegate.userSession.sesionID,
+                                     @"id_gallery"      : galeriaID,
+                                     @"title"           : self.getDescripcion,
+                                     @"description"     : appDelegate.userSession.programaID,
+                                     @"image"           : appDelegate.userSession.productoID
+                                     };
+        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+        [manager.requestSerializer setValue:@"new_gallery_image" forHTTPHeaderField:@"opt"];
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        NSLog(@"RESPUESTA: %@",responseObject);
+        for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
+        {
+
+
+
+        }
+
+            
+        }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  
+                  NSLog(@"Error: %@",error);
+                  
+              }];
+    }
+
+}
 @end
 
 
@@ -156,24 +241,23 @@
 
 
 #pragma mark - nuevoAlbum
+#import <AFNetworking.h>
+#import "AppDelegate.h"
 
 
 @implementation nuevoAlbum
 UIPickerView *pickerView1;
 UIPickerView *pickerView2;
 UIPickerView *pickerView3;
-NSArray *programas;
+NSMutableArray *programas;
 NSMutableArray *productos;
-NSArray *especies;
+NSMutableArray *especies;
+NSMutableArray *programaID;
+NSMutableArray *productoID;
+NSMutableArray *especieID;
+UIView *blockView;
 
-NSArray * productosMinerales;
-NSArray * productosSaludIntestinal;
-NSArray * productosMicotoxinas;
-NSArray * productosEficienciaAlimenticia;
-NSArray * productosAlgas;
-NSArray * productosProteinas;
-NSArray * productosotros;
-NSInteger renglon;
+AppDelegate *appDelegate;
 
 CGRect screenBound;
 CGSize screenSize;
@@ -188,21 +272,14 @@ CGFloat screenHeight;
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
-
-    
-    programas = [NSArray arrayWithObjects:@"Manejo de Minerales",@"Manejo de Salud Intestinal",@"Manejo de Micotoxinas",@"Manejo de Eficiencia Alimenticia",@"Manejo de Algas",@"Manejo de Proteinas",@"Otros productos",nil];
-    especies =@[@"Acuicultura",@"Ganado de Carne",@"Ganado de Leche",@"Mascotas",@"Ponedoras",@"Brokers",@"Cerdos"];
-    
-    
-    productosMinerales = @[@"Bioplex",@"Selplex",@"Elonomase"];
-    productosSaludIntestinal = @[@"Actigen",@"Bio-Mos",@"Acid Pak",@"Yea-Sacc"];
-    productosMicotoxinas = @[@"Mycosorb"];
-    productosEficienciaAlimenticia = @[@"Allzyme SSF",@"Allzyme VegPro"];
-    productosAlgas = @[@"All-G-Rich",@"LG Max"];
-    productosProteinas =@[@"NuPRO",@"Optigen"];
-    productosotros = @[@"Advantage Packs",@"Yea-Sacc"];
-
+    programas =[[NSMutableArray alloc]init];
+    productos =[[NSMutableArray alloc]init];
+    especies =[[NSMutableArray alloc]init];
+    programaID =[[NSMutableArray alloc]init];
+    productoID =[[NSMutableArray alloc]init];
+    especieID =[[NSMutableArray alloc]init];
     
     
     //ponemos fondo al View y a la barra de navegacion
@@ -227,13 +304,12 @@ CGFloat screenHeight;
     _programaPV.inputView = pickerView1;
     _productoPV.inputView = pickerView1;
     _especiePV.inputView = pickerView1;
-    
-    [self pickerView:pickerView1 didSelectRow:0 inComponent:0];
+    [self programasRequest];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
 
-    self.programaPV.text = [self pickerView:pickerView1 titleForRow:0 forComponent:0 ];
+
 }
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
 
@@ -246,22 +322,7 @@ CGFloat screenHeight;
     if ([_programaPV isFirstResponder]) {
         return [programas count];
     }else if ([_productoPV isFirstResponder]){
-        if (renglon == 0) {
-           return [productosMinerales count];
-        }else if (renglon == 1) {
-            return [productosSaludIntestinal count];
-        }else if (renglon == 2) {
-            return [productosMicotoxinas count];
-        }else if (renglon == 3) {
-            return [productosEficienciaAlimenticia count];
-        }else if (renglon == 4) {
-            return [productosAlgas count];
-        }else if (renglon == 5) {
-            return [productosProteinas count];
-        }else if (renglon == 6) {
-            return [productosotros count];
-        }
-        
+        return [productos count];
     }else if ([_especiePV isFirstResponder]){
         return [especies count];
     } return 0;
@@ -272,24 +333,13 @@ CGFloat screenHeight;
     if ([_programaPV isFirstResponder]) {
         return programas[row];
     }else if ([_productoPV isFirstResponder]){
-        if (renglon == 0) {
-            return productosMinerales[row];
-        }else if (renglon == 1) {
-            return productosSaludIntestinal[row];
-        }else if (renglon == 2) {
-            return productosMicotoxinas[row];
-        }else if (renglon == 3) {
-            return productosEficienciaAlimenticia[row];
-        }else if (renglon == 4) {
-            return productosAlgas[row];
-        }else if (renglon == 5) {
-            return productosProteinas[row];
-        }else if (renglon == 6) {
-            return productosotros[row];
-        }
-
+        if ([programas count] == 0) {
+            return @"No Existen Productos en este Programa";
+        }else return productos[row];
     }else if ([_especiePV isFirstResponder]){
-        return especies[row];
+        if ([especies count] == 0) {
+            return @"No Existen Especies en este Producto";
+        }else return especies[row];
     }
     return @"Error al cargar los programas";
 
@@ -302,34 +352,41 @@ CGFloat screenHeight;
 
     if ([_programaPV isFirstResponder]) {
         _programaPV.text = programas[row];
-        renglon = [pickerView1 selectedRowInComponent:0];
-        NSLog(@"este es el renglon seleccionado %li",(long)renglon);
         _productoPV.enabled = YES;
-        _productoPV.text = @"";
+        appDelegate.userSession.programaID = programaID[row];
+        [self productosRequest];
         [_programaPV resignFirstResponder];
     }else if ([_productoPV isFirstResponder]){
-        NSString *nombredelProducto = [self pickerView:pickerView1 titleForRow:row forComponent:0];
-        _productoPV.text = nombredelProducto;
+        _productoPV.text = productos[row];
+        _especiePV.enabled = YES;
+        appDelegate.userSession.productoID = productoID[row];
+        [self EspeciesRequest];
         [_productoPV resignFirstResponder];
     }else if ([_especiePV isFirstResponder]){
         _especiePV.text = especies[row];
+        appDelegate.userSession.especieID = especieID[row];
         [_especiePV resignFirstResponder];
     }
 
 
 }
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-
+    
+//    blockView = [[UIView alloc]initWithFrame:self.view.frame];
+//    blockView.backgroundColor = [UIColor clearColor];
+//    [self.view addSubview:blockView];
     [textField isFirstResponder];
-   
     [pickerView1 reloadAllComponents];
 
-    
     return YES;
 
 }
 
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
 
+    //[blockView removeFromSuperview];
+    return YES;
+}
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
 
     if (([_descripcionTextField isFirstResponder] || [_tituloTextField isFirstResponder]) && ( screenWidth == 320 )) {
@@ -400,10 +457,107 @@ CGFloat screenHeight;
     crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
     crear.getTitulo = _tituloTextField.text;
     crear.getDescripcion = _descripcionTextField.text;
+    crear.selectedImages = self.selectedImages;
     [self.navigationController  pushViewController:crear animated:YES];
 }
 
 
+-(void)programasRequest{
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"sessid"    : appDelegate.userSession.sesionID
+                                 
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"get_programs" forHTTPHeaderField:@"opt"];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        for(NSDictionary *tmpDic in [responseObject objectForKey:@"programs"])
+        {
+            [programas addObject: [tmpDic objectForKey:@"title"]];
+            [programaID addObject:[tmpDic valueForKey:@"id"]];
+            NSLog(@"title es: %@", [tmpDic valueForKey:@"title"]);
+            
+        }
+
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              
+          }];
+
+    
+}
+
+-(void)productosRequest{
+    
+    [productos removeAllObjects];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"sessid"    : appDelegate.userSession.sesionID,
+                                 @"id_program": appDelegate.userSession.programaID
+                                 
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"get_products" forHTTPHeaderField:@"opt"];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        
+        for(NSDictionary *tempDic in [responseObject objectForKey:@"products"])
+        {
+            [productos addObject: [tempDic objectForKey:@"title"]];
+            [productoID addObject: [tempDic objectForKey:@"id"]];
+            NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+            
+        }
+        NSLog(@"JSON: %@",responseObject);
+        NSLog(@"array title: %@",productos);
+        NSLog(@"array ID: %@",productoID);
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              
+          }];
+
+    
+}
+
+-(void)EspeciesRequest{
+    
+    [especies removeAllObjects];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"sessid"    : appDelegate.userSession.sesionID,
+                                 @"id_product": appDelegate.userSession.productoID
+                                 
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"get_animals" forHTTPHeaderField:@"opt"];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
+        {
+            [especies addObject:[tempDic objectForKey:@"title"]];
+            [especieID addObject:[tempDic objectForKey:@"id"]];
+            NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+            
+        }
+        NSLog(@"JSON: %@",responseObject);
+        NSLog(@"array title: %@",especies);
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              
+          }];
+
+}
 
 @end
 

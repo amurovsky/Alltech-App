@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -950,11 +950,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mpY-5c-g5q">
-                                <rect key="frame" x="185" y="74" width="231" height="36"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="C8w-31-v1n"/>
-                                </constraints>
+                                <rect key="frame" x="185" y="74" width="231" height="29"/>
                                 <segments>
                                     <segment title="Todas" width="115"/>
                                     <segment title="Mis álbums" width="115"/>
@@ -965,7 +961,7 @@
                                 </connections>
                             </segmentedControl>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="iSr-Uc-cWA">
-                                <rect key="frame" x="0.0" y="119" width="600" height="481"/>
+                                <rect key="frame" x="0.0" y="112" width="600" height="488"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="yCK-nj-0Yi">
                                     <size key="itemSize" width="290" height="328"/>
@@ -1215,7 +1211,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <segue destination="DjD-Ev-ifA" kind="show" id="g07-cV-D9m"/>
+                                            <segue destination="DjD-Ev-ifA" kind="show" identifier="crearNuevoAlbum" id="g07-cV-D9m"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SimpleTableItem" id="oDF-Hd-czh">
@@ -1306,7 +1302,7 @@
                                             <constraint firstAttribute="height" constant="1" id="xMe-Gc-ddy"/>
                                         </constraints>
                                     </imageView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Selecciona una Especie..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hAg-XU-KsW">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Selecciona una Especie..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hAg-XU-KsW">
                                         <rect key="frame" x="25" y="142" width="550" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="70" id="muH-Rh-gdN"/>
@@ -1478,7 +1474,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="290" height="278"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Agrega un pie de foto..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YaD-kd-MGs">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="19" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Agrega un pie de foto..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YaD-kd-MGs">
                                                     <rect key="frame" x="0.0" y="248" width="290" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -1550,6 +1546,7 @@
                                         </constraint>
                                         <constraint firstItem="Hqn-VP-SLu" firstAttribute="top" secondItem="bVu-wv-1F1" secondAttribute="bottom" constant="2" id="lor-Jf-sGd"/>
                                         <constraint firstItem="DGN-82-K92" firstAttribute="top" secondItem="jhH-co-NIF" secondAttribute="top" constant="8" id="pd3-N4-5SF"/>
+                                        <constraint firstItem="bVu-wv-1F1" firstAttribute="width" secondItem="Hqn-VP-SLu" secondAttribute="width" id="vHz-Jf-I2g"/>
                                         <constraint firstItem="DGN-82-K92" firstAttribute="leading" secondItem="jhH-co-NIF" secondAttribute="leading" id="y8t-kO-Lrv">
                                             <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                         </constraint>
@@ -1565,21 +1562,24 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j43-KR-CvX">
-                                <rect key="frame" x="250" y="480" width="100" height="100"/>
+                                <rect key="frame" x="275" y="530" width="50" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42Z-LL-nSA">
-                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <state key="normal" image="sendIcon"/>
+                                        <connections>
+                                            <action selector="enviarButton:" destination="gjS-T3-p7Z" eventType="touchUpInside" id="8Iu-gG-HCc"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="42Z-LL-nSA" secondAttribute="trailing" id="0Cy-Uf-Eno"/>
-                                    <constraint firstAttribute="width" constant="100" id="94C-pg-K0R"/>
+                                    <constraint firstAttribute="width" constant="50" id="94C-pg-K0R"/>
                                     <constraint firstItem="42Z-LL-nSA" firstAttribute="leading" secondItem="j43-KR-CvX" secondAttribute="leading" id="Ohj-MV-bOB"/>
                                     <constraint firstAttribute="bottom" secondItem="42Z-LL-nSA" secondAttribute="bottom" id="XQ4-UA-np0"/>
                                     <constraint firstItem="42Z-LL-nSA" firstAttribute="top" secondItem="j43-KR-CvX" secondAttribute="top" id="lOG-lE-XIS"/>
-                                    <constraint firstAttribute="height" constant="100" id="u8d-Cc-Q3A"/>
+                                    <constraint firstAttribute="height" constant="50" id="u8d-Cc-Q3A"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1600,6 +1600,7 @@
                     <connections>
                         <outlet property="collectionView" destination="xTB-Zv-dXi" id="ZGe-w1-4g0"/>
                         <outlet property="crearAlbumNav" destination="HLR-i5-q4N" id="ELv-vX-UtC"/>
+                        <outlet property="enviarButton" destination="42Z-LL-nSA" id="7se-0s-gH4"/>
                         <outlet property="sendFrame" destination="j43-KR-CvX" id="XPQ-Fx-rsq"/>
                     </connections>
                 </viewController>

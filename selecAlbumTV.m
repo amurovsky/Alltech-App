@@ -40,8 +40,6 @@
     screenHeight = screenSize.height;
     
     albums = [[NSMutableArray alloc]initWithObjects:@"Pelaje bovino en Feria del ganado Guanajuato.",@"Alltech FEI World Equestrian Games™",@"Resultados en Avicultura",@"Eficencia Alimenticia Porcina",@"VIRBAC Bovinos Carne 2014",@"Congreso Mundial de Ganadería Tropical",nil];
-    imgAlbums=@[@"img1",@"img2",@"img3",@"img4",@"img5",@"img6"];
-    
     //ponemos fondo al View y a la barra de navegacion
     
     self.view.backgroundColor = [UIColor colorWithRed:0.969 green:0.976 blue:0.98 alpha:1]; /*#f7f9fa*/
@@ -273,6 +271,10 @@
     if ([segue.identifier isEqualToString:@"crearAlbum"]) {
         crearAlbumVC *crearAlbum = (crearAlbumVC *) segue.destinationViewController;
         crearAlbum.selectedImages = self.selectedImages;
+    }
+    if ([segue.identifier isEqualToString:@"crearNuevoAlbum"]) {
+        nuevoAlbum *crearNuevoAlbum = (nuevoAlbum *) segue.destinationViewController;
+        crearNuevoAlbum.selectedImages = self.selectedImages;
     }
     
     
