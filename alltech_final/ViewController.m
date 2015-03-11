@@ -60,10 +60,20 @@
             [_programas addObject: [_getprograms objectForKey:@"title"]];
             [imgProgramas addObject:[_getprograms valueForKey:@"image"]];
             [programaID addObject:[_getprograms valueForKey:@"id"]];
-            NSLog(@"title es: %@", [_getprograms valueForKey:@"title"]);
-            NSLog(@"Imagen es: %@", [_getprograms valueForKey:@"Image"]);
+
             
-        }[self.programasTable reloadData];
+        }
+        //Getting Images from Url
+        for(int i = 0; i < [imgProgramas count]; i++)
+        {
+            UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                      [NSURL URLWithString:[imgProgramas objectAtIndex:i]]]];
+            
+            //After converted, replace the same array with the new UIImage Object
+            [imgProgramas replaceObjectAtIndex:i withObject: image];
+            NSLog(@"arreglo con imagenes %@",imgProgramas);
+        }
+        [self.programasTable reloadData];
         NSLog(@"JSON: %@",responseObject);
         NSLog(@"array title: %@",_programas);
         NSLog(@"array imagen: %@",imgProgramas);
@@ -81,12 +91,6 @@
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
-
-    
-    // Arreglos de los programas con sus respectivas imagenes
-    
-    //programas = [NSArray arrayWithObjects:@"Manejo de Minerales",@"Manejo de Salud Intestinal",@"Manejo de Micotoxinas",@"Manejo de Eficiencia Alimenticia",@"Manejo de Algas",@"Manejo de Proteinas",@"Otros productos",nil];
-    //imgProgramas =[NSArray arrayWithObjects:@"img1.png",@"img2.png",@"img3.png",@"img4.png",@"img5.png",@"img6.png",@"mas.png", nil];
     
     
     // Poner logo de Altech en barra de navegacion
@@ -276,17 +280,8 @@
         
         imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 69, 69)];
         itemSize = CGSizeMake(70, 70);
-        
-        if (indexPath.row >= 6) {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-SemiBold" size:25.0];
-            
-        }else {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:25.0];
-        }
-        
-        
+        cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:25.0];
+
     }
     
     // iphone 6 plus
@@ -294,16 +289,8 @@
         
         imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 49, 49)];
         itemSize = CGSizeMake(40, 40);
-        
-        if (indexPath.row >= 6) {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-SemiBold" size:19];
-            
-        }else {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
-        }
-        
+        cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
+
     }
     
     // iphone 6
@@ -311,58 +298,27 @@
         
         imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 49, 49)];
         itemSize = CGSizeMake(40, 40);
-        
-        if (indexPath.row >= 6) {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-SemiBold" size:19];
-            
-        }else {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
-        }
-
-        
+        cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
+ 
     }
     // iphone 5, 5c, 5s, touch 5
     else if (screenWidth == 320 && screenHeight == 568){
         
         imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
         itemSize = CGSizeMake(30, 30);
-        
-        if (indexPath.row >= 6) {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-SemiBold" size:17];
-            
-        }else {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
-        }
-
-        
+        cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
     }
     // iphone 4, 4s, touch 4
     else if (screenWidth == 320 && screenHeight == 480){
         
         imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
         itemSize = CGSizeMake(30, 30);
-        
-        if (indexPath.row >= 6) {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-SemiBold" size:17];
-            
-        }else {
-            
-            cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
-        }
-
-        
+        cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
     }
 
-
-    
-    
+    imgView.image = [imgProgramas objectAtIndex:indexPath.row];
     //imgView.image = [UIImage imageNamed:[imgProgramas objectAtIndex:indexPath.row] ];
-    imgView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgProgramas objectAtIndex:indexPath.row]]]];
+    //imgView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgProgramas objectAtIndex:indexPath.row]]]];
     imgView.contentMode = UIViewContentModeScaleAspectFit;
     imgView.layer.cornerRadius = imgView.frame.size.width/2;
     imgView.clipsToBounds = YES;

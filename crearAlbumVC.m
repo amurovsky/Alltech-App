@@ -162,74 +162,120 @@
 
 - (IBAction)enviarButton:(id)sender {
     
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
-        sleep(1);
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSDictionary *parameters = @{
-                                     @"sessid"          : appDelegate.userSession.sesionID,
-                                     @"title"           : self.getTitulo,
-                                     @"description"     : self.getDescripcion,
-                                     @"id_program"      : appDelegate.userSession.programaID,
-                                     @"id_product"      : appDelegate.userSession.productoID,
-                                     @"id_animal_type"  : appDelegate.userSession.especieID
-                                     };
-        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-        [manager.requestSerializer setValue:@"new_gallery" forHTTPHeaderField:@"opt"];
-        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        NSLog(@"RESPUESTA: %@",responseObject);
-        galeriaID = [responseObject objectForKey:@"id_gallery"];
-        NSLog(@"id de la galeria: %@",[responseObject objectForKey:@"id_gallery"]);
-        [self uploadImages];
-        }
-              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  
-                  NSLog(@"Error: %@",error);
-                  
-              }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        });
-    });
+    [self uploadImages];
+    
+//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//        
+//        sleep(1);
+//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//        NSDictionary *parameters = @{
+//                                     @"sessid"          : appDelegate.userSession.sesionID,
+//                                     @"title"           : self.getTitulo,
+//                                     @"description"     : self.getDescripcion,
+//                                     @"id_program"      : appDelegate.userSession.programaID,
+//                                     @"id_product"      : appDelegate.userSession.productoID,
+//                                     @"id_animal_type"  : appDelegate.userSession.especieID
+//                                     };
+//        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+//        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+//        [manager.requestSerializer setValue:@"new_gallery" forHTTPHeaderField:@"opt"];
+//        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+//        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+//        NSLog(@"RESPUESTA: %@",responseObject);
+//        galeriaID = [responseObject objectForKey:@"id_gallery"];
+//        NSLog(@"id de la galeria: %@",[responseObject objectForKey:@"id_gallery"]);
+//        [self uploadImages];
+//        }
+//              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                  
+//                  NSLog(@"Error: %@",error);
+//                  
+//              }];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [MBProgressHUD hideHUDForView:self.view animated:YES];
+//        });
+//    });
 
 }
 
 
 -(void)uploadImages{
-    for (int i = 0; i < [self.selectedImages count]; i++) {
+//    for (int i = 0; i < [self.selectedImages count]; i++) {
+//    
+//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//        NSDictionary *parameters = @{
+//                                     @"sessid"          : appDelegate.userSession.sesionID,
+//                                     @"id_gallery"      : galeriaID,
+//                                     @"title"           : self.getDescripcion,
+//                                     @"description"     : appDelegate.userSession.programaID,
+//                                     @"image"           : appDelegate.userSession.productoID
+//                                     };
+//        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+//        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+//        [manager.requestSerializer setValue:@"new_gallery_image" forHTTPHeaderField:@"opt"];
+//        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+//        [manager POST:appDelegate.userSession.Url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//
+//        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//
+//        }
+//         
+//         
+//              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//
+//              }]
+//        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+//        NSLog(@"RESPUESTA: %@",responseObject);
+//        for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
+//        {
+//
+//
+//
+//        }
+//
+//            
+//        }
+//              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                  
+//                  NSLog(@"Error: %@",error);
+//                  
+//              }];
+//  }
     
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSDictionary *parameters = @{
-                                     @"sessid"          : appDelegate.userSession.sesionID,
-                                     @"id_gallery"      : galeriaID,
-                                     @"title"           : self.getDescripcion,
-                                     @"description"     : appDelegate.userSession.programaID,
-                                     @"image"           : appDelegate.userSession.productoID
-                                     };
-        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-        [manager.requestSerializer setValue:@"new_gallery_image" forHTTPHeaderField:@"opt"];
-        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        NSLog(@"RESPUESTA: %@",responseObject);
-        for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
-        {
-
-
-
+    ALAsset *asset = self.selectedImages[0];
+    
+    NSLog(@"URL img %@",asset.defaultRepresentation.url);
+//    NSDictionary *headers = @{
+//                                  @"apikey"     : @"sinspf34niufww44ib53ufds",
+//                                  @"password"   : @"dfaiun45vfogn234",
+//                                  @"opt"        : @"new_gallery_image",
+//                                  };
+    NSDictionary *parameters = @{
+                                  @"sessid"          : appDelegate.userSession.sesionID,
+                                  @"id_gallery"      : galeriaID,
+                                  @"title"           : self.getDescripcion,
+                                  @"description"     : appDelegate.userSession.programaID,
+                                  @"image"           : appDelegate.userSession.productoID
+                                  };
+    
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.HTTPAdditionalHeaders = headers;
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+    NSURL *URL = [NSURL URLWithString:appDelegate.userSession.Url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+    [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:appDelegate.userSession.Url parameters:parameters];
+    //[[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:appDelegate.userSession.Url parameters:@""];
+    NSURL *filePath = asset.defaultRepresentation.url;
+    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithRequest:request fromFile:filePath progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        if (error) {
+            NSLog(@"Error: %@", error);
+        } else {
+            NSLog(@"Success: %@ %@", response, responseObject);
         }
-
-            
-        }
-              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  
-                  NSLog(@"Error: %@",error);
-                  
-              }];
-    }
+    }];
+    [uploadTask resume];
+    
 
 }
 @end
