@@ -7,8 +7,17 @@
 //
 
 #import "idiomaVC.h"
+#import "AppDelegate.h"
+#import <AFNetworking.h>
+#import "SWRevealViewController.h"
 
-@interface idiomaVC ()
+@interface idiomaVC (){
+
+    AppDelegate *appDelegate;
+    UIImageView *check;
+    NSInteger margen;
+
+}
 
 @end
 
@@ -16,7 +25,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     //poner fondo al view
     
@@ -29,6 +39,38 @@
     
     [self.idiomaNav setShadowImage:[UIImage new]];
     
+    check =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"check"]];
+    
+    margen = 60;
+    
+    NSLog(@"guardado en nsuserdefaults: %@",[appDelegate.userSession.lenguajeGuardado objectForKey:@"lang"]);
+   
+    
+    
+    [self.view addSubview:check];
+    
+    
+}
+
+-(void)viewDidLayoutSubviews{
+    NSString *lenguaje = appDelegate.userSession.lenguaje;
+    if ([lenguaje  isEqual: @"es"]){
+        [self.espanolButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        check.center = CGPointMake(self.espanolButton.bounds.size.width - margen, self.espanolButton.center.y);
+        self.tituloNav.title = @"Ajustes";
+        self.segundaBarraLabel.text = @"Cambiar Idioma";
+    }else if ([lenguaje  isEqual: @"en"]){
+        [self.ingelsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        check.center = CGPointMake(self.ingelsButton.bounds.size.width - margen, self.ingelsButton.center.y);
+        self.tituloNav.title = @"Settings";
+        self.segundaBarraLabel.text = @"Change Language";
+    }else if ([lenguaje  isEqual: @"pt"]){
+        [self.portuguesButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        check.center = CGPointMake(self.portuguesButton.bounds.size.width - margen, self.portuguesButton.center.y);
+        self.tituloNav.title = @"definições";
+        self.segundaBarraLabel.text = @"mudar idioma";
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,9 +93,74 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (IBAction)portuguesButton:(id)sender {
+    
+
+    [self.portuguesButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [self.espanolButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.ingelsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    appDelegate.userSession.lenguaje = @"pt";
+    check.center = CGPointMake(self.portuguesButton.bounds.size.width - margen, self.portuguesButton.center.y);
+    [self cambiarIdioma];
+    self.tituloNav.title = @"definições";
+    self.segundaBarraLabel.text = @"mudar idioma";
+    [appDelegate.userSession.lenguajeGuardado setObject:@"pt" forKey:@"lang"];
+    [appDelegate.userSession.lenguajeGuardado synchronize];
+}
+
+- (IBAction)inglesButton:(id)sender {
+    [self.ingelsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [self.espanolButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.portuguesButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    appDelegate.userSession.lenguaje = @"en";
+    check.center = CGPointMake(self.ingelsButton.bounds.size.width - margen, self.ingelsButton.center.y);
+    self.tituloNav.title = @"Settings";
+    self.segundaBarraLabel.text = @"Change Language";
+    [self cambiarIdioma];
+    [appDelegate.userSession.lenguajeGuardado setObject:@"en" forKey:@"lang"];
+    [appDelegate.userSession.lenguajeGuardado synchronize];
+}
+- (IBAction)espanolButton:(id)sender {
+    [self.espanolButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [self.portuguesButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.ingelsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    appDelegate.userSession.lenguaje = @"es";
+    check.center = CGPointMake(self.espanolButton.bounds.size.width - margen, self.espanolButton.center.y);
+    self.tituloNav.title = @"Ajustes";
+    self.segundaBarraLabel.text = @"Cambiar Idioma";
+    [self cambiarIdioma];
+    [appDelegate.userSession.lenguajeGuardado setObject:@"es" forKey:@"lang"];
+    [appDelegate.userSession.lenguajeGuardado synchronize];
+}
+
+-(void)cambiarIdioma{
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"sessid" : appDelegate.userSession.sesionID,
+                                 @"lang"   : appDelegate.userSession.lenguaje
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"set_lang" forHTTPHeaderField:@"opt"];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        
+        NSLog(@"JSON: %@",responseObject);
+        
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              
+          }];
+
+}
+
 - (IBAction)returnButton:(id)sender {
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+        SWRevealViewController *revealcontroller = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
+    [self presentViewController:revealcontroller animated:YES completion:nil];
     
 }
 @end

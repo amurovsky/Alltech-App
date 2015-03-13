@@ -12,6 +12,5 @@
 
 @property(nonatomic, strong) NSArray *fotos;
 @property(nonatomic, strong) IBOutlet UIImageView *previewImg;
-@property (weak, nonatomic) IBOutlet UITextField *piedeFotoTextField;
 
 @end

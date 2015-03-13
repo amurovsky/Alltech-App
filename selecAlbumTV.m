@@ -9,6 +9,7 @@
 #import "selecAlbumTV.h"
 #import "crearAlbumVC.h"
 #import "Albums.h"
+#import "AppDelegate.h"
 
 @interface selecAlbumTV ()
 
@@ -16,8 +17,8 @@
 
 @implementation selecAlbumTV{
 
-    NSMutableArray *albums;
-    NSArray *imgAlbums;
+    NSMutableArray *nombreAlbum;
+    NSMutableArray *imgAlbums;
     CGRect screenBound;
     CGSize screenSize;
     CGFloat screenWidth;
@@ -38,8 +39,10 @@
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
+    nombreAlbum = [[NSMutableArray alloc]init];
+    imgAlbums = [[NSMutableArray alloc]init];
     
-    albums = [[NSMutableArray alloc]initWithObjects:@"Pelaje bovino en Feria del ganado Guanajuato.",@"Alltech FEI World Equestrian Games™",@"Resultados en Avicultura",@"Eficencia Alimenticia Porcina",@"VIRBAC Bovinos Carne 2014",@"Congreso Mundial de Ganadería Tropical",nil];
+    //nombreAlbum = [[NSMutableArray alloc]initWithObjects:@"Pelaje bovino en Feria del ganado Guanajuato.",@"Alltech FEI World Equestrian Games™",@"Resultados en Avicultura",@"Eficencia Alimenticia Porcina",@"VIRBAC Bovinos Carne 2014",@"Congreso Mundial de Ganadería Tropical",nil];
     //ponemos fondo al View y a la barra de navegacion
     
     self.view.backgroundColor = [UIColor colorWithRed:0.969 green:0.976 blue:0.98 alpha:1]; /*#f7f9fa*/
@@ -53,6 +56,34 @@
     NSLog(@"estas son las imagenes que el usuario selecciono en SelecAlbumTV: %@",self.selectedImages);
     
     [self.selectAlbumTable setTableFooterView:[UIView new]];
+    
+    AppDelegate *appDelegateContext =
+    [[UIApplication sharedApplication] delegate];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Albums" inManagedObjectContext:appDelegateContext.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSError *error = nil;
+    NSArray *result = [appDelegateContext.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        NSLog(@"Unable to execute fetch request.");
+        NSLog(@"%@, %@", error, error .localizedDescription);
+        
+    } else {
+        NSLog(@"%@", result);
+        if (result.count > 0) {
+            for (int i = 0; i < result.count; i++) {
+            
+                NSManagedObject *Nombre = (NSManagedObject *)[result objectAtIndex:i];
+                NSLog(@"%@ %@", [Nombre valueForKey:@"nombre"], [Nombre valueForKey:@"descripcion"]);
+                [nombreAlbum addObject:[Nombre valueForKey:@"nombre"]];
+                
+            }
+        }[self.selectAlbumTable reloadData];
+    }
+
     
 }
 
@@ -71,7 +102,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (section == 1)
-        return [albums count];
+        return [nombreAlbum count];
     return 1;
     
     
@@ -137,8 +168,9 @@
     }else{
         cell = [tableView dequeueReusableCellWithIdentifier:@"SimpleTableItem" forIndexPath:indexPath];
     
-        cell.textLabel.text = [albums objectAtIndex:indexPath.row];
+        cell.textLabel.text = [nombreAlbum objectAtIndex:indexPath.row];
         cell.textLabel.numberOfLines = 2;
+        cell.detailTextLabel.text = @"Última modificación 19/02/16";
     
         //Redimencion de imagenes respecto a tamaño del dispositivo
         
@@ -216,7 +248,7 @@
 
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 
-        [albums removeObjectAtIndex:indexPath.row];
+        [nombreAlbum removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
     }

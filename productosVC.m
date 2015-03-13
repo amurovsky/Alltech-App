@@ -74,32 +74,6 @@
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
 
-    NSLog(@"programas nos manda : %@",_nombreDelPrograma);
-    
-//    productosMinerales = @[@"Bioplex",@"Selplex",@"Elonomase"];
-//    productosSaludIntestinal = @[@"Actigen",@"Bio-Mos",@"Acid Pak",@"Yea-Sacc"];
-//    productosMicotoxinas = @[@"Mycosorb"];
-//    productosEficienciaAlimenticia = @[@"Allzyme SSF",@"Allzyme VegPro"];
-//    productosAlgas = @[@"All-G-Rich",@"LG Max"];
-//    productosProteinas =@[@"NuPRO",@"Optigen"];
-//    productosotros = @[@"Advantage Packs",@"Yea-Sacc"];
-//    
-//    productos = [[NSMutableArray alloc] init];
-//    
-//    
-//    [productos addObject:productosMinerales];
-//    [productos addObject:productosSaludIntestinal];
-//    [productos addObject:productosMicotoxinas];
-//    [productos addObject:productosEficienciaAlimenticia];
-//    [productos addObject:productosAlgas];
-//    [productos addObject:productosProteinas];
-//    [productos addObject:productosotros];
-    
-    
-   // NSLog(@"Este es mi arreglo con arreglos Anidados: %@",productos);
-    
-    
-    
     // Poner logo de Altech en barra de navegacion
     
     UIImage *image = [UIImage imageNamed:@"alltech_logo_naranja"];
@@ -180,7 +154,7 @@
     //cambiamos el label de la segunda barra
     
     _programaLabel.text = [_nombreDelPrograma uppercaseString];
-
+    self.programaLabel.adjustsFontSizeToFitWidth = YES;
     
     //Slide-out right Menu
     

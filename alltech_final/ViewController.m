@@ -45,44 +45,51 @@
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     _getSessionID = appDelegate.userSession.sesionID;
 
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{
-                                 @"sessid"    : _getSessionID
-                                
-                                 };
-    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-    [manager.requestSerializer setValue:@"get_programs" forHTTPHeaderField:@"opt"];
-    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        for(_getprograms in [responseObject objectForKey:@"programs"])
-        {
-            [_programas addObject: [_getprograms objectForKey:@"title"]];
-            [imgProgramas addObject:[_getprograms valueForKey:@"image"]];
-            [programaID addObject:[_getprograms valueForKey:@"id"]];
+    
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"sessid"    : _getSessionID
+                                    
+                                     };
+        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+        [manager.requestSerializer setValue:@"get_programs" forHTTPHeaderField:@"opt"];
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
 
-            
+            for(_getprograms in [responseObject objectForKey:@"programs"])
+            {
+                [_programas addObject: [_getprograms objectForKey:@"title"]];
+                
+                [imgProgramas addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                                [NSURL URLWithString:
+                                                                 [NSString stringWithFormat:@"%@",[_getprograms valueForKey:@"image"]]]]]];
+                
+                [programaID addObject:[_getprograms valueForKey:@"id"]];
+                
+                NSLog(@"imagenes : %@",imgProgramas);
+                
+            }
+            //Getting Images from Url
+    //        for(int i = 0; i < [imgProgramas count]; i++)
+    //        {
+    //            UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfURL:
+    //                                                      [NSURL URLWithString:[imgProgramas objectAtIndex:i]]]];
+    //            
+    //            //After converted, replace the same array with the new UIImage Object
+    //            [imgProgramas replaceObjectAtIndex:i withObject: image];
+    //            NSLog(@"arreglo con imagenes %@",imgProgramas);
+    //        }
+            [self.programasTable reloadData];
+            NSLog(@"JSON: %@",responseObject);
+            NSLog(@"array title: %@",_programas);
+            NSLog(@"array imagen: %@",imgProgramas);
         }
-        //Getting Images from Url
-        for(int i = 0; i < [imgProgramas count]; i++)
-        {
-            UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfURL:
-                                                      [NSURL URLWithString:[imgProgramas objectAtIndex:i]]]];
-            
-            //After converted, replace the same array with the new UIImage Object
-            [imgProgramas replaceObjectAtIndex:i withObject: image];
-            NSLog(@"arreglo con imagenes %@",imgProgramas);
-        }
-        [self.programasTable reloadData];
-        NSLog(@"JSON: %@",responseObject);
-        NSLog(@"array title: %@",_programas);
-        NSLog(@"array imagen: %@",imgProgramas);
-    }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              
-              NSLog(@"Error: %@",error);
-            
-          }];
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  
+                  NSLog(@"Error: %@",error);
+                
+              }];
 
 
     //Inicializamos las variables para recoger las dimensiones de la pantalla
@@ -185,7 +192,7 @@
 
 
 -(void)viewWillAppear:(BOOL)animated{
-
+    [self.programasTable reloadData];
     
 }
 

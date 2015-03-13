@@ -57,24 +57,6 @@ AppDelegate *appDelegate;
                                                object: moviePlayer];
     
     
-    //Video en el background por medio de gift
-    
-//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"railway" ofType:@"gif"];
-//    NSData *gif = [NSData dataWithContentsOfFile:filePath];
-//    
-//    NSLog(@"este es el frame del View: %@",NSStringFromCGRect(self.view.frame));
-//    UIWebView *webViewBG = [[UIWebView alloc] initWithFrame:self.view.frame];
-//    [webViewBG loadData:gif MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
-//    webViewBG.userInteractionEnabled = NO;
-//    webViewBG.contentMode = UIViewContentModeScaleAspectFill;
-//    [self.view insertSubview:webViewBG atIndex:0];
-//    
-//    UIView *filter = [[UIView alloc] initWithFrame:self.view.frame];
-//    filter.backgroundColor = [UIColor blackColor];
-//    filter.alpha = 0.05;
-//    [self.view insertSubview:filter atIndex:1];
-    
-    
     // Sacar Dimensiones de la pantalla
     screenBound = [[UIScreen mainScreen] bounds];
     screenSize = screenBound.size;
@@ -85,10 +67,6 @@ AppDelegate *appDelegate;
     _userName.delegate = self;
     _password.delegate = self;
 
-    
-    //Ponemos  en el background la imagen de fondo
-    //UIImage *backgroundImage;
-    
     //Logo Alltech
     
     UIImage *image = [UIImage imageNamed:@"logo_alltech"];
@@ -157,6 +135,7 @@ AppDelegate *appDelegate;
     [animationView addSubview:imageView];
     // Kick start the animation immediately
     [animationView startCanvasAnimation];
+
     
     
 }
@@ -253,11 +232,8 @@ AppDelegate *appDelegate;
         [alerta show];
         
     }else{
-        
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            // Do something...
-            sleep(1);
+       
+
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             NSDictionary *parameters = @{
                                          @"username"    : username,
@@ -320,10 +296,7 @@ AppDelegate *appDelegate;
                   
               }];
     
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-            });
-        });
+
     }
 
 

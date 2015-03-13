@@ -31,6 +31,7 @@
     NSMutableArray *descAlbums;
     NSMutableArray *albumID;
     NSMutableArray *fechaPublicacion;
+    NSMutableArray *photosURL;
     AppDelegate *appDelegate;
     BOOL misAlbums;
 
@@ -77,8 +78,8 @@
     
     //cambiar texto de las etiquetas de la barra de navegacion (Programa, Producto, Especie)
     self.nombredelPrograma.text = self.nombrePrograma;
+    self.nombredelPrograma.adjustsFontSizeToFitWidth = YES;
     self.nombreProductoyEspecie.text = [NSString stringWithFormat:@"%@ - %@",self.nombreProducto,self.nombreEspecie];
-    
     
 
     
@@ -98,6 +99,9 @@
 }
 
 -(void)loadRequest{
+
+    
+    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
@@ -119,8 +123,10 @@
             {
                 if (misAlbums == YES) {
                     if ([[tempDic objectForKey:@"owner"]  isEqual: appDelegate.userSession.userID]) {
-                        [albums addObject:[tempDic objectForKey:@"title"]];
-                        [imgAlbums addObject:[tempDic objectForKey:@"image"]];
+                        [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
+                        [imgAlbums addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                                     [NSURL URLWithString:
+                                                                      [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
                         [descAlbums addObject:[tempDic objectForKey:@"description"]];
                         [albumID addObject:[tempDic objectForKey:@"id"]];
                         [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
@@ -128,7 +134,7 @@
                         
                 }else{
                     
-                    [albums addObject:[tempDic objectForKey:@"title"]];
+                    [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
                     [imgAlbums addObject:[tempDic objectForKey:@"image"]];
                     [descAlbums addObject:[tempDic objectForKey:@"description"]];
                     [albumID addObject:[tempDic objectForKey:@"id"]];
@@ -171,12 +177,46 @@
 
     galeriaCell *cell = (galeriaCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"galeriaCell" forIndexPath:indexPath];
     
+    NSMutableAttributedString *text =
+    [[NSMutableAttributedString alloc]
+     initWithString:[NSString stringWithFormat:@"%@",[albums objectAtIndex:indexPath.row]]];
     
-    cell.nombredelAlbum.text = [albums objectAtIndex:indexPath.row];
+    [text addAttribute:NSForegroundColorAttributeName
+                 value:[UIColor orangeColor]
+                 range:NSMakeRange(0, 6)];
+    [cell.nombredelAlbum setAttributedText: text];
+    //cell.nombredelAlbum.text = [albums objectAtIndex:indexPath.row];
     cell.portadaAlbum.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgAlbums objectAtIndex:indexPath.row]]]];
     cell.portadaAlbum.clipsToBounds = YES;
     cell.descripciondelAlbum.text = [descAlbums objectAtIndex:indexPath.row];
-    cell.fechadelAlbum.text = [fechaPublicacion objectAtIndex:indexPath.row];
+    
+    NSString *str = [NSString stringWithFormat:@"%@",[fechaPublicacion objectAtIndex:indexPath.row]]; /// here this is your date with format yyyy-MM-dd
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init] ; // here we create NSDateFormatter object for change the Format of date..
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"]; //// here set format of date which is in your output date (means above str with format)
+    
+    NSDate *date = [dateFormatter dateFromString: str]; // here you can fetch date from string with define format
+    NSLocale *Locale;
+    dateFormatter = [[NSDateFormatter alloc] init];
+    
+    if ([appDelegate.userSession.lenguaje  isEqual: @"es"]) {
+        Locale = [[NSLocale alloc]initWithLocaleIdentifier:@"es_ES"];
+        [dateFormatter setDateFormat:@"dd' de 'MMMM'  'yyyy'"];// here set format which you want...
+    }else if ([appDelegate.userSession.lenguaje isEqual: @"en"]){
+        Locale = [[NSLocale alloc]initWithLocaleIdentifier:@"en_US"];
+        [dateFormatter setDateFormat:@"MMMM' 'dd', 'yyyy'"];
+    
+    }else if ([appDelegate.userSession.lenguaje isEqual: @"pt"]){
+        Locale = [[NSLocale alloc]initWithLocaleIdentifier:@"pt"];
+        [dateFormatter setDateFormat:@"dd' 'MMMM' de 'yyyy'"];
+    }
+    
+    
+    [dateFormatter setLocale:Locale];
+    
+    
+    NSString *convertedString = [dateFormatter stringFromDate:date]; //here convert date in NSString
+    cell.fechadelAlbum.text = convertedString;
     cell.backgroundColor = [UIColor clearColor];
     return cell;
     
@@ -196,7 +236,7 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
 
-    NSMutableArray *photosURL = [[NSMutableArray alloc] init];
+    photosURL = [[NSMutableArray alloc] init];
     
 
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -218,7 +258,8 @@
             NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
             NSLog(@"imagen es: %@", [tempDic valueForKey:@"image"]);
             
-        }[self.collectionView reloadData];
+        }NSLog(@"arreglo de url %@",photosURL);
+        [self mostrarGaleria];
         // NSLog(@"JSON: %@",responseObject);
         // NSLog(@"array title: %@",especies);
     }
@@ -229,14 +270,7 @@
           }];
 
     
-    NSMutableArray *photos = [[NSMutableArray alloc] init];
-    MWPhoto *photo;
-    for (int i=0; i< photosURL.count; i++) {
-        NSLog(@"Url de la imagen: %@ Index: %i",[photosURL objectAtIndex:i],i);
-        photo = [MWPhoto photoWithURL:[NSURL URLWithString:[photos objectAtIndex:i]]];
-        [photos addObject:photo];
-    }
-    
+
     
 //    photo = [MWPhoto photoWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ejemplo1" ofType:@"png"]]];
 //    photo.caption = @"Fotografías de Gerardo Torres. \n \n Notar el pelaje del ejemplar al frente, ahí podemos notar mejor la mejora.";
@@ -258,6 +292,21 @@
 //    photo = [MWPhoto photoWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ejemplo7" ofType:@"png"]]];
 //    photo.caption = @"Fotografías de Gerardo Torres. \n \n Notar el pelaje del ejemplar al frente, ahí podemos notar mejor la mejora.";
 //    [photos addObject:photo];
+    
+    
+
+}
+
+
+-(void)mostrarGaleria{
+
+    NSMutableArray *photos = [[NSMutableArray alloc] init];
+    MWPhoto *photo;
+    for (int i=0; i< photosURL.count; i++) {
+        NSLog(@"Url de la imagen: %@ Index: %i",[photosURL objectAtIndex:i],i);
+        photo = [MWPhoto photoWithURL:[NSURL URLWithString:[photosURL objectAtIndex:i]]];
+        [photos addObject:photo];
+    }
     
     self.photos = photos;
     
@@ -289,10 +338,8 @@
     // Deselect
     //[self.collectionView deselectRowAtIndexPath:indexPath animated:YES];
 
+
 }
-
-
-
 
 -(NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser{
 
