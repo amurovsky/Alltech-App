@@ -42,8 +42,6 @@
     nombreAlbum = [[NSMutableArray alloc]init];
     imgAlbums = [[NSMutableArray alloc]init];
     
-    //nombreAlbum = [[NSMutableArray alloc]initWithObjects:@"Pelaje bovino en Feria del ganado Guanajuato.",@"Alltech FEI World Equestrian Games™",@"Resultados en Avicultura",@"Eficencia Alimenticia Porcina",@"VIRBAC Bovinos Carne 2014",@"Congreso Mundial de Ganadería Tropical",nil];
-    //ponemos fondo al View y a la barra de navegacion
     
     self.view.backgroundColor = [UIColor colorWithRed:0.969 green:0.976 blue:0.98 alpha:1]; /*#f7f9fa*/
     self.selectAlbumNav.barTintColor = [UIColor orangeColor];
@@ -248,6 +246,26 @@
 
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 
+        AppDelegate *appDelegateContext =
+        [[UIApplication sharedApplication] delegate];
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Albums" inManagedObjectContext:appDelegateContext.managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSError *error = nil;
+        NSArray *result = [appDelegateContext.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        
+        if (error) {
+            NSLog(@"Unable to execute fetch request.");
+            NSLog(@"%@, %@", error, error .localizedDescription);
+            
+        } else {
+            
+            [appDelegateContext.managedObjectContext deleteObject:[result objectAtIndex:indexPath.row]];
+        }
+
+        
         [nombreAlbum removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
@@ -321,8 +339,10 @@
 }
 
 - (IBAction)returnButton:(id)sender {
-    
-    [self.navigationController popViewControllerAnimated:TRUE];
-    
+    if (self.navigationController) {
+        [self.navigationController popViewControllerAnimated:TRUE];
+    }else{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 @end

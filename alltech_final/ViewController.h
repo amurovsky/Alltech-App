@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightMenu;
 @property (strong, nonatomic) NSDictionary *getprograms;
 @property (strong, nonatomic) NSString *getSessionID;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *uiActivator;
 
 
 @end

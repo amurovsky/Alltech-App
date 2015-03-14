@@ -48,16 +48,20 @@
     [manager.requestSerializer setValue:@"get_animals" forHTTPHeaderField:@"opt"];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        [self.activityIndicator startAnimating];
         for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
         {
             [especies addObject:[tempDic objectForKey:@"title"]];
-            [imgEspecies addObject:[tempDic objectForKey:@"image"]];
+            [imgEspecies addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                           [NSURL URLWithString:
+                                                            [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
             [especieID addObject:[tempDic objectForKey:@"id"]];
             NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
             
         }[self.especiesTable reloadData];
         NSLog(@"JSON: %@",responseObject);
         NSLog(@"array title: %@",especies);
+        [self.activityIndicator stopAnimating];
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
@@ -254,8 +258,7 @@
     
     
     //imgView.image = [UIImage imageNamed:[imgEspecies objectAtIndex:indexPath.row] ];
-    imgView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgEspecies objectAtIndex:indexPath.row]]]];
-    NSLog(@"imagen de la especie ruta: %@",[imgEspecies objectAtIndex:indexPath.row]);
+    imgView.image =[imgEspecies objectAtIndex:indexPath.row];
     imgView.contentMode = UIViewContentModeScaleAspectFit;
     [cell addSubview:imgView];
     

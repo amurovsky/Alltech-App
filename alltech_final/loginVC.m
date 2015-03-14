@@ -37,7 +37,7 @@ AppDelegate *appDelegate;
     [super viewDidLoad];
     
     // find movie file
-    NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"backgroundVideo" ofType:@"mp4"];
+    NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"video_iphone_1" ofType:@"mp4"];
     NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
     UIImageView *gradient =[[UIImageView alloc]initWithFrame:self.view.frame];
     gradient.image = [UIImage imageNamed:@"gradient23"];
@@ -246,7 +246,7 @@ AppDelegate *appDelegate;
             [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
             manager.responseSerializer = [AFJSONResponseSerializer serializer];
             [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
+            NSLog(@"RESPUESTA: %@",responseObject);
             if ([[responseObject objectForKey:@"error"]  isEqual: @"incorrect_access"]) {
                 UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Usuario o Contraseña Invalido" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alerta show];
@@ -359,6 +359,29 @@ AppDelegate *appDelegate;
 }
 
 - (IBAction)recuperarButton:(id)sender {
+//    NSLog(@"mail : %@",_correoTexField.text);
+//    //NSURL *email = [NSURL URLWithString:_correoTexField.text];
+//    NSString *encoded = [_correoTexField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSLog(@"mail Encoded: %@",encoded);
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    NSDictionary *parameters = @{
+//                                 @"email"    : _correoTexField.text
+//                                 };
+//    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+//    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+//    [manager.requestSerializer setValue:@"recover_password" forHTTPHeaderField:@"opt"];
+//    //[manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+//    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+//
+//        NSLog(@"JSON: %@",responseObject);
+//  
+//    }
+//          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//              
+//              NSLog(@"Error: %@",error);
+//              
+//          }];
+//    
     
     
     _ingresaCorreoLabel.hidden = YES;

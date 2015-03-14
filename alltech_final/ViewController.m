@@ -44,7 +44,7 @@
     programaID = [[NSMutableArray alloc]init];
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     _getSessionID = appDelegate.userSession.sesionID;
-
+    //_uiActivator.hidden = NO;
     
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         NSDictionary *parameters = @{
@@ -56,34 +56,42 @@
         [manager.requestSerializer setValue:@"get_programs" forHTTPHeaderField:@"opt"];
         [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
         [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            
+            [_uiActivator startAnimating];
 
-            for(_getprograms in [responseObject objectForKey:@"programs"])
-            {
-                [_programas addObject: [_getprograms objectForKey:@"title"]];
+
+                for(_getprograms in [responseObject objectForKey:@"programs"])
+                {
+                    [_programas addObject: [_getprograms objectForKey:@"title"]];
+                    
+                    [imgProgramas addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                                    [NSURL URLWithString:
+                                                                     [NSString stringWithFormat:@"%@",[_getprograms valueForKey:@"image"]]]]]];
+                    
+                    [programaID addObject:[_getprograms valueForKey:@"id"]];
+                    
+                    NSLog(@"imagenes : %@",imgProgramas);
+                    
+                }
+
+                //Getting Images from Url
+        //        for(int i = 0; i < [imgProgramas count]; i++)
+        //        {
+        //            UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfURL:
+        //                                                      [NSURL URLWithString:[imgProgramas objectAtIndex:i]]]];
+        //            
+        //            //After converted, replace the same array with the new UIImage Object
+        //            [imgProgramas replaceObjectAtIndex:i withObject: image];
+        //            NSLog(@"arreglo con imagenes %@",imgProgramas);
+        //        }
+                [self.programasTable reloadData];
+                NSLog(@"JSON: %@",responseObject);
+                NSLog(@"array title: %@",_programas);
+                NSLog(@"array imagen: %@",imgProgramas);
                 
-                [imgProgramas addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
-                                                                [NSURL URLWithString:
-                                                                 [NSString stringWithFormat:@"%@",[_getprograms valueForKey:@"image"]]]]]];
-                
-                [programaID addObject:[_getprograms valueForKey:@"id"]];
-                
-                NSLog(@"imagenes : %@",imgProgramas);
-                
-            }
-            //Getting Images from Url
-    //        for(int i = 0; i < [imgProgramas count]; i++)
-    //        {
-    //            UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfURL:
-    //                                                      [NSURL URLWithString:[imgProgramas objectAtIndex:i]]]];
-    //            
-    //            //After converted, replace the same array with the new UIImage Object
-    //            [imgProgramas replaceObjectAtIndex:i withObject: image];
-    //            NSLog(@"arreglo con imagenes %@",imgProgramas);
-    //        }
-            [self.programasTable reloadData];
-            NSLog(@"JSON: %@",responseObject);
-            NSLog(@"array title: %@",_programas);
-            NSLog(@"array imagen: %@",imgProgramas);
+           
+                    [_uiActivator stopAnimating];
+          
         }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   
@@ -91,7 +99,8 @@
                 
               }];
 
-
+    
+    
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
     screenBound = [[UIScreen mainScreen] bounds];

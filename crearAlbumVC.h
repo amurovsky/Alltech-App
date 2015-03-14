@@ -18,13 +18,10 @@
 @property (strong, nonatomic) NSString *getPrograma;
 @property (strong, nonatomic) NSString *getProducto;
 @property (strong, nonatomic) NSString *getEspecie;
-@property (weak, nonatomic) IBOutlet UIView *sendFrame;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolBarAlbum;
+
 - (IBAction)returnButton:(id)sender;
 - (IBAction)enviarButton:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *enviarButton;
-
-
-
 - (IBAction)guardarButton:(id)sender;
 
 

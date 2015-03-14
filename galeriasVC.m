@@ -32,6 +32,7 @@
     NSMutableArray *albumID;
     NSMutableArray *fechaPublicacion;
     NSMutableArray *photosURL;
+    NSMutableArray *numFotos;
     AppDelegate *appDelegate;
     BOOL misAlbums;
 
@@ -45,7 +46,7 @@
     descAlbums = [[NSMutableArray alloc]init];
     albumID = [[NSMutableArray alloc]init];
     fechaPublicacion = [[NSMutableArray alloc]init];
-
+    numFotos = [[NSMutableArray alloc]init];
     
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self loadRequest];
@@ -100,62 +101,59 @@
 
 -(void)loadRequest{
 
-    
-    
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        sleep(1);
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSDictionary *parameters = @{
-                                     @"sessid"    : appDelegate.userSession.sesionID,
-                                     @"id_program": appDelegate.userSession.programaID,
-                                     @"id_product": appDelegate.userSession.productoID,
-                                     @"id_animal_type": appDelegate.userSession.especieID
-                                     };
-        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-        [manager.requestSerializer setValue:@"get_galleries" forHTTPHeaderField:@"opt"];
-        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            NSLog(@"RESPUESTA: %@",responseObject);
-            for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
-            {
-                if (misAlbums == YES) {
-                    if ([[tempDic objectForKey:@"owner"]  isEqual: appDelegate.userSession.userID]) {
-                        [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
-                        [imgAlbums addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
-                                                                     [NSURL URLWithString:
-                                                                      [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
-                        [descAlbums addObject:[tempDic objectForKey:@"description"]];
-                        [albumID addObject:[tempDic objectForKey:@"id"]];
-                        [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
-                    }
-                        
-                }else{
-                    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"sessid"    : appDelegate.userSession.sesionID,
+                                 @"id_program": appDelegate.userSession.programaID,
+                                 @"id_product": appDelegate.userSession.productoID,
+                                 @"id_animal_type": appDelegate.userSession.especieID
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"get_galleries" forHTTPHeaderField:@"opt"];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        NSLog(@"RESPUESTA: %@",responseObject);
+        [_activityIndicator startAnimating];
+        for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
+        {
+            if (misAlbums == YES) {
+                if ([[tempDic objectForKey:@"owner"]  isEqual: appDelegate.userSession.userID]) {
                     [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
-                    [imgAlbums addObject:[tempDic objectForKey:@"image"]];
+                    [imgAlbums addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                                 [NSURL URLWithString:
+                                                                  [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
                     [descAlbums addObject:[tempDic objectForKey:@"description"]];
                     [albumID addObject:[tempDic objectForKey:@"id"]];
                     [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
-                    
+                    [numFotos addObject:[tempDic objectForKey:@"num_images"]];
                 }
+                    
+            }else{
                 
+                [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
+                [imgAlbums addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                             [NSURL URLWithString:
+                                                              [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
+                [descAlbums addObject:[tempDic objectForKey:@"description"]];
+                [albumID addObject:[tempDic objectForKey:@"id"]];
+                [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
+                [numFotos addObject:[tempDic objectForKey:@"num_images"]];
                 
-            }[self.collectionView reloadData];
-            // NSLog(@"JSON: %@",responseObject);
+            }
             
-        }
-              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  
-                  NSLog(@"Error: %@",error);
-                  
-              }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        });
-    });
+            
+        }[self.collectionView reloadData];
+        // NSLog(@"JSON: %@",responseObject);
+        [_activityIndicator stopAnimating];
+        
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              
+          }];
 
 
 }
@@ -184,11 +182,14 @@
     [text addAttribute:NSForegroundColorAttributeName
                  value:[UIColor orangeColor]
                  range:NSMakeRange(0, 6)];
+    
     [cell.nombredelAlbum setAttributedText: text];
     //cell.nombredelAlbum.text = [albums objectAtIndex:indexPath.row];
-    cell.portadaAlbum.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgAlbums objectAtIndex:indexPath.row]]]];
+    //cell.portadaAlbum.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgAlbums objectAtIndex:indexPath.row]]]];
+    cell.portadaAlbum.image = [imgAlbums objectAtIndex:indexPath.row];
     cell.portadaAlbum.clipsToBounds = YES;
     cell.descripciondelAlbum.text = [descAlbums objectAtIndex:indexPath.row];
+    cell.numerodeFotos.text = [NSString stringWithFormat:@"%@",[numFotos objectAtIndex:indexPath.row]];
     
     NSString *str = [NSString stringWithFormat:@"%@",[fechaPublicacion objectAtIndex:indexPath.row]]; /// here this is your date with format yyyy-MM-dd
     

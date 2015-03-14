@@ -20,6 +20,8 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightMenu;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 - (IBAction)returnButton:(id)sender;
 
 

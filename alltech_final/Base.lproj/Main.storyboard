@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Aileron-Bold.otf">
@@ -202,6 +202,10 @@
                                     <outlet property="delegate" destination="azm-DQ-Mat" id="bnh-ij-O2E"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="0WG-mR-Dew">
+                                <rect key="frame" x="282" y="282" width="37" height="37"/>
+                                <color key="color" red="0.67843137249999996" green="0.69803921570000005" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -210,7 +214,9 @@
                                 <variation key="heightClass=regular-widthClass=regular" constant="40"/>
                             </constraint>
                             <constraint firstAttribute="centerX" secondItem="zJC-Cm-m80" secondAttribute="centerX" id="35i-gx-QXV"/>
+                            <constraint firstAttribute="centerY" secondItem="0WG-mR-Dew" secondAttribute="centerY" id="ANY-r0-PnX"/>
                             <constraint firstItem="bmX-gC-qsc" firstAttribute="width" secondItem="plP-iy-Xcm" secondAttribute="width" id="a9R-eT-a8F"/>
+                            <constraint firstAttribute="centerX" secondItem="0WG-mR-Dew" secondAttribute="centerX" id="i3b-qE-SVV"/>
                             <constraint firstItem="bmX-gC-qsc" firstAttribute="top" secondItem="fuc-o8-sJh" secondAttribute="bottom" id="mdB-jI-aHa"/>
                             <constraint firstAttribute="trailing" secondItem="zJC-Cm-m80" secondAttribute="trailing" constant="40" id="t9r-6H-Vvn">
                                 <variation key="heightClass=regular-widthClass=regular" constant="190"/>
@@ -226,6 +232,7 @@
                         <outlet property="programasNav" destination="bmX-gC-qsc" id="Yv2-b8-76a"/>
                         <outlet property="programasTable" destination="zJC-Cm-m80" id="KJs-1O-7fS"/>
                         <outlet property="rightMenu" destination="BjR-ne-OEY" id="BqS-i7-fDJ"/>
+                        <outlet property="uiActivator" destination="0WG-mR-Dew" id="vyb-9m-4Jm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uk9-Kw-wz8" sceneMemberID="firstResponder"/>
@@ -422,7 +429,7 @@
                                                 <attributes>
                                                     <color key="NSColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <font key="NSFont" size="17" name="Aileron-Bold"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                                     <integer key="NSUnderline" value="1"/>
                                                 </attributes>
                                             </fragment>
@@ -550,7 +557,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <segue destination="w5l-as-JSI" kind="showDetail" identifier="mostrarCarrete" id="RFs-oK-FY2"/>
+                                            <segue destination="w5l-as-JSI" kind="show" identifier="mostrarCarrete" id="RFs-oK-FY2"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="75" id="RTl-LA-8YC">
@@ -580,7 +587,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hi1-jI-eNh" id="mOd-WW-aKd">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="sideMenu3.png" translatesAutoresizingMaskIntoConstraints="NO" id="Y3u-Lb-RSD">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="albums" translatesAutoresizingMaskIntoConstraints="NO" id="Y3u-Lb-RSD">
                                                     <rect key="frame" x="85" y="15" width="40" height="40"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
                                                         <rect key="frame" x="90" y="25" width="60" height="60"/>
@@ -594,7 +601,29 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <segue destination="UP5-aK-xKI" kind="show" id="hRG-nC-GgS"/>
+                                            <segue destination="IwJ-YP-9CZ" kind="show" id="bKE-Pw-Ffb"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="75" id="nne-u3-YeW">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nne-u3-YeW" id="IlE-q0-ROf">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="sideMenu3.png" translatesAutoresizingMaskIntoConstraints="NO" id="gWX-7V-Put">
+                                                    <rect key="frame" x="85" y="15" width="40" height="40"/>
+                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                                                        <rect key="frame" x="90" y="25" width="60" height="60"/>
+                                                    </variation>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="separatorSideMenu.png" translatesAutoresizingMaskIntoConstraints="NO" id="B68-SD-iLl">
+                                                    <rect key="frame" x="75" y="72" width="60" height="1"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <segue destination="UP5-aK-xKI" kind="show" id="fmu-D6-Af4"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -888,14 +917,20 @@
                                     <outlet property="delegate" destination="NqU-7G-ZVb" id="NtI-H9-cBn"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="uOj-0k-9yZ">
+                                <rect key="frame" x="282" y="282" width="37" height="37"/>
+                                <color key="color" red="0.67843137249999996" green="0.69803921570000005" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="uIh-sa-lCh" secondAttribute="centerX" id="0g7-XZ-9qa"/>
+                            <constraint firstAttribute="centerX" secondItem="uOj-0k-9yZ" secondAttribute="centerX" id="7Hs-57-dQP"/>
                             <constraint firstAttribute="trailing" secondItem="uIh-sa-lCh" secondAttribute="trailing" constant="40" id="PjT-fQ-xKR">
                                 <variation key="heightClass=regular-widthClass=regular" constant="220"/>
                             </constraint>
                             <constraint firstAttribute="centerX" secondItem="Ff9-3W-O8w" secondAttribute="centerX" id="SLv-x6-avd"/>
+                            <constraint firstAttribute="centerY" secondItem="uOj-0k-9yZ" secondAttribute="centerY" id="dSd-Dq-lJ9"/>
                             <constraint firstItem="Ff9-3W-O8w" firstAttribute="width" secondItem="Wao-Th-lLv" secondAttribute="width" id="f2T-ZB-4FO"/>
                             <constraint firstItem="uIh-sa-lCh" firstAttribute="leading" secondItem="Wao-Th-lLv" secondAttribute="leading" constant="40" id="jns-R2-sEz">
                                 <variation key="heightClass=regular-widthClass=regular" constant="220"/>
@@ -908,6 +943,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="uOj-0k-9yZ" id="N5w-hZ-coC"/>
                         <outlet property="especiesNav" destination="Ff9-3W-O8w" id="a6l-eL-O0t"/>
                         <outlet property="especiesTable" destination="uIh-sa-lCh" id="DVT-UQ-HwZ"/>
                         <outlet property="rightMenu" destination="Tb3-Wd-kUQ" id="R3J-MY-N4R"/>
@@ -1010,7 +1046,7 @@
                                                                 <rect key="frame" x="21" y="24" width="281" height="217"/>
                                                             </variation>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Álbum: Ganancia de peso y calidad de pelaje." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="UQT-oH-B10">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Álbum: Ganancia de peso y calidad de pelaje." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="UQT-oH-B10">
                                                             <rect key="frame" x="20" y="209" width="250" height="50"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="50" id="KVC-d1-PNB"/>
@@ -1118,9 +1154,14 @@
                                     <outlet property="delegate" destination="h9z-4w-jmW" id="NGG-ZF-ZMI"/>
                                 </connections>
                             </collectionView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="5tP-9L-Nay">
+                                <rect key="frame" x="282" y="282" width="37" height="37"/>
+                                <color key="color" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerX" secondItem="5tP-9L-Nay" secondAttribute="centerX" id="2AR-5C-ZAk"/>
                             <constraint firstAttribute="trailing" secondItem="iSr-Uc-cWA" secondAttribute="trailing" id="3yb-XS-6B7"/>
                             <constraint firstItem="IlI-Of-fij" firstAttribute="leading" secondItem="oX1-JL-7Na" secondAttribute="leading" id="5OO-wN-qdU"/>
                             <constraint firstItem="iSr-Uc-cWA" firstAttribute="leading" secondItem="oX1-JL-7Na" secondAttribute="leading" id="6yU-oa-q5J"/>
@@ -1139,11 +1180,13 @@
                             <constraint firstItem="mpY-5c-g5q" firstAttribute="top" secondItem="IlI-Of-fij" secondAttribute="bottom" constant="10" id="j5z-6Y-2Iy"/>
                             <constraint firstItem="rvc-vR-FmY" firstAttribute="top" secondItem="BaU-C1-n5y" secondAttribute="bottom" id="lp5-ao-qM4"/>
                             <constraint firstItem="IlI-Of-fij" firstAttribute="top" secondItem="aQF-pb-l3B" secondAttribute="bottom" id="mWP-mH-bq9"/>
+                            <constraint firstAttribute="centerY" secondItem="5tP-9L-Nay" secondAttribute="centerY" id="pdQ-Ch-Rt0"/>
                             <constraint firstItem="iSr-Uc-cWA" firstAttribute="top" secondItem="mpY-5c-g5q" secondAttribute="bottom" constant="10" id="vCj-kZ-dvU"/>
                             <constraint firstItem="rvc-vR-FmY" firstAttribute="leading" secondItem="oX1-JL-7Na" secondAttribute="leading" constant="40" id="zuC-Sh-otE"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="5tP-9L-Nay" id="B4j-zC-yyF"/>
                         <outlet property="collectionView" destination="iSr-Uc-cWA" id="FVj-ai-hUA"/>
                         <outlet property="galeriasNav" destination="IlI-Of-fij" id="i9g-8n-qac"/>
                         <outlet property="nombreProductoyEspecie" destination="rvc-vR-FmY" id="DXw-l8-g12"/>
@@ -1449,11 +1492,8 @@
                                                 <action selector="returnButton:" destination="gjS-T3-p7Z" id="FLr-eL-NMI"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Guardar" id="zNU-ff-2Qj">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="zNU-ff-2Qj">
                                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <action selector="guardarButton:" destination="gjS-T3-p7Z" id="5H1-6n-tjg"/>
-                                            </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
@@ -1496,9 +1536,8 @@
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=regular-widthClass=regular" ambiguous="YES">
+                                            <variation key="heightClass=regular-widthClass=regular">
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
-                                                <rect key="frame" x="60" y="8" width="640" height="29"/>
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ganado Bovino Rancho Chapopote" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVu-wv-1F1">
@@ -1506,9 +1545,8 @@
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=regular-widthClass=regular" ambiguous="YES">
+                                            <variation key="heightClass=regular-widthClass=regular">
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                <rect key="frame" x="60" y="39" width="640" height="20"/>
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999973" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="560" translatesAutoresizingMaskIntoConstraints="NO" id="Hqn-VP-SLu">
@@ -1556,38 +1594,40 @@
                                     <outlet property="delegate" destination="gjS-T3-p7Z" id="fIY-Gv-wRu"/>
                                 </connections>
                             </collectionView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j43-KR-CvX">
-                                <rect key="frame" x="275" y="530" width="50" height="50"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42Z-LL-nSA">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <state key="normal" image="sendIcon"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6U-BO-KPx">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="085-1u-ZA8"/>
+                                    <barButtonItem title="Guardar" id="lyn-iz-Rbt">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <action selector="enviarButton:" destination="gjS-T3-p7Z" eventType="touchUpInside" id="8Iu-gG-HCc"/>
+                                            <action selector="guardarButton:" destination="gjS-T3-p7Z" id="A2H-6v-2cV"/>
                                         </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="42Z-LL-nSA" secondAttribute="trailing" id="0Cy-Uf-Eno"/>
-                                    <constraint firstAttribute="width" constant="50" id="94C-pg-K0R"/>
-                                    <constraint firstItem="42Z-LL-nSA" firstAttribute="leading" secondItem="j43-KR-CvX" secondAttribute="leading" id="Ohj-MV-bOB"/>
-                                    <constraint firstAttribute="bottom" secondItem="42Z-LL-nSA" secondAttribute="bottom" id="XQ4-UA-np0"/>
-                                    <constraint firstItem="42Z-LL-nSA" firstAttribute="top" secondItem="j43-KR-CvX" secondAttribute="top" id="lOG-lE-XIS"/>
-                                    <constraint firstAttribute="height" constant="50" id="u8d-Cc-Q3A"/>
-                                </constraints>
-                            </view>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="gr2-xe-b2Y"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Kzm-mB-O6U"/>
+                                    <barButtonItem title="Enviar" id="xPe-cz-FyD">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="enviarButton:" destination="gjS-T3-p7Z" id="RfM-27-6oI"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="6Pt-gz-OXV"/>
+                                </items>
+                                <color key="barTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="J6U-BO-KPx" secondAttribute="trailing" id="1nz-eY-sx2"/>
                             <constraint firstItem="xTB-Zv-dXi" firstAttribute="leading" secondItem="U3F-53-8v5" secondAttribute="leading" constant="20" id="1wV-BK-F3D"/>
                             <constraint firstItem="hwk-tm-q9q" firstAttribute="top" secondItem="xTB-Zv-dXi" secondAttribute="bottom" id="Hur-a2-BZx"/>
                             <constraint firstItem="HLR-i5-q4N" firstAttribute="top" secondItem="gp1-8f-XUB" secondAttribute="bottom" id="ZKB-29-7C1"/>
                             <constraint firstItem="xTB-Zv-dXi" firstAttribute="top" secondItem="HLR-i5-q4N" secondAttribute="bottom" id="gEf-J1-57r"/>
                             <constraint firstAttribute="centerX" secondItem="HLR-i5-q4N" secondAttribute="centerX" id="l78-8t-pOv"/>
-                            <constraint firstAttribute="centerX" secondItem="j43-KR-CvX" secondAttribute="centerX" id="mFd-dJ-l5f"/>
-                            <constraint firstItem="hwk-tm-q9q" firstAttribute="top" secondItem="j43-KR-CvX" secondAttribute="bottom" constant="20" id="oSz-Is-RBt"/>
+                            <constraint firstItem="J6U-BO-KPx" firstAttribute="leading" secondItem="U3F-53-8v5" secondAttribute="leading" id="pEd-g1-YI7"/>
                             <constraint firstItem="HLR-i5-q4N" firstAttribute="width" secondItem="U3F-53-8v5" secondAttribute="width" id="rJk-p1-PTw"/>
+                            <constraint firstItem="hwk-tm-q9q" firstAttribute="top" secondItem="J6U-BO-KPx" secondAttribute="bottom" id="rOA-NY-bGN"/>
                             <constraint firstAttribute="trailing" secondItem="xTB-Zv-dXi" secondAttribute="trailing" constant="20" id="xbp-0h-apW"/>
                         </constraints>
                     </view>
@@ -1595,8 +1635,7 @@
                     <connections>
                         <outlet property="collectionView" destination="xTB-Zv-dXi" id="ZGe-w1-4g0"/>
                         <outlet property="crearAlbumNav" destination="HLR-i5-q4N" id="ELv-vX-UtC"/>
-                        <outlet property="enviarButton" destination="42Z-LL-nSA" id="7se-0s-gH4"/>
-                        <outlet property="sendFrame" destination="j43-KR-CvX" id="XPQ-Fx-rsq"/>
+                        <outlet property="toolBarAlbum" destination="J6U-BO-KPx" id="iLx-5t-vlX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i2T-Dn-PYw" sceneMemberID="firstResponder"/>
@@ -1623,6 +1662,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="albums" width="40" height="38"/>
         <image name="boton_2x.png" width="900" height="193"/>
         <image name="camara_bco" width="37" height="30"/>
         <image name="campo_texto_2x.png" width="900" height="192"/>
@@ -1635,7 +1675,6 @@
         <image name="return.png" width="25" height="43"/>
         <image name="returnOlvide.png" width="12" height="21"/>
         <image name="selectedFrame" width="122" height="122"/>
-        <image name="sendIcon" width="32" height="32"/>
         <image name="separatorCell.png" width="687" height="2"/>
         <image name="separatorSideMenu.png" width="128" height="2"/>
         <image name="sideMenu1.png" width="74" height="59"/>

@@ -160,7 +160,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     
-    return 3;
+    return 4;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -240,7 +240,8 @@
     
     if ([segue.identifier isEqualToString:@"mostrarCarrete"]) {
         carreteVC * carrete = segue.destinationViewController;
-        [self presentViewController:carrete animated:YES completion:nil];
+       // [self presentViewController:carrete animated:YES completion:nil];
+        [self.navigationController presentViewController:carrete animated:YES completion:nil];
     }
     
 }

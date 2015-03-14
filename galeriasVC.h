@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSString * nombreProducto;
 
 @property (nonatomic, strong) NSMutableArray *photos;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)returnButton:(id)sender;
 

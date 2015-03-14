@@ -89,10 +89,10 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    //[self scrollToBottom];
+    [self.selectedAssets removeAllObjects];
+   
     [self loadAssets];
-    [self.collectionView reloadData];
-    
+    //[self.collectionView reloadData];
     
 }
 
@@ -204,19 +204,11 @@
     [self dismissViewControllerAnimated:YES completion:^{
         // Do something with the image
         
-        
-        
-        
+ 
     }];
+    
     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-    //[self.collectionView reloadData];
 
-//    NSInteger section = [_collectionView numberOfSections] - 1 ;
-//    NSInteger item = [_collectionView numberOfItemsInSection:section] - 1 ;
-//    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section] ;
-//    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:(UICollectionViewScrollPositionBottom) animated:NO];
-    
-    
 }
 
 
@@ -269,42 +261,24 @@
 - (IBAction)camaraButton:(id)sender {
     
     UIImagePickerController * picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    
+    [picker setDelegate:self];
+    [picker setSourceType:UIImagePickerControllerSourceTypeCamera];
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
         [self presentViewController:picker animated:YES completion:nil];
+        
     }else{
         
         NSLog(@"fuck it.! no hay camara...");
     }
-    
-    
-    
-    //    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
-    //    picker.delegate = self;
-    //    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    //
-    //    [self presentViewController:picker animated:YES completion:nil];
+
     
     
 }
 
-- (void) scrollToBottom {
-    
-    
-    _collectionView.contentInset = UIEdgeInsetsZero;
-    
-    
-    static NSInteger section = 0;
-    NSInteger item = [self collectionView:_collectionView numberOfItemsInSection:section] - 1;
-    NSIndexPath *lastIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
-    [_collectionView scrollToItemAtIndexPath:lastIndexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
-    
-    
-}
+
 
 //- (void)loadAssets {
 //

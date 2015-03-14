@@ -11,7 +11,9 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AFNetworking.h>
 #import "AppDelegate.h"
-#import <MBProgressHUD.h>
+#import "ViewController.h"
+#import "SWRevealViewController.h"
+#import "selecAlbumTV.h"
 
 @interface crearAlbumVC ()
 
@@ -26,7 +28,6 @@
     previewCell *cell;
     AppDelegate *appDelegate;
     NSString *galeriaID;
-    NSInteger tag;
 
     
 }
@@ -37,7 +38,6 @@
     [super viewDidLoad];
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
-    tag = 0;
     screenBound = [[UIScreen mainScreen] bounds];
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
@@ -53,10 +53,11 @@
     UIView *statusBarView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 22)];
     statusBarView.backgroundColor  =  [UIColor orangeColor];
     [self.view addSubview:statusBarView];
+
+    UIView * separador = [[UIView alloc]initWithFrame:CGRectMake(screenWidth/2, 0, 1, screenHeight)];
+    separador.backgroundColor = [UIColor whiteColor];
+    [self.toolBarAlbum   addSubview:separador];
     
-    self.sendFrame.layer.cornerRadius = self.sendFrame.frame.size.width /2;
-    self.sendFrame.clipsToBounds = YES;
-    self.enviarButton.imageView.tintColor = [UIColor whiteColor];
 }
 
 
@@ -164,8 +165,17 @@
 }
 
 - (IBAction)returnButton:(id)sender{
-
-   [self.navigationController popViewControllerAnimated:TRUE];
+    if (self.navigationController) {
+         [self.navigationController popViewControllerAnimated:TRUE];
+    }else {
+    
+        ViewController *revealView = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
+        
+        [self presentViewController:revealView animated:YES completion:nil];
+    
+    }
+  
+    
 
 }
 
@@ -503,7 +513,13 @@ CGFloat screenHeight;
 
 - (IBAction)returnButton:(id)sender {
     
-   [self.navigationController popViewControllerAnimated:TRUE];
+    if (self.navigationController) {
+        [self.navigationController popViewControllerAnimated:TRUE];
+    }else {
+
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+   
     
 }
 
@@ -516,7 +532,15 @@ CGFloat screenHeight;
     crear.getPrograma = _programaPV.text;
     crear.getProducto = _productoPV.text;
     crear.getEspecie = _especiePV.text;
-    [self.navigationController  pushViewController:crear animated:YES];
+    if (self.navigationController) {
+        [self.navigationController  pushViewController:crear animated:YES];
+    }else {
+    
+        
+        [self presentViewController:crear animated:YES completion:nil];
+    
+    }
+    
 
 }
 
