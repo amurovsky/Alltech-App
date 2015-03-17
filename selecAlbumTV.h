@@ -14,8 +14,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *selectAlbumTable;
 
-@property(nonatomic, strong) NSMutableArray *selectedImages;
-
 - (IBAction)returnButton:(id)sender;
 
 @end

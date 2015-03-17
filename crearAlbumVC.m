@@ -14,6 +14,7 @@
 #import "ViewController.h"
 #import "SWRevealViewController.h"
 #import "selecAlbumTV.h"
+#import "carreteVC.h"
 
 @interface crearAlbumVC ()
 
@@ -36,7 +37,6 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     screenBound = [[UIScreen mainScreen] bounds];
     screenSize = screenBound.size;
@@ -57,8 +57,17 @@
     UIView * separador = [[UIView alloc]initWithFrame:CGRectMake(screenWidth/2, 0, 1, screenHeight)];
     separador.backgroundColor = [UIColor whiteColor];
     [self.toolBarAlbum   addSubview:separador];
+    [appDelegate.userSession.selectedImages removeAllObjects];
     
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [self.collectionView reloadData];
+    NSLog(@"imagenes seleccionadas: %@",_selectedImages);
+    
+}
+
+
 
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -87,7 +96,7 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
     //return [fotos count];
-    return [self.selectedImages count];
+    return [appDelegate.userSession.selectedImages count];
 }
 
 
@@ -96,13 +105,13 @@
     cell = (previewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
     
     
-    ALAsset *asset = self.selectedImages[indexPath.row];
-    ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
-    cell.backgroundColor = [UIColor clearColor];
-    cell.previewImg.image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
+    //ALAsset *asset = self.selectedImages[indexPath.row];
+    //ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
+    //cell.backgroundColor = [UIColor clearColor];
+    //cell.previewImg.image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
+    cell.previewImg.image = [appDelegate.userSession.selectedImages objectAtIndex:indexPath.row];
     cell.previewImg.clipsToBounds = YES;
 
-    
     return cell;
     
     
@@ -151,42 +160,39 @@
     [newAlbum setValue: _getEspecie forKey:@"especie"];
     [newAlbum setValue: _getTitulo forKey:@"nombre"];
     [newAlbum setValue: _getDescripcion forKey:@"descripcion"];
+    NSData *imagen = UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[0], 0.0);
+    [newAlbum setValue:imagen forKey:@"imagen"];
 
     NSError *error;
     [context save:&error];
     
     
-    UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Su album fue enviado a revisíon" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"GUARDAR" message:@"Su album fue guardado con exito" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alerta show];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
     
     
         
 }
 
+- (IBAction)mostrarCarrete:(id)sender {
+    
+    [appDelegate.userSession.selectedImages removeAllObjects];
+    carreteVC *carrete = [self.storyboard instantiateViewControllerWithIdentifier:@"carreteVC"];
+    [self presentViewController:carrete animated:YES completion:nil];
+    
+}
+
 - (IBAction)returnButton:(id)sender{
-    if (self.navigationController) {
-         [self.navigationController popViewControllerAnimated:TRUE];
-    }else {
-    
-        ViewController *revealView = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
-        
-        [self presentViewController:revealView animated:YES completion:nil];
-    
-    }
-  
-    
+    [appDelegate.userSession.selectedImages removeAllObjects];
+    [self.navigationController popViewControllerAnimated:TRUE];
 
 }
 
 - (IBAction)enviarButton:(id)sender {
-    
     [self uploadImages];
-    
-//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//        
-//        sleep(1);
+
 //        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 //        NSDictionary *parameters = @{
 //                                     @"sessid"          : appDelegate.userSession.sesionID,
@@ -204,95 +210,51 @@
 //        NSLog(@"RESPUESTA: %@",responseObject);
 //        galeriaID = [responseObject objectForKey:@"id_gallery"];
 //        NSLog(@"id de la galeria: %@",[responseObject objectForKey:@"id_gallery"]);
-//        [self uploadImages];
+//        //[self uploadImages];
 //        }
 //              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //                  
 //                  NSLog(@"Error: %@",error);
 //                  
 //              }];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [MBProgressHUD hideHUDForView:self.view animated:YES];
-//        });
-//    });
 
 }
 
 
 -(void)uploadImages{
-//    for (int i = 0; i < [self.selectedImages count]; i++) {
-//    
-//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//        NSDictionary *parameters = @{
-//                                     @"sessid"          : appDelegate.userSession.sesionID,
-//                                     @"id_gallery"      : galeriaID,
-//                                     @"title"           : self.getDescripcion,
-//                                     @"description"     : appDelegate.userSession.programaID,
-//                                     @"image"           : appDelegate.userSession.productoID
-//                                     };
-//        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-//        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-//        [manager.requestSerializer setValue:@"new_gallery_image" forHTTPHeaderField:@"opt"];
-//        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-//        [manager POST:appDelegate.userSession.Url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//
-//        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//
-//        }
-//         
-//         
-//              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//
-//              }]
-//        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-//        NSLog(@"RESPUESTA: %@",responseObject);
-//        for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
-//        {
-//
-//
-//
-//        }
-//
-//            
-//        }
-//              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                  
-//                  NSLog(@"Error: %@",error);
-//                  
-//              }];
-//  }
+    NSLog(@"galeria ID: %@",appDelegate.userSession.selectedImages);
+    //for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
+    UIImage *image = [UIImage imageNamed:@"ejemplo4"];
+    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(image)];
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"sessid"          : appDelegate.userSession.sesionID,
+                                     @"id_gallery"      : @"37",
+                                     @"title"           : @"",
+                                     @"description"     : @"",
+                                     @"image"           : imageData,
+                                     @"cover"           : @"0"
+                                     };
+        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+        [manager.requestSerializer setValue:@"new_gallery_image" forHTTPHeaderField:@"opt"];
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:appDelegate.userSession.Url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            //[formData appendPartWithFormData:imageData name:@"image"];
+            NSLog(@"data: %@",formData);
+        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"RESPUESTA: %@",responseObject);
+
+        }
+         
+         
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  NSLog(@"Error: %@",error);
+              }];
     
-//    ALAsset *asset = self.selectedImages[0];
-//    
-//    NSLog(@"URL img %@",asset.defaultRepresentation.url);
-////    NSDictionary *headers = @{
-////                                  @"apikey"     : @"sinspf34niufww44ib53ufds",
-////                                  @"password"   : @"dfaiun45vfogn234",
-////                                  @"opt"        : @"new_gallery_image",
-////                                  };
-//    NSDictionary *parameters = @{
-//                                  @"sessid"          : appDelegate.userSession.sesionID,
-//                                  @"id_gallery"      : galeriaID,
-//                                  @"title"           : self.getDescripcion,
-//                                  @"description"     : appDelegate.userSession.programaID,
-//                                  @"image"           : appDelegate.userSession.productoID
-//                                  };
-//    
-//    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-//    //configuration.HTTPAdditionalHeaders = headers;
-//    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-//    NSURL *URL = [NSURL URLWithString:appDelegate.userSession.Url];
-//    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-//    [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:appDelegate.userSession.Url parameters:@""];
-//    NSURL *filePath = asset.defaultRepresentation.url;
-//    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithRequest:request fromFile:filePath progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-//        if (error) {
-//            NSLog(@"Error: %@", error);
-//        } else {
-//            NSLog(@"Success: %@ %@", response, responseObject);
-//        }
-//    }];
-//    [uploadTask resume];
+        
+
+  //  }
     
 
 }
@@ -505,46 +467,6 @@ CGFloat screenHeight;
 }
 
 
--(UIStatusBarStyle)preferredStatusBarStyle{
-    
-    return UIStatusBarStyleLightContent;
-    
-}
-
-- (IBAction)returnButton:(id)sender {
-    
-    if (self.navigationController) {
-        [self.navigationController popViewControllerAnimated:TRUE];
-    }else {
-
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-   
-    
-}
-
-- (IBAction)crearButton:(id)sender {
-
-    crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
-    crear.getTitulo = _tituloTextField.text;
-    crear.getDescripcion = _descripcionTextField.text;
-    crear.selectedImages = self.selectedImages;
-    crear.getPrograma = _programaPV.text;
-    crear.getProducto = _productoPV.text;
-    crear.getEspecie = _especiePV.text;
-    if (self.navigationController) {
-        [self.navigationController  pushViewController:crear animated:YES];
-    }else {
-    
-        
-        [self presentViewController:crear animated:YES completion:nil];
-    
-    }
-    
-
-}
-
-
 -(void)programasRequest{
 
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -640,6 +562,31 @@ CGFloat screenHeight;
               
           }];
 
+}
+
+
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    
+    return UIStatusBarStyleLightContent;
+    
+}
+
+- (IBAction)returnButton:(id)sender {
+    
+    [self.navigationController popViewControllerAnimated:TRUE];
+}
+
+- (IBAction)crearButton:(id)sender {
+    
+    crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
+    crear.getTitulo = _tituloTextField.text;
+    crear.getDescripcion = _descripcionTextField.text;
+    crear.getPrograma = _programaPV.text;
+    crear.getProducto = _productoPV.text;
+    crear.getEspecie = _especiePV.text;
+    
+    [self.navigationController  pushViewController:crear animated:YES];
+    
 }
 
 @end

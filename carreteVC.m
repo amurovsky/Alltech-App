@@ -11,6 +11,7 @@
 #import "PhotoCell.h"
 #import "crearAlbumVC.h"
 #import "selecAlbumTV.h"
+#import "AppDelegate.h"
 
 
 @interface carreteVC ()
@@ -41,6 +42,7 @@
     CGFloat screenWidth;
     CGFloat screenHeight;
     PhotoCell *cell;
+    AppDelegate *appDelegate;
 
     
 }
@@ -50,6 +52,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    appDelegate = [[UIApplication sharedApplication] delegate];
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
     screenBound = [[UIScreen mainScreen] bounds];
@@ -140,6 +143,33 @@
     return 1;
 }
 
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    //Medidas segun Device
+    //ipad
+    if (screenWidth == 768) {
+        return CGSizeMake(122, 122);
+    }
+    //iphone 6 plus
+    else if(screenWidth == 414){
+        return CGSizeMake(122, 122);
+    }
+    //iphone 6
+    else if(screenWidth == 375){
+        return CGSizeMake(122, 122);
+    }
+    //iphone 5 y 4
+    return CGSizeMake(70, 70);
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    if (screenWidth == 320) {
+        return UIEdgeInsetsMake(0, 10, 0, 10);
+    }
+    return UIEdgeInsetsMake(0, 0, 0, 0); // top, left, bottom, right
+    
+}
+
+
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //    UIImageView *selected =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"selectedFrame"]];
@@ -156,7 +186,7 @@
     
     
     
-    [_selectedAssets addObject:asset];
+    [_selectedAssets addObject:asset.defaultRepresentation.url];
     NSLog(@"este es el array en Selected: %@",_selectedAssets);
     NSLog(@"este es el index en Selected: %@",indexPath);
     NSLog(@"esta es la ruta de la imagen seleccionada: %@",asset.defaultRepresentation.url);
@@ -176,7 +206,7 @@
     
     
     // Add the selected item into the array
-    [_selectedAssets removeObject:asset];
+    [_selectedAssets removeObject:asset.defaultRepresentation.url];
     NSLog(@"este es el array en Deselected: %@",_selectedAssets);
     NSLog(@"este es el index en Deselected: %@",indexPath);
     UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
@@ -350,7 +380,7 @@
 
 - (IBAction)returnButton:(id)sender {
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 
@@ -360,9 +390,18 @@
         UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:@"Selecciona por lo menos una fotografia" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alerta show];
     }else{
-        selecAlbumTV *selecAlbum =  [self.storyboard instantiateViewControllerWithIdentifier:@"selecAlbumTV"];
-        selecAlbum.selectedImages = _selectedAssets;
-        [self.navigationController pushViewController:selecAlbum animated:YES];
+        crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
+        crear.selectedImages = _selectedAssets;
+        NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
+        for (int i=0; i < [_selectedAssets count]; i++) {
+            ALAsset *asset = self.assets[i];
+            ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
+            UIImage *image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
+            [tmpArray addObject:image];
+        }
+        appDelegate.userSession.selectedImages = tmpArray;
+        NSLog(@"imagenes: %@",appDelegate.userSession.selectedImages);
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     
     

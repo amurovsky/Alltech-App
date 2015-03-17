@@ -504,7 +504,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N4g-IF-oet" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-551.25" y="390"/>
+            <point key="canvasLocation" x="-670" y="790"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="waG-fF-Eii">
@@ -546,7 +546,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="separatorSideMenu.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZWw-Z9-Qxe">
                                                     <rect key="frame" x="75" y="72" width="60" height="1"/>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="sideMenu1.png" translatesAutoresizingMaskIntoConstraints="NO" id="VDh-Eb-Wil">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="albums" translatesAutoresizingMaskIntoConstraints="NO" id="VDh-Eb-Wil">
                                                     <rect key="frame" x="8" y="18" width="40" height="40"/>
                                                     <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
                                                         <rect key="frame" x="8" y="8" width="60" height="60"/>
@@ -557,7 +557,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <segue destination="w5l-as-JSI" kind="show" identifier="mostrarCarrete" id="RFs-oK-FY2"/>
+                                            <segue destination="Z1Z-RD-zEE" kind="show" identifier="mostrarSelecAlbum" id="8yv-Gi-vtv"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="75" id="RTl-LA-8YC">
@@ -580,28 +580,6 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="tqG-yI-4HL" kind="show" id="9o9-rd-rnk"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="75" id="hi1-jI-eNh">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hi1-jI-eNh" id="mOd-WW-aKd">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="albums" translatesAutoresizingMaskIntoConstraints="NO" id="Y3u-Lb-RSD">
-                                                    <rect key="frame" x="85" y="15" width="40" height="40"/>
-                                                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
-                                                        <rect key="frame" x="90" y="25" width="60" height="60"/>
-                                                    </variation>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="separatorSideMenu.png" translatesAutoresizingMaskIntoConstraints="NO" id="FiR-7K-UKc">
-                                                    <rect key="frame" x="75" y="72" width="60" height="1"/>
-                                                </imageView>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <segue destination="IwJ-YP-9CZ" kind="show" id="bKE-Pw-Ffb"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="75" id="nne-u3-YeW">
@@ -637,10 +615,10 @@
                     <connections>
                         <outlet property="camaraImg" destination="VDh-Eb-Wil" id="Myt-gT-nHY"/>
                         <outlet property="idiomaImg" destination="OfJ-d8-Fi5" id="rKc-wb-DIK"/>
-                        <outlet property="logoutImg" destination="Y3u-Lb-RSD" id="Dmf-r0-4ij"/>
-                        <outletCollection property="separatorImg" destination="FiR-7K-UKc" id="iPS-ai-U1D"/>
+                        <outlet property="logoutImg" destination="gWX-7V-Put" id="8Pk-F5-ajE"/>
                         <outletCollection property="separatorImg" destination="ZWw-Z9-Qxe" id="Mpt-aO-3B0"/>
                         <outletCollection property="separatorImg" destination="ucX-y8-3wi" id="YI9-cz-6tS"/>
+                        <outletCollection property="separatorImg" destination="B68-SD-iLl" id="Nm1-YY-ATn"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ANU-iS-Krw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -650,7 +628,7 @@
         <!--carreteVC-->
         <scene sceneID="j3Y-cu-rzd">
             <objects>
-                <viewController title="carreteVC" id="QBb-Gm-Io4" customClass="carreteVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="carreteVC" title="carreteVC" id="QBb-Gm-Io4" customClass="carreteVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Pnr-Ev-ypb"/>
                         <viewControllerLayoutGuide type="bottom" id="rgB-Xp-oGL"/>
@@ -659,6 +637,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gh2-Dk-mV3">
+                                <rect key="frame" x="282" y="555" width="37" height="30"/>
+                                <state key="normal" image="camara_bco">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="camaraButton:" destination="QBb-Gm-Io4" eventType="touchUpInside" id="H4a-8g-UbB"/>
+                                </connections>
+                            </button>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6sB-B1-19p">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <offsetWrapper key="textShadowOffset" horizontal="0.0" vertical="0.0"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="Selecciona" id="f55-qB-WWF">
+                                        <barButtonItem key="rightBarButtonItem" title="Usar" id="WP7-UP-F0u">
+                                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="usarButton:" destination="QBb-Gm-Io4" id="7Na-NC-yFD"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LtJ-C9-ZwN">
                                 <rect key="frame" x="0.0" y="82" width="600" height="458"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -707,40 +712,6 @@
                                     <outlet property="delegate" destination="QBb-Gm-Io4" id="n8L-47-eKY"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gh2-Dk-mV3">
-                                <rect key="frame" x="282" y="555" width="37" height="30"/>
-                                <state key="normal" image="camara_bco">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="camaraButton:" destination="QBb-Gm-Io4" eventType="touchUpInside" id="H4a-8g-UbB"/>
-                                </connections>
-                            </button>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6sB-B1-19p">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <offsetWrapper key="textShadowOffset" horizontal="0.0" vertical="0.0"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="Selecciona" id="f55-qB-WWF">
-                                        <barButtonItem key="leftBarButtonItem" image="return.png" id="phd-tA-4XK" userLabel="Return">
-                                            <inset key="imageInsets" minX="10" minY="13" maxX="2" maxY="7"/>
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <action selector="returnButton:" destination="QBb-Gm-Io4" id="Yuk-6s-fT0"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Usar" id="WP7-UP-F0u">
-                                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <connections>
-                                                <action selector="usarButton:" destination="QBb-Gm-Io4" id="7Na-NC-yFD"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="gh2-Dk-mV3" secondAttribute="centerX" id="9Nr-Hh-llg"/>
@@ -762,7 +733,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Up7-h2-tYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2211" y="390"/>
+            <point key="canvasLocation" x="3569" y="390"/>
         </scene>
         <!--ProductosVC-->
         <scene sceneID="9Nl-mw-CDL">
@@ -1061,7 +1032,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="13 de Octubre del 2015" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyz-b6-cWf">
                                                             <rect key="frame" x="20" y="309" width="250" height="12"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                             <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                                                 <rect key="frame" x="21" y="329" width="281" height="21"/>
@@ -1096,7 +1067,7 @@
                                                                 <constraint firstAttribute="height" constant="50" id="vj4-np-gqa"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                             <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                                                 <rect key="frame" x="21" y="294" width="281" height="32"/>
@@ -1252,7 +1223,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uB9-Vm-pcK">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kq6-1P-e4k">
@@ -1301,7 +1272,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w6P-WP-ehW" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2886" y="390"/>
+            <point key="canvasLocation" x="2200" y="390"/>
         </scene>
         <!--Nuevo Album-->
         <scene sceneID="xhI-Gn-vqb">
@@ -1464,7 +1435,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cua-bK-lgi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2886" y="-322"/>
+            <point key="canvasLocation" x="2200" y="-306"/>
         </scene>
         <!--Crear AlbumVC-->
         <scene sceneID="bMx-iP-8C4">
@@ -1494,6 +1465,9 @@
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="zNU-ff-2Qj">
                                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <action selector="mostrarCarrete:" destination="gjS-T3-p7Z" id="wG1-jO-oez"/>
+                                            </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
@@ -1534,7 +1508,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999998807907104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Álbum:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DGN-82-K92">
                                             <rect key="frame" x="0.0" y="8" width="560" height="24"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="heightClass=regular-widthClass=regular">
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
@@ -1543,7 +1517,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ganado Bovino Rancho Chapopote" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVu-wv-1F1">
                                             <rect key="frame" x="0.0" y="34" width="560" height="18"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="heightClass=regular-widthClass=regular">
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -1553,7 +1527,7 @@
                                             <rect key="frame" x="0.0" y="54" width="560" height="66"/>
                                             <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent viverra, lorem in rhoncus imperdiet, velit felis mollis tellus, lacinia fringilla lorem odio ac dolor. Vivamus bibendum vel odio sit amet ultricies. Pellentesque risus augue, elementum at nisi eu, pulvinar mattis magna. Fusce id diam quis urna vehicula hendrerit. Integer consectetur, diam vel consequat tincidunt, lectus nibh dignissim nibh, eu consectetur urna mauris et velit. Quisque et enim aliquet, venenatis magna et, pulvinar enim. Maecenas quis leo a sem rhoncus viverra eget ac enim. Phasellus ultricies, dui sed rutrum cursus, turpis sapien consequat lorem, at malesuada mi risus eu justo. Praesent porttitor iaculis tellus, sed auctor nisl facilisis sit amet. Praesent sed ornare ipsum. In non sagittis ipsum. Morbi quis augue a dolor auctor placerat et ac massa.</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="heightClass=regular-widthClass=regular">
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -1640,23 +1614,23 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i2T-Dn-PYw" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3631" y="390"/>
+            <point key="canvasLocation" x="2886" y="390"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="sHo-7G-zt7">
+        <scene sceneID="Cz1-up-pFz">
             <objects>
-                <navigationController navigationBarHidden="YES" id="w5l-as-JSI" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Z1Z-RD-zEE" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N9b-Ow-IWe">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lWM-Y6-nZd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="QBb-Gm-Io4" kind="relationship" relationship="rootViewController" id="Tkq-0K-XHa"/>
+                        <segue destination="IwJ-YP-9CZ" kind="relationship" relationship="rootViewController" id="orD-55-s2o"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Z2I-ET-fBO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k4R-n7-dvf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1543" y="390"/>
         </scene>
@@ -1677,7 +1651,6 @@
         <image name="selectedFrame" width="122" height="122"/>
         <image name="separatorCell.png" width="687" height="2"/>
         <image name="separatorSideMenu.png" width="128" height="2"/>
-        <image name="sideMenu1.png" width="74" height="59"/>
         <image name="sideMenu2.png" width="76" height="76"/>
         <image name="sideMenu3.png" width="67" height="72"/>
     </resources>

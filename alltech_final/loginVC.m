@@ -359,40 +359,40 @@ AppDelegate *appDelegate;
 }
 
 - (IBAction)recuperarButton:(id)sender {
-//    NSLog(@"mail : %@",_correoTexField.text);
-//    //NSURL *email = [NSURL URLWithString:_correoTexField.text];
-//    NSString *encoded = [_correoTexField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    NSLog(@"mail Encoded: %@",encoded);
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    NSDictionary *parameters = @{
-//                                 @"email"    : _correoTexField.text
-//                                 };
-//    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-//    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-//    [manager.requestSerializer setValue:@"recover_password" forHTTPHeaderField:@"opt"];
-//    //[manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-//    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-//
-//        NSLog(@"JSON: %@",responseObject);
-//  
-//    }
-//          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//              
-//              NSLog(@"Error: %@",error);
-//              
-//          }];
-//    
+    NSLog(@"mail : %@",_correoTexField.text);
+    //NSURL *email = [NSURL URLWithString:_correoTexField.text];
+    NSString *encoded = [_correoTexField.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"mail Encoded: %@",encoded);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = @{
+                                 @"email"    : encoded
+                                 };
+    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
+    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
+    [manager.requestSerializer setValue:@"recover_password" forHTTPHeaderField:@"opt"];
+    //[manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        
+        NSLog(@"JSON: %@",responseObject);
+        if ([[responseObject objectForKey:@"status"]  isEqual: @"ok"]) {
+            _ingresaCorreoLabel.hidden = YES;
+            _correoTexField.hidden = YES;
+            _recuperarButton.hidden = YES;
+            _enviadoLabel.hidden = NO;
+            _enviadoCorreoLabel.hidden = NO;
+            _enviadoCorreoLabel.text = _correoTexField.text;
+        }
+        
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@",error);
+              
+          }];
     
     
-    _ingresaCorreoLabel.hidden = YES;
-    _correoTexField.hidden = YES;
-    _recuperarButton.hidden = YES;
     
-    _enviadoLabel.hidden = NO;
-    _enviadoCorreoLabel.hidden = NO;
-    
-    
-    _enviadoCorreoLabel.text = _correoTexField.text;
+
     
     
 }

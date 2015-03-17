@@ -23,6 +23,7 @@
 - (IBAction)returnButton:(id)sender;
 - (IBAction)enviarButton:(id)sender;
 - (IBAction)guardarButton:(id)sender;
+- (IBAction)mostrarCarrete:(id)sender;
 
 
 @end
@@ -53,7 +54,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *programaPV;
 @property (weak, nonatomic) IBOutlet UITextField *productoPV;
 @property (weak, nonatomic) IBOutlet UITextField *especiePV;
-@property(nonatomic, strong) NSMutableArray *selectedImages;
 @property (weak, nonatomic) IBOutlet UITextField *tituloTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descripcionTextField;
 @property (strong, nonatomic) NSArray *tituloDescripcionAlbum;

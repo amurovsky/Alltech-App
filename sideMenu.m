@@ -8,7 +8,7 @@
 
 #import "sideMenu.h"
 #import "SWRevealViewController.h"
-#import "carreteVC.h"
+#import "selecAlbumTV.h"
 
 @interface sideMenu ()
 
@@ -157,11 +157,7 @@
 
 
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    
-    return 4;
-}
+
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     [cell setBackgroundColor:[UIColor clearColor]];
@@ -238,10 +234,9 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-    if ([segue.identifier isEqualToString:@"mostrarCarrete"]) {
-        carreteVC * carrete = segue.destinationViewController;
-       // [self presentViewController:carrete animated:YES completion:nil];
-        [self.navigationController presentViewController:carrete animated:YES completion:nil];
+    if ([segue.identifier isEqualToString:@"mostrarSelecAlbum"]) {
+        selecAlbumTV * selecAlbum = segue.destinationViewController;
+        [self.navigationController presentViewController:selecAlbum animated:YES completion:nil];
     }
     
 }

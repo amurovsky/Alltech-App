@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSString *especieID;
 @property (nonatomic, strong) NSString *Url;
 @property (nonatomic, strong) NSUserDefaults *lenguajeGuardado;
-
+@property (nonatomic, strong) NSMutableArray *selectedImages;
 
 
 @end
