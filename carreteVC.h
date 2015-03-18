@@ -18,8 +18,6 @@
 
 - (IBAction)camaraButton:(id)sender;
 
-- (IBAction)returnButton:(id)sender;
-
 - (IBAction)usarButton:(id)sender;
 
 @end

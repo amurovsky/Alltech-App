@@ -7,20 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 
 
-@interface Albums : NSManagedObject
+@interface Albums : NSObject
 
-@property (nonatomic, retain) NSNumber * id;
 @property (nonatomic, retain) NSString * nombre;
 @property (nonatomic, retain) NSString * descripcion;
 @property (nonatomic, retain) NSString * programa;
 @property (nonatomic, retain) NSString * producto;
 @property (nonatomic, retain) NSString * especie;
-@property (nonatomic, retain) NSString * imagen;
+@property (nonatomic, retain) NSMutableArray * imagenes;
+@property (nonatomic, retain) NSString * fechaModificacion;
 
-
-+(id)albumWhitContext:(NSManagedObjectContext *)context;
 
 @end

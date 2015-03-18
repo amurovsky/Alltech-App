@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class Albums;
 @interface crearAlbumVC : UIViewController <UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>
 
 @property(nonatomic, weak) IBOutlet UINavigationBar *crearAlbumNav;
@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSString *getProducto;
 @property (strong, nonatomic) NSString *getEspecie;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolBarAlbum;
+@property (strong, nonatomic) Albums *albums;
+
 
 - (IBAction)returnButton:(id)sender;
 - (IBAction)enviarButton:(id)sender;
@@ -40,6 +42,7 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *tituloAlbumLabel;
 @property (strong, nonatomic) IBOutlet UILabel *descripcionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *filtradoLabel;
 
 
 

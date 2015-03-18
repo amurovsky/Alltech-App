@@ -15,6 +15,8 @@
 #import "SWRevealViewController.h"
 #import "selecAlbumTV.h"
 #import "carreteVC.h"
+#import "Albums.h"
+#import "repositoriodeAlbums.h"
 
 @interface crearAlbumVC ()
 
@@ -59,11 +61,12 @@
     [self.toolBarAlbum   addSubview:separador];
     [appDelegate.userSession.selectedImages removeAllObjects];
     
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [self.collectionView reloadData];
-    NSLog(@"imagenes seleccionadas: %@",_selectedImages);
     
 }
 
@@ -82,9 +85,9 @@
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 129, headerView.bounds.size.width, 1)];
         lineView.backgroundColor = [UIColor orangeColor];
         [headerView addSubview:lineView];
-        headerView.tituloAlbumLabel.text = _getTitulo;
-        headerView.descripcionLabel.text = _getDescripcion;
-
+        headerView.tituloAlbumLabel.text = _albums.nombre;
+        headerView.descripcionLabel.text = _albums.descripcion;
+        headerView.filtradoLabel.text = [NSString stringWithFormat:@"%@/ %@/ %@",_albums.programa,_albums.producto,_albums.especie];
     }
     
     
@@ -95,7 +98,10 @@
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    //return [fotos count];
+    if ([appDelegate.userSession.selectedImages count] == 0) {
+        NSLog(@"vienes de atras count y hay :%lu imagenes",(unsigned long)[_albums.imagenes count]);
+       return [_albums.imagenes count];
+    }
     return [appDelegate.userSession.selectedImages count];
 }
 
@@ -109,7 +115,16 @@
     //ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
     //cell.backgroundColor = [UIColor clearColor];
     //cell.previewImg.image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
-    cell.previewImg.image = [appDelegate.userSession.selectedImages objectAtIndex:indexPath.row];
+    
+    if([appDelegate.userSession.selectedImages count] == 0){
+        cell.previewImg.image = [_albums.imagenes objectAtIndex:indexPath.row];
+        NSLog(@"vienes de atras");
+    }else{
+        cell.previewImg.image = [appDelegate.userSession.selectedImages objectAtIndex:indexPath.row];
+    
+    }
+    
+        
     cell.previewImg.clipsToBounds = YES;
 
     return cell;
@@ -145,31 +160,23 @@
 
 
 -(IBAction)guardarButton:(id)sender{
-
-    AppDelegate *appDelegateContext =
-    [[UIApplication sharedApplication] delegate];
     
-    NSManagedObjectContext *context =
-    [appDelegateContext managedObjectContext];
-    NSManagedObject *newAlbum;
-    newAlbum = [NSEntityDescription
-                insertNewObjectForEntityForName:@"Albums"
-                inManagedObjectContext:context];
-    [newAlbum setValue: _getPrograma forKey:@"programa"];
-    [newAlbum setValue: _getProducto  forKey:@"producto"];
-    [newAlbum setValue: _getEspecie forKey:@"especie"];
-    [newAlbum setValue: _getTitulo forKey:@"nombre"];
-    [newAlbum setValue: _getDescripcion forKey:@"descripcion"];
-    NSData *imagen = UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[0], 0.0);
-    [newAlbum setValue:imagen forKey:@"imagen"];
-
-    NSError *error;
-    [context save:&error];
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"dd/MM/yyyy hh:mma"];
+    NSString *dateString = [dateFormat stringFromDate:today];
     
+    _albums.imagenes = [[NSMutableArray alloc]init];
     
+    for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
+        
+        [_albums.imagenes addObject:appDelegate.userSession.selectedImages[i]];
+        
+    }
+    
+    _albums.fechaModificacion = dateString;
     UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"GUARDAR" message:@"Su album fue guardado con exito" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alerta show];
-    
     [self.navigationController popToRootViewControllerAnimated:YES];
     
     
@@ -578,14 +585,32 @@ CGFloat screenHeight;
 
 - (IBAction)crearButton:(id)sender {
     
-    crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
-    crear.getTitulo = _tituloTextField.text;
-    crear.getDescripcion = _descripcionTextField.text;
-    crear.getPrograma = _programaPV.text;
-    crear.getProducto = _productoPV.text;
-    crear.getEspecie = _especiePV.text;
     
-    [self.navigationController  pushViewController:crear animated:YES];
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"dd/MM/yyyy hh:mma"];
+    NSString *dateString = [dateFormat stringFromDate:today];
+    
+//    crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
+//    crear.getTitulo = _tituloTextField.text;
+//    crear.getDescripcion = _descripcionTextField.text;
+//    crear.getPrograma = _programaPV.text;
+//    crear.getProducto = _productoPV.text;
+//    crear.getEspecie = _especiePV.text;
+    
+    Albums *album = [[Albums alloc]init];
+    
+    album.nombre = _tituloTextField.text;
+    album.descripcion = _descripcionTextField.text;
+    album.programa = _programaPV.text;
+    album.producto = _productoPV.text;
+    album.especie = _especiePV.text;
+    album.fechaModificacion = dateString;
+   
+    NSMutableArray * albums = [repositoriodeAlbums sharedInstance].albums;
+    [albums addObject:album];
+    
+    [self.navigationController  popViewControllerAnimated:YES];
     
 }
 

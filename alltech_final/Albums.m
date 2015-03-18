@@ -11,21 +11,14 @@
 
 @implementation Albums
 
-@dynamic id;
-@dynamic nombre;
-@dynamic descripcion;
-@dynamic programa;
-@dynamic producto;
-@dynamic especie;
-@dynamic imagen;
-
-+(id)albumWhitContext:(NSManagedObjectContext *)context {
-    Albums *album = [NSEntityDescription
-                     insertNewObjectForEntityForName:@"nombre"
-                     inManagedObjectContext:context];
-    return album;
+-(id)init {
+    if (self=[super init]) {
+        if (self.imagenes==nil) {
+            self.imagenes = [[NSMutableArray alloc] init];
+        }
+    }
+    return self;
 }
-
 @end
 
 

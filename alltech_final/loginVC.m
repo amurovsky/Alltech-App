@@ -36,25 +36,25 @@ AppDelegate *appDelegate;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    // find movie file
-//    NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"video_iphone_1" ofType:@"mp4"];
-//    NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
-//    UIImageView *gradient =[[UIImageView alloc]initWithFrame:self.view.frame];
-//    gradient.image = [UIImage imageNamed:@"gradient23"];
-//    moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
-//    moviePlayer.controlStyle = MPMovieControlStyleNone;
-//    moviePlayer.view.frame = self.view.frame;
-//    moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
-//    [self.view addSubview:moviePlayer.view];
-//    [self.view sendSubviewToBack:moviePlayer.view];
-//    [self.view insertSubview:gradient aboveSubview:moviePlayer.view];
-//    [moviePlayer play];
-//    
-//    // loop movie
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(replayMovie:)
-//                                                 name: MPMoviePlayerPlaybackDidFinishNotification
-//                                               object: moviePlayer];
+    // find movie file
+    NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"video_iphone_1" ofType:@"mp4"];
+    NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
+    UIImageView *gradient =[[UIImageView alloc]initWithFrame:self.view.frame];
+    gradient.image = [UIImage imageNamed:@"gradient23"];
+    moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
+    moviePlayer.controlStyle = MPMovieControlStyleNone;
+    moviePlayer.view.frame = self.view.frame;
+    moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
+    [self.view addSubview:moviePlayer.view];
+    [self.view sendSubviewToBack:moviePlayer.view];
+    [self.view insertSubview:gradient aboveSubview:moviePlayer.view];
+    [moviePlayer play];
+    
+    // loop movie
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(replayMovie:)
+                                                 name: MPMoviePlayerPlaybackDidFinishNotification
+                                               object: moviePlayer];
     
     
     // Sacar Dimensiones de la pantalla
@@ -125,16 +125,16 @@ AppDelegate *appDelegate;
     
     //Animacion Fade In de logo Alltech
     
-//    CSAnimationView *animationView = [[CSAnimationView alloc] initWithFrame:CGRectMake(0, 80, screenWidth, 40)];
-//    animationView.backgroundColor = [UIColor clearColor];
-//    animationView.duration = 1;
-//    animationView.delay    = 0;
-//    animationView.type     = CSAnimationTypeFadeIn;
-//    [self.view insertSubview:animationView aboveSubview:gradient];
-//    // Add your subviews into animationView
-//    [animationView addSubview:imageView];
-//    // Kick start the animation immediately
-//    [animationView startCanvasAnimation];
+    CSAnimationView *animationView = [[CSAnimationView alloc] initWithFrame:CGRectMake(0, 80, screenWidth, 40)];
+    animationView.backgroundColor = [UIColor clearColor];
+    animationView.duration = 1;
+    animationView.delay    = 0;
+    animationView.type     = CSAnimationTypeFadeIn;
+    [self.view insertSubview:animationView aboveSubview:gradient];
+    // Add your subviews into animationView
+    [animationView addSubview:imageView];
+    // Kick start the animation immediately
+    [animationView startCanvasAnimation];
 
     
     

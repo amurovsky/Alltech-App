@@ -9,6 +9,7 @@
 #import "selecAlbumTV.h"
 #import "crearAlbumVC.h"
 #import "Albums.h"
+#import "repositoriodeAlbums.h"
 #import "AppDelegate.h"
 
 @interface selecAlbumTV ()
@@ -55,35 +56,6 @@
     
     [self.selectAlbumTable setTableFooterView:[UIView new]];
     
-    AppDelegate *appDelegateContext =
-    [[UIApplication sharedApplication] delegate];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Albums" inManagedObjectContext:appDelegateContext.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    NSError *error = nil;
-    NSArray *result = [appDelegateContext.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    if (error) {
-        NSLog(@"Unable to execute fetch request.");
-        NSLog(@"%@, %@", error, error .localizedDescription);
-        
-    } else {
-        NSLog(@"%@", result);
-        if (result.count > 0) {
-            for (int i = 0; i < result.count; i++) {
-            
-                NSManagedObject *Nombre = (NSManagedObject *)[result objectAtIndex:i];
-                NSLog(@"%@ %@", [Nombre valueForKey:@"nombre"], [Nombre valueForKey:@"descripcion"]);
-                NSLog(@"Guardado :%@", Nombre);
-                [nombreAlbum addObject:[Nombre valueForKey:@"nombre"]];
-                [descripcionAlbum addObject:[Nombre valueForKey:@"descripcion"]];
-            }
-        }[self.selectAlbumTable reloadData];
-    }
-
-    
 }
 -(void)viewDidAppear:(BOOL)animated{
 
@@ -104,8 +76,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    if (section == 1)
-        return [nombreAlbum count];
+    if (section == 1){
+        NSMutableArray *albums =[repositoriodeAlbums sharedInstance].albums;
+        return [albums count];
+    
+    }
+
     return 1;
     
     
@@ -127,9 +103,11 @@
     }else{
         cell = [tableView dequeueReusableCellWithIdentifier:@"SimpleTableItem" forIndexPath:indexPath];
     
-        cell.textLabel.text = [nombreAlbum objectAtIndex:indexPath.row];
+        NSMutableArray *albums =[repositoriodeAlbums sharedInstance].albums;
+        Albums *album = [albums objectAtIndex:indexPath.row];
+        cell.textLabel.text = album.nombre;
         cell.textLabel.numberOfLines = 2;
-        cell.detailTextLabel.text = @"Última modificación 19/02/16";
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Ultima modificacion: %@",album.fechaModificacion];
         cell.backgroundColor = [UIColor colorWithRed:0.969 green:0.976 blue:0.98 alpha:1]; /*#f7f9fa*/
         cell.imageView.image = [UIImage imageNamed:@"albumIcon"];
     }
@@ -170,27 +148,8 @@
 
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 
-        AppDelegate *appDelegateContext =
-        [[UIApplication sharedApplication] delegate];
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Albums" inManagedObjectContext:appDelegateContext.managedObjectContext];
-        [fetchRequest setEntity:entity];
-        
-        NSError *error = nil;
-        NSArray *result = [appDelegateContext.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        
-        if (error) {
-            NSLog(@"Unable to execute fetch request.");
-            NSLog(@"%@, %@", error, error .localizedDescription);
-            
-        } else {
-            
-            [appDelegateContext.managedObjectContext deleteObject:[result objectAtIndex:indexPath.row]];
-        }
-
-        
-        [nombreAlbum removeObjectAtIndex:indexPath.row];
+        NSMutableArray *albums = [repositoriodeAlbums sharedInstance].albums;
+        [albums removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
     }
@@ -244,8 +203,10 @@
     
     if ([segue.identifier isEqualToString:@"crearAlbum"]) {
         crearAlbumVC *crearAlbum = (crearAlbumVC *) segue.destinationViewController;
-        crearAlbum.getTitulo = [nombreAlbum objectAtIndex:indexPath.row];
-        crearAlbum.getDescripcion = [descripcionAlbum objectAtIndex:indexPath.row];
+        
+        NSMutableArray *albums =[repositoriodeAlbums sharedInstance].albums;
+        Albums *album = [albums objectAtIndex:indexPath.row];
+        crearAlbum.albums = album;
 
     }
 

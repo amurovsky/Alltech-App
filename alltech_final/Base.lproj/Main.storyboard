@@ -1523,6 +1523,15 @@
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                             </variation>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="programa/producto/especie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Bx-Nr-yvf">
+                                            <rect key="frame" x="0.0" y="117" width="560" height="13"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
+                                            <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="heightClass=regular-widthClass=regular">
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                            </variation>
+                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999973" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="560" translatesAutoresizingMaskIntoConstraints="NO" id="Hqn-VP-SLu">
                                             <rect key="frame" x="0.0" y="54" width="560" height="66"/>
                                             <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent viverra, lorem in rhoncus imperdiet, velit felis mollis tellus, lacinia fringilla lorem odio ac dolor. Vivamus bibendum vel odio sit amet ultricies. Pellentesque risus augue, elementum at nisi eu, pulvinar mattis magna. Fusce id diam quis urna vehicula hendrerit. Integer consectetur, diam vel consequat tincidunt, lectus nibh dignissim nibh, eu consectetur urna mauris et velit. Quisque et enim aliquet, venenatis magna et, pulvinar enim. Maecenas quis leo a sem rhoncus viverra eget ac enim. Phasellus ultricies, dui sed rutrum cursus, turpis sapien consequat lorem, at malesuada mi risus eu justo. Praesent porttitor iaculis tellus, sed auctor nisl facilisis sit amet. Praesent sed ornare ipsum. In non sagittis ipsum. Morbi quis augue a dolor auctor placerat et ac massa.</string>
@@ -1538,12 +1547,14 @@
                                         <constraint firstAttribute="trailing" secondItem="Hqn-VP-SLu" secondAttribute="trailing" id="2gG-pN-Fy7">
                                             <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                         </constraint>
+                                        <constraint firstAttribute="trailing" secondItem="1Bx-Nr-yvf" secondAttribute="trailing" id="D3y-pq-RDf"/>
                                         <constraint firstItem="bVu-wv-1F1" firstAttribute="leading" secondItem="jhH-co-NIF" secondAttribute="leading" id="I0d-Gd-WEW">
                                             <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                         </constraint>
                                         <constraint firstItem="Hqn-VP-SLu" firstAttribute="leading" secondItem="jhH-co-NIF" secondAttribute="leading" id="Lhc-PV-Bhm">
                                             <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                         </constraint>
+                                        <constraint firstItem="1Bx-Nr-yvf" firstAttribute="leading" secondItem="jhH-co-NIF" secondAttribute="leading" id="MV6-cO-LXp"/>
                                         <constraint firstItem="bVu-wv-1F1" firstAttribute="top" secondItem="DGN-82-K92" secondAttribute="bottom" constant="2" id="Y5o-QB-JdD"/>
                                         <constraint firstAttribute="trailing" secondItem="DGN-82-K92" secondAttribute="trailing" id="azv-By-n1r">
                                             <variation key="heightClass=regular-widthClass=regular" constant="60"/>
@@ -1552,6 +1563,7 @@
                                             <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                         </constraint>
                                         <constraint firstItem="Hqn-VP-SLu" firstAttribute="top" secondItem="bVu-wv-1F1" secondAttribute="bottom" constant="2" id="lor-Jf-sGd"/>
+                                        <constraint firstAttribute="bottom" secondItem="1Bx-Nr-yvf" secondAttribute="bottom" id="o3d-ki-miQ"/>
                                         <constraint firstItem="DGN-82-K92" firstAttribute="top" secondItem="jhH-co-NIF" secondAttribute="top" constant="8" id="pd3-N4-5SF"/>
                                         <constraint firstItem="bVu-wv-1F1" firstAttribute="width" secondItem="Hqn-VP-SLu" secondAttribute="width" id="vHz-Jf-I2g"/>
                                         <constraint firstItem="DGN-82-K92" firstAttribute="leading" secondItem="jhH-co-NIF" secondAttribute="leading" id="y8t-kO-Lrv">
@@ -1560,6 +1572,7 @@
                                     </constraints>
                                     <connections>
                                         <outlet property="descripcionLabel" destination="Hqn-VP-SLu" id="IYh-qa-kh6"/>
+                                        <outlet property="filtradoLabel" destination="1Bx-Nr-yvf" id="POv-po-LxY"/>
                                         <outlet property="tituloAlbumLabel" destination="bVu-wv-1F1" id="S74-J8-Pv4"/>
                                     </connections>
                                 </collectionReusableView>

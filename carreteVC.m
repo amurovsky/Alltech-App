@@ -12,6 +12,8 @@
 #import "crearAlbumVC.h"
 #import "selecAlbumTV.h"
 #import "AppDelegate.h"
+#import "Albums.h"
+#import "repositoriodeAlbums.h"
 
 
 @interface carreteVC ()
@@ -190,7 +192,6 @@
     NSLog(@"este es el array en Selected: %@",_selectedAssets);
     NSLog(@"este es el index en Selected: %@",indexPath);
     NSLog(@"esta es la ruta de la imagen seleccionada: %@",asset.defaultRepresentation.url);
-    //collectionView.allowsMultipleSelection = YES;
     UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
     UIImageView *selectedImg = [[celda.contentView subviews] lastObject];
     selectedImg.hidden=NO;
@@ -378,11 +379,7 @@
 //    }
 //}
 
-- (IBAction)returnButton:(id)sender {
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
-}
+
 
 - (IBAction)usarButton:(id)sender {
 
@@ -400,7 +397,6 @@
             [tmpArray addObject:image];
         }
         appDelegate.userSession.selectedImages = tmpArray;
-        NSLog(@"imagenes: %@",appDelegate.userSession.selectedImages);
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     
