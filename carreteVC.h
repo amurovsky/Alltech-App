@@ -20,4 +20,6 @@
 
 - (IBAction)usarButton:(id)sender;
 
+- (IBAction)cancelarButton:(id)sender;
+
 @end

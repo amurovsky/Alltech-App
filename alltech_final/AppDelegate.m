@@ -24,7 +24,7 @@
     // 192.168.15.101:7000/ws
     // alltech.tejuino.mx/ws
     //alltech-pics-sell.azurewebsites.net/ws
-    self.userSession.Url = @"http://alltech.tejuino.mx/ws";
+    self.userSession.Url = @"http://alltech-pics-sell.azurewebsites.net/ws";
     self.userSession.lenguajeGuardado = [NSUserDefaults standardUserDefaults];
     
     return YES;

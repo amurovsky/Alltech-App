@@ -107,11 +107,9 @@
                                  @"sessid"    : appDelegate.userSession.sesionID,
                                  @"id_program": appDelegate.userSession.programaID,
                                  @"id_product": appDelegate.userSession.productoID,
-                                 @"id_animal_type": appDelegate.userSession.especieID
+                                 @"id_animal_type": appDelegate.userSession.especieID,
+                                 @"opt"       : @"get_galleries"
                                  };
-    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-    [manager.requestSerializer setValue:@"get_galleries" forHTTPHeaderField:@"opt"];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         NSLog(@"RESPUESTA: %@",responseObject);
@@ -243,11 +241,9 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
                                  @"sessid"    : appDelegate.userSession.sesionID,
-                                 @"id_gallery": [albumID objectAtIndex:indexPath.row]
+                                 @"id_gallery": [albumID objectAtIndex:indexPath.row],
+                                 @"opt"       : @"get_gallery_images"
                                  };
-    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-    [manager.requestSerializer setValue:@"get_gallery_images" forHTTPHeaderField:@"opt"];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         NSLog(@"RESPUESTA gallery images: %@",responseObject);
@@ -270,31 +266,7 @@
               
           }];
 
-    
 
-    
-//    photo = [MWPhoto photoWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ejemplo1" ofType:@"png"]]];
-//    photo.caption = @"Fotografías de Gerardo Torres. \n \n Notar el pelaje del ejemplar al frente, ahí podemos notar mejor la mejora.";
-//    [photos addObject:photo];
-//    photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ejemplo2" ofType:@"png"]]];
-//    photo.caption = @"Fotografías de Gerardo Torres. \n \n Notar el pelaje del ejemplar al frente, ahí podemos notar mejor la mejora";
-//    [photos addObject:photo];
-//    //photo = [MWPhoto photoWithURL:[NSURL URLWithString:@"http://global.alltech.com/sites/default/files/styles/flexslider_country/public/images/country/slideshow/2305-What-if-you-could-get-more-milk-ad.gif?itok=l7TuToB0"]];
-//    photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"ejemplo3" ofType:@"png"]]];
-//    photo.caption = @"Fotografías de Gerardo Torres. \n \n Aquí se muestra como el pelaje cambió favorablemente cabo de 35 días de alimento.";
-//    [photos addObject:photo];
-//    photo = [MWPhoto photoWithURL:[NSURL URLWithString:@"http://ag.alltech.com/sites/default/files/styles/flexslider_full/public/Profitability-On-The-Farm.png?itok=HiRCm7v2"]];
-//    //photo = [MWPhoto photoWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ejemplo4" ofType:@"png"]]];
-//    photo.caption = @"Fotografías de Gerardo Torres. \n \n Notar el pelaje del ejemplar al frente, ahí podemos notar mejor la mejora.";
-//    [photos addObject:photo];
-//    photo = [MWPhoto photoWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ejemplo6" ofType:@"png"]]];
-//    photo.caption = @"Fotografías de Gerardo Torres. \n \n Notar el pelaje del ejemplar al frente, ahí podemos notar mejor la mejora.";
-//    [photos addObject:photo];
-//    photo = [MWPhoto photoWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ejemplo7" ofType:@"png"]]];
-//    photo.caption = @"Fotografías de Gerardo Torres. \n \n Notar el pelaje del ejemplar al frente, ahí podemos notar mejor la mejora.";
-//    [photos addObject:photo];
-    
-    
 
 }
 

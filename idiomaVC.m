@@ -138,7 +138,8 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
                                  @"sessid" : appDelegate.userSession.sesionID,
-                                 @"lang"   : appDelegate.userSession.lenguaje
+                                 @"lang"   : appDelegate.userSession.lenguaje,
+                                 @"opt"    : @"set_lang"
                                  };
     [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
     [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];

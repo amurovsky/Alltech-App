@@ -45,6 +45,7 @@
     CGFloat screenHeight;
     PhotoCell *cell;
     AppDelegate *appDelegate;
+    UIRefreshControl *refreshControl;
 
     
 }
@@ -75,11 +76,22 @@
 
     [self loadAssets];
     
+    refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.tintColor = [UIColor grayColor];
+    [refreshControl addTarget:self action:@selector(refershControlAction) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:refreshControl];
+    self.collectionView.alwaysBounceVertical = YES;
+    
     
 }
 
 
+-(void)refershControlAction{
+    
+    [self loadAssets];
+    [refreshControl endRefreshing];
 
+}
 -(void)viewDidLayoutSubviews{
     
     
@@ -294,7 +306,7 @@
     UIImagePickerController * picker = [[UIImagePickerController alloc] init];
     [picker setDelegate:self];
     [picker setSourceType:UIImagePickerControllerSourceTypeCamera];
-    
+    //picker.modalPresentationStyle = UIModalPresentationCurrentContext;
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         
@@ -401,5 +413,10 @@
     }
     
     
+}
+
+- (IBAction)cancelarButton:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

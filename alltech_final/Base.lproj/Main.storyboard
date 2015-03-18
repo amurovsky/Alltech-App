@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
@@ -655,6 +655,12 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Selecciona" id="f55-qB-WWF">
+                                        <barButtonItem key="leftBarButtonItem" title="Cancelar" id="XIB-Ne-PXU">
+                                            <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="cancelarButton:" destination="QBb-Gm-Io4" id="noB-qz-W7A"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Usar" id="WP7-UP-F0u">
                                             <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
@@ -664,7 +670,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LtJ-C9-ZwN">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LtJ-C9-ZwN">
                                 <rect key="frame" x="0.0" y="82" width="600" height="458"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GRN-HR-KNt">
@@ -1286,6 +1292,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rVf-hI-Rao">
+                                <rect key="frame" x="282" y="282" width="37" height="37"/>
+                                <color key="color" red="0.67843137249999996" green="0.69803921570000005" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8F-t2-KIq" userLabel="Conteiner" customClass="CSAnimationView">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
@@ -1419,11 +1429,14 @@
                             <constraint firstAttribute="trailing" secondItem="B8F-t2-KIq" secondAttribute="trailing" id="UGA-dk-doy"/>
                             <constraint firstItem="ab8-ox-9oM" firstAttribute="top" secondItem="vLp-Vk-nuu" secondAttribute="bottom" id="W5l-Zr-9UR"/>
                             <constraint firstAttribute="centerX" secondItem="ab8-ox-9oM" secondAttribute="centerX" id="iz3-kP-5Nl"/>
+                            <constraint firstAttribute="centerX" secondItem="rVf-hI-Rao" secondAttribute="centerX" id="rRi-rA-J2s"/>
+                            <constraint firstAttribute="centerY" secondItem="rVf-hI-Rao" secondAttribute="centerY" id="sv6-ti-IZh"/>
                             <constraint firstItem="ab8-ox-9oM" firstAttribute="leading" secondItem="2li-DA-zXT" secondAttribute="leading" id="teK-RM-p65"/>
                             <constraint firstAttribute="trailing" secondItem="ab8-ox-9oM" secondAttribute="trailing" id="w3f-pi-eDm"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="rVf-hI-Rao" id="qwH-HA-3NG"/>
                         <outlet property="conteiner" destination="B8F-t2-KIq" id="GcM-u5-ct2"/>
                         <outlet property="descripcionTextField" destination="wuW-GU-cXz" id="U1c-Vt-4T6"/>
                         <outlet property="especiePV" destination="hAg-XU-KsW" id="2xf-cr-9bO"/>

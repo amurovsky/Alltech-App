@@ -237,12 +237,10 @@ AppDelegate *appDelegate;
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             NSDictionary *parameters = @{
                                          @"username"    : username,
-                                         @"password"    : password
+                                         @"password"    : password,
+                                         @"opt"         : @"login"
                                      
                                          };
-            [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-            [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-            [manager.requestSerializer setValue:@"login" forHTTPHeaderField:@"opt"];
             [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
             manager.responseSerializer = [AFJSONResponseSerializer serializer];
             [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

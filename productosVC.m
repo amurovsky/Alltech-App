@@ -40,12 +40,10 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
                                  @"sessid"    : appDelegate.userSession.sesionID,
-                                 @"id_program": appDelegate.userSession.programaID
-                                 
+                                 @"id_program": appDelegate.userSession.programaID,
+                                 @"opt"       : @"get_products"
                                  };
-    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-    [manager.requestSerializer setValue:@"get_products" forHTTPHeaderField:@"opt"];
+
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         

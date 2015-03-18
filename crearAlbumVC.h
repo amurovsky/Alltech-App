@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MBProgressHUD.h>
 @class Albums;
-@interface crearAlbumVC : UIViewController <UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>
+@interface crearAlbumVC : UIViewController <UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate,MBProgressHUDDelegate>
 
 @property(nonatomic, weak) IBOutlet UINavigationBar *crearAlbumNav;
 @property(nonatomic, weak) IBOutlet UICollectionView *collectionView;
@@ -60,6 +61,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *tituloTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descripcionTextField;
 @property (strong, nonatomic) NSArray *tituloDescripcionAlbum;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (weak, nonatomic) IBOutlet CSAnimationView *conteiner;
 

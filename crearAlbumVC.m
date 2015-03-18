@@ -17,6 +17,7 @@
 #import "carreteVC.h"
 #import "Albums.h"
 #import "repositoriodeAlbums.h"
+#import <MBProgressHUD.h>
 
 @interface crearAlbumVC ()
 
@@ -31,7 +32,6 @@
     previewCell *cell;
     AppDelegate *appDelegate;
     NSString *galeriaID;
-
     
 }
 
@@ -118,7 +118,6 @@
     
     if([appDelegate.userSession.selectedImages count] == 0){
         cell.previewImg.image = [_albums.imagenes objectAtIndex:indexPath.row];
-        NSLog(@"vienes de atras");
     }else{
         cell.previewImg.image = [appDelegate.userSession.selectedImages objectAtIndex:indexPath.row];
     
@@ -198,26 +197,28 @@
 }
 
 - (IBAction)enviarButton:(id)sender {
+
+    
     [self uploadImages];
 
 //        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 //        NSDictionary *parameters = @{
 //                                     @"sessid"          : appDelegate.userSession.sesionID,
-//                                     @"title"           : self.getTitulo,
-//                                     @"description"     : self.getDescripcion,
+//                                     @"title"           : self.albums.nombre,
+//                                     @"description"     : self.albums.descripcion,
 //                                     @"id_program"      : appDelegate.userSession.programaID,
 //                                     @"id_product"      : appDelegate.userSession.productoID,
-//                                     @"id_animal_type"  : appDelegate.userSession.especieID
+//                                     @"id_animal_type"  : appDelegate.userSession.especieID,
+//                                     @"opt"             : @"new_gallery"
 //                                     };
-//        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-//        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-//        [manager.requestSerializer setValue:@"new_gallery" forHTTPHeaderField:@"opt"];
+//
 //        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
 //        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+//
 //        NSLog(@"RESPUESTA: %@",responseObject);
 //        galeriaID = [responseObject objectForKey:@"id_gallery"];
 //        NSLog(@"id de la galeria: %@",[responseObject objectForKey:@"id_gallery"]);
-//        //[self uploadImages];
+//        [self uploadImages];
 //        }
 //              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //                  
@@ -229,42 +230,97 @@
 
 
 -(void)uploadImages{
+    
     NSLog(@"galeria ID: %@",appDelegate.userSession.selectedImages);
-    //for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
-    UIImage *image = [UIImage imageNamed:@"ejemplo4"];
-    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(image)];
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSDictionary *parameters = @{
-                                     @"sessid"          : appDelegate.userSession.sesionID,
-                                     @"id_gallery"      : @"37",
-                                     @"title"           : @"",
-                                     @"description"     : @"",
-                                     @"image"           : imageData,
-                                     @"cover"           : @"0"
-                                     };
-        [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-        [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-        [manager.requestSerializer setValue:@"new_gallery_image" forHTTPHeaderField:@"opt"];
-        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-        [manager POST:appDelegate.userSession.Url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            //[formData appendPartWithFormData:imageData name:@"image"];
-            NSLog(@"data: %@",formData);
-        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"RESPUESTA: %@",responseObject);
 
-        }
-         
-         
-              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  NSLog(@"Error: %@",error);
-              }];
     
+    for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
+        NSString *fileName = [NSString stringWithFormat:@"%ld%c%c.jpg", (long)[[NSDate date] timeIntervalSince1970], arc4random_uniform(26) + 'a', arc4random_uniform(26) + 'a'];
+        //UIImage *image = [UIImage imageNamed:@"ejemplo4"];
+        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
         
-
-  //  }
+        // setting up the request object now
+        NSURL *nsurl =[NSURL URLWithString:appDelegate.userSession.Url];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsurl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        [request setURL:nsurl];
+        [request setHTTPMethod:@"POST"];
+        
+        
+        NSString *boundary = @"---------------------------14737809831466499882746641449";
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+        [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+        
+        /*
+         now lets create the body of the post
+         */
+        NSMutableData *body = [NSMutableData data];
+        
+        //sessionID
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"sessid\"\r\n\r\n%@", appDelegate.userSession.sesionID] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        //Galeria ID
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"id_gallery\"\r\n\r\n%@",@"71"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        //titulo
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"title\"\r\n\r\n%@", @""] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        //Descripcion
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"description\"\r\n\r\n%@", @""] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        //cover
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"cover\"\r\n\r\n%@", @"0"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        //opt
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"opt\"\r\n\r\n%@", @"new_gallery_image"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        //Image
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"image\"; filename=\"%@\"\r\n",fileName] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[NSData dataWithData:imageData]];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        // setting the body of the post to the reqeust
+        [request setHTTPBody:body];
+        
+        NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+        NSLog(@"Respuesta: %@",returnData);
+  
     
+    }
+ 
+    //NSString *fileName = [NSString stringWithFormat:@"%ld%c%c.jpg", (long)[[NSDate date] timeIntervalSince1970], arc4random_uniform(26) + 'a', arc4random_uniform(26) + 'a'];
+    //    UIImage *image = [UIImage imageNamed:@"ejemplo4"];
+    //    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(image)];
+    //        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    //        NSDictionary *parameters = @{
+    //                                     @"sessid"          : appDelegate.userSession.sesionID,
+    //                                     @"id_gallery"      : @"51",
+    //                                     @"title"           : @"",
+    //                                     @"description"     : @"",
+    //                                     @"image"           : fileName,
+    //                                     @"cover"           : @"0",
+    //                                     @"opt"             : @"new_gallery_image"
+    //                                     };
+    //        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+    //        [manager POST:appDelegate.userSession.Url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    //            [formData appendPartWithFormData:imageData name:@"image"];
+    //            NSLog(@"data: %@",formData);
+    //        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    //            NSLog(@"RESPUESTA: %@",responseObject);
+    //
+    //        }
+    //
+    //
+    //              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    //                  NSLog(@"Error: %@",error);
+    //              }];
+    //
+
 
 }
+
+
 @end
 
 
@@ -478,14 +534,12 @@ CGFloat screenHeight;
 
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
-                                 @"sessid"    : appDelegate.userSession.sesionID
-                                 
+                                 @"sessid"  : appDelegate.userSession.sesionID,
+                                 @"opt"     : @"get_programs"
                                  };
-    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-    [manager.requestSerializer setValue:@"get_programs" forHTTPHeaderField:@"opt"];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+
         for(NSDictionary *tmpDic in [responseObject objectForKey:@"programs"])
         {
             [programas addObject: [tmpDic objectForKey:@"title"]];
@@ -493,7 +547,7 @@ CGFloat screenHeight;
             NSLog(@"title es: %@", [tmpDic valueForKey:@"title"]);
             
         }
-
+        
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
@@ -510,12 +564,9 @@ CGFloat screenHeight;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
                                  @"sessid"    : appDelegate.userSession.sesionID,
-                                 @"id_program": appDelegate.userSession.programaID
-                                 
+                                 @"id_program": appDelegate.userSession.programaID,
+                                 @"opt"       : @"get_products"
                                  };
-    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-    [manager.requestSerializer setValue:@"get_products" forHTTPHeaderField:@"opt"];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         
@@ -529,6 +580,7 @@ CGFloat screenHeight;
         NSLog(@"JSON: %@",responseObject);
         NSLog(@"array title: %@",productos);
         NSLog(@"array ID: %@",productoID);
+
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
@@ -545,14 +597,12 @@ CGFloat screenHeight;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
                                  @"sessid"    : appDelegate.userSession.sesionID,
-                                 @"id_product": appDelegate.userSession.productoID
-                                 
+                                 @"id_product": appDelegate.userSession.productoID,
+                                 @"opt"       : @"get_animals"
                                  };
-    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-    [manager.requestSerializer setValue:@"get_animals" forHTTPHeaderField:@"opt"];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+
         for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
         {
             [especies addObject:[tempDic objectForKey:@"title"]];
@@ -562,6 +612,7 @@ CGFloat screenHeight;
         }
         NSLog(@"JSON: %@",responseObject);
         NSLog(@"array title: %@",especies);
+
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
@@ -591,12 +642,6 @@ CGFloat screenHeight;
     [dateFormat setDateFormat:@"dd/MM/yyyy hh:mma"];
     NSString *dateString = [dateFormat stringFromDate:today];
     
-//    crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
-//    crear.getTitulo = _tituloTextField.text;
-//    crear.getDescripcion = _descripcionTextField.text;
-//    crear.getPrograma = _programaPV.text;
-//    crear.getProducto = _productoPV.text;
-//    crear.getEspecie = _especiePV.text;
     
     Albums *album = [[Albums alloc]init];
     
