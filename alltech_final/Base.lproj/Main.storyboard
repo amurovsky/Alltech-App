@@ -1298,10 +1298,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rVf-hI-Rao">
-                                <rect key="frame" x="282" y="282" width="37" height="37"/>
-                                <color key="color" red="0.67843137249999996" green="0.69803921570000005" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
-                            </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8F-t2-KIq" userLabel="Conteiner" customClass="CSAnimationView">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
@@ -1435,14 +1431,11 @@
                             <constraint firstAttribute="trailing" secondItem="B8F-t2-KIq" secondAttribute="trailing" id="UGA-dk-doy"/>
                             <constraint firstItem="ab8-ox-9oM" firstAttribute="top" secondItem="vLp-Vk-nuu" secondAttribute="bottom" id="W5l-Zr-9UR"/>
                             <constraint firstAttribute="centerX" secondItem="ab8-ox-9oM" secondAttribute="centerX" id="iz3-kP-5Nl"/>
-                            <constraint firstAttribute="centerX" secondItem="rVf-hI-Rao" secondAttribute="centerX" id="rRi-rA-J2s"/>
-                            <constraint firstAttribute="centerY" secondItem="rVf-hI-Rao" secondAttribute="centerY" id="sv6-ti-IZh"/>
                             <constraint firstItem="ab8-ox-9oM" firstAttribute="leading" secondItem="2li-DA-zXT" secondAttribute="leading" id="teK-RM-p65"/>
                             <constraint firstAttribute="trailing" secondItem="ab8-ox-9oM" secondAttribute="trailing" id="w3f-pi-eDm"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="activityIndicator" destination="rVf-hI-Rao" id="qwH-HA-3NG"/>
                         <outlet property="conteiner" destination="B8F-t2-KIq" id="GcM-u5-ct2"/>
                         <outlet property="crearAlbumNavItem" destination="5HV-wE-3SF" id="eXu-a5-rbJ"/>
                         <outlet property="crearButton" destination="Axd-Zb-zNG" id="W0v-XN-fDj"/>

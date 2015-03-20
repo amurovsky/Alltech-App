@@ -193,9 +193,9 @@
     _albums.imagenes = [[NSMutableArray alloc]init];
     
     for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
-       // NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
-        [_albums.imagenes addObject:appDelegate.userSession.selectedImages[i]];
-        
+        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
+        //[_albums.imagenes addObject:appDelegate.userSession.selectedImages[i]];
+        [_albums.imagenes addObject:imageData];
     }
     
     _albums.fechaModificacion = dateString;
@@ -224,32 +224,32 @@
 - (IBAction)enviarButton:(id)sender {
 
     
-    [self uploadImages];
+    //[self uploadImages];
 
-//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//        NSDictionary *parameters = @{
-//                                     @"sessid"          : appDelegate.userSession.sesionID,
-//                                     @"title"           : self.albums.nombre,
-//                                     @"description"     : self.albums.descripcion,
-//                                     @"id_program"      : appDelegate.userSession.programaID,
-//                                     @"id_product"      : appDelegate.userSession.productoID,
-//                                     @"id_animal_type"  : appDelegate.userSession.especieID,
-//                                     @"opt"             : @"new_gallery"
-//                                     };
-//
-//        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-//        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-//
-//        NSLog(@"RESPUESTA: %@",responseObject);
-//        galeriaID = [responseObject objectForKey:@"id_gallery"];
-//        NSLog(@"id de la galeria: %@",[responseObject objectForKey:@"id_gallery"]);
-//        [self uploadImages];
-//        }
-//              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                  
-//                  NSLog(@"Error: %@",error);
-//                  
-//              }];
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"sessid"          : appDelegate.userSession.sesionID,
+                                     @"title"           : self.albums.nombre,
+                                     @"description"     : self.albums.descripcion,
+                                     @"id_program"      : appDelegate.userSession.programaID,
+                                     @"id_product"      : appDelegate.userSession.productoID,
+                                     @"id_animal_type"  : appDelegate.userSession.especieID,
+                                     @"opt"             : @"new_gallery"
+                                     };
+
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+
+        NSLog(@"RESPUESTA: %@",responseObject);
+        galeriaID = [responseObject objectForKey:@"id_gallery"];
+        NSLog(@"id de la galeria: %@",[responseObject objectForKey:@"id_gallery"]);
+        [self uploadImages];
+        }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  
+                  NSLog(@"Error: %@",error);
+                  
+              }];
 
 }
 
@@ -286,7 +286,7 @@
             [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"sessid\"\r\n\r\n%@", appDelegate.userSession.sesionID] dataUsingEncoding:NSUTF8StringEncoding]];
             [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
             //Galeria ID
-            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"id_gallery\"\r\n\r\n%@",@"71"] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"id_gallery\"\r\n\r\n%@",galeriaID] dataUsingEncoding:NSUTF8StringEncoding]];
             [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
             //titulo
             [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"title\"\r\n\r\n%@", @""] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -349,8 +349,6 @@
 
 @implementation nuevoAlbum
 UIPickerView *pickerView1;
-UIPickerView *pickerView2;
-UIPickerView *pickerView3;
 NSMutableArray *programas;
 NSMutableArray *productos;
 NSMutableArray *especies;
@@ -358,6 +356,8 @@ NSMutableArray *programaID;
 NSMutableArray *productoID;
 NSMutableArray *especieID;
 UIView *blockView;
+NSString *choose;
+NSString *alertaVacios;
 
 AppDelegate *appDelegate;
 
@@ -394,7 +394,7 @@ CGFloat screenHeight;
     statusBarView.backgroundColor  =  [UIColor orangeColor];
     [self.view addSubview:statusBarView];
     
-    pickerView1 = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    pickerView1 = [[UIPickerView alloc]init];
     pickerView1.delegate = self;
     pickerView1.dataSource = self;
     _programaPV.delegate = self;
@@ -403,9 +403,32 @@ CGFloat screenHeight;
     _tituloTextField.delegate = self;
     _descripcionTextField.delegate = self;
     pickerView1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fondo"]];
+    
+    UIToolbar *toolBar= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.width,44)];
+    [toolBar setBarStyle:UIBarStyleDefault];
+    [toolBar setBackgroundImage:[UIImage new]
+                  forToolbarPosition:UIToolbarPositionAny
+                          barMetrics:UIBarMetricsDefault];
+    
+    [toolBar setBackgroundColor:[UIColor clearColor]];
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *barButtonDone = [[UIBarButtonItem alloc] initWithTitle:@"OK"
+                                                                      style:UIBarButtonItemStylePlain target:self action:@selector(doneButton:)];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    space.width = 10;
+    toolBar.items = @[flex,barButtonDone,space];
+    barButtonDone.tintColor=[UIColor orangeColor];
     _programaPV.inputView = pickerView1;
     _productoPV.inputView = pickerView1;
     _especiePV.inputView = pickerView1;
+    _programaPV.inputAccessoryView = toolBar;
+    _productoPV.inputAccessoryView = toolBar;
+    _especiePV.inputAccessoryView = toolBar;
+    
+    
+//    NSInteger row = [pickerView1 selectedRowInComponent:0];
+//    NSString *Selected = [programas objectAtIndex:row];
+    
     [self programasRequest];
     
     NSString *idioma = appDelegate.userSession.lenguaje;
@@ -417,6 +440,8 @@ CGFloat screenHeight;
         self.descripcionTextField.placeholder =@"Agrega una descripción";
         self.crearAlbumNavItem.title=@"Crear Álbum";
         self.crearButton.title=@"Crear";
+        choose = @"Selecciona ...";
+        alertaVacios = @"Hay Campos sin completar";
         
     }else if ([idioma isEqual:@"en"]) {
         self.programaPV.placeholder =@"Choose a program";
@@ -426,6 +451,8 @@ CGFloat screenHeight;
         self.descripcionTextField.placeholder =@"Add a description";
         self.crearAlbumNavItem.title=@"Create Album";
         self.crearButton.title=@"Create";
+        choose = @"Choose ...";
+        alertaVacios = @"There are fields without completing";
     }else if ([idioma isEqual:@"pt"]) {
         self.programaPV.placeholder =@"Escolha um programa";
         self.productoPV.placeholder =@"Escolha um produto";
@@ -434,12 +461,27 @@ CGFloat screenHeight;
         self.descripcionTextField.placeholder =@"Adicione uma descrição";
         self.crearAlbumNavItem.title=@"Criar Album";
         self.crearButton.title=@"Criar";
+        choose = @"Escolha ...";
+        alertaVacios = @"Existem campos sem preenchimento";
     }
 }
 
--(void)viewWillAppear:(BOOL)animated{
-
-
+-(void)doneButton:(id)sender
+{
+    if ([_programaPV isFirstResponder]) {
+        _productoPV.enabled = YES;
+        [_programaPV resignFirstResponder];
+        [self.conteiner setUserInteractionEnabled:YES];
+    }else if ([_productoPV isFirstResponder]){
+        _especiePV.enabled = YES;
+        [_productoPV resignFirstResponder];
+        [self.conteiner setUserInteractionEnabled:YES];
+    }else if ([_especiePV isFirstResponder]){
+        [_especiePV resignFirstResponder];
+        [self.conteiner setUserInteractionEnabled:YES];
+    }
+    
+    
 }
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
 
@@ -479,32 +521,27 @@ CGFloat screenHeight;
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
 
-
-    if ([_programaPV isFirstResponder]) {
-        _programaPV.text = programas[row];
-        _productoPV.enabled = YES;
-        appDelegate.userSession.programaID = programaID[row];
-        [self productosRequest];
-        [_programaPV resignFirstResponder];
-    }else if ([_productoPV isFirstResponder]){
-        _productoPV.text = productos[row];
-        _especiePV.enabled = YES;
-        appDelegate.userSession.productoID = productoID[row];
-        [self EspeciesRequest];
-        [_productoPV resignFirstResponder];
-    }else if ([_especiePV isFirstResponder]){
-        _especiePV.text = especies[row];
-        appDelegate.userSession.especieID = especieID[row];
-        [_especiePV resignFirstResponder];
+    if (row != 0) {
+        if ([_programaPV isFirstResponder]) {
+            _programaPV.text = programas[row];
+            appDelegate.userSession.programaID = programaID[row-1];
+            [self productosRequest];
+        }else if ([_productoPV isFirstResponder]){
+            _productoPV.text = productos[row];
+            appDelegate.userSession.productoID = productoID[row-1];
+            [self EspeciesRequest];
+        }else if ([_especiePV isFirstResponder]){
+            _especiePV.text = especies[row];
+            appDelegate.userSession.especieID = especieID[row-1];
+        }
     }
-
 
 }
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     
-//    blockView = [[UIView alloc]initWithFrame:self.view.frame];
-//    blockView.backgroundColor = [UIColor clearColor];
-//    [self.view addSubview:blockView];
+    if (textField == _programaPV || textField == _productoPV || textField == _especiePV) {
+        [self.conteiner setUserInteractionEnabled:NO];
+    }
     [textField isFirstResponder];
     [pickerView1 reloadAllComponents];
 
@@ -512,14 +549,10 @@ CGFloat screenHeight;
 
 }
 
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-
-    //[blockView removeFromSuperview];
-    return YES;
-}
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
 
-    if (([_descripcionTextField isFirstResponder] || [_tituloTextField isFirstResponder]) && ( screenWidth == 320 )) {
+
+    if ( screenWidth == 320 ) {
         [self animateTextField:textField up:YES];
     }
     
@@ -528,28 +561,23 @@ CGFloat screenHeight;
 
 -(void)textFieldDidEndEditing:(UITextField *)textField{
 
-    if (([_descripcionTextField resignFirstResponder] || [_tituloTextField resignFirstResponder]) && ( screenWidth == 320)) {
+    if (screenWidth == 320) {
         [self animateTextField:textField up:NO];
     }
 
 }
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
     [self.tituloTextField resignFirstResponder];
     [self.descripcionTextField resignFirstResponder];
-    [self.programaPV resignFirstResponder];
-    [self.productoPV resignFirstResponder];
-    [self.especiePV resignFirstResponder];
-    
+
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [self.tituloTextField resignFirstResponder];
     [self.descripcionTextField resignFirstResponder];
-    [self.programaPV resignFirstResponder];
-    [self.productoPV resignFirstResponder];
-    [self.especiePV resignFirstResponder];
     return YES;
     
 }
@@ -586,7 +614,11 @@ CGFloat screenHeight;
             [programaID addObject:[tmpDic valueForKey:@"id"]];
             NSLog(@"title es: %@", [tmpDic valueForKey:@"title"]);
             
-        }
+            
+        }[programas insertObject:choose atIndex:0];
+        NSLog(@"1: %@ 2: %@",programas[0],programas[1]);
+        NSLog(@"Count: %lu",(unsigned long)[programas count]);
+
         
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -620,7 +652,7 @@ CGFloat screenHeight;
         NSLog(@"JSON: %@",responseObject);
         NSLog(@"array title: %@",productos);
         NSLog(@"array ID: %@",productoID);
-
+        [productos insertObject:choose atIndex:0];
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
@@ -652,7 +684,7 @@ CGFloat screenHeight;
         }
         NSLog(@"JSON: %@",responseObject);
         NSLog(@"array title: %@",especies);
-
+        [especies insertObject:choose atIndex:0];
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
@@ -676,26 +708,35 @@ CGFloat screenHeight;
 
 - (IBAction)crearButton:(id)sender {
     
+    if (_programaPV.text.length !=0 && _productoPV.text.length !=0 && _especiePV.text.length !=0 && _tituloTextField.text.length !=0 && _descripcionTextField.text.length !=0 ) {
+        
+        NSDate *today = [NSDate date];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"dd/MM/yyyy hh:mma"];
+        NSString *dateString = [dateFormat stringFromDate:today];
+        
+        
+        Albums *album = [[Albums alloc]init];
+        
+        album.nombre = _tituloTextField.text;
+        album.descripcion = _descripcionTextField.text;
+        album.programa = _programaPV.text;
+        album.producto = _productoPV.text;
+        album.especie = _especiePV.text;
+        album.fechaModificacion = dateString;
+        
+        NSMutableArray * albums = [repositoriodeAlbums sharedInstance].albums;
+        [albums addObject:album];
+        
+        [self.navigationController  popViewControllerAnimated:YES];
+        
+    }else
+    {
+        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:alertaVacios delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alerta show];
+    }
     
-    NSDate *today = [NSDate date];
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"dd/MM/yyyy hh:mma"];
-    NSString *dateString = [dateFormat stringFromDate:today];
     
-    
-    Albums *album = [[Albums alloc]init];
-    
-    album.nombre = _tituloTextField.text;
-    album.descripcion = _descripcionTextField.text;
-    album.programa = _programaPV.text;
-    album.producto = _productoPV.text;
-    album.especie = _especiePV.text;
-    album.fechaModificacion = dateString;
-   
-    NSMutableArray * albums = [repositoriodeAlbums sharedInstance].albums;
-    [albums addObject:album];
-    
-    [self.navigationController  popViewControllerAnimated:YES];
     
 }
 
