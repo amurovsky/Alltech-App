@@ -125,7 +125,7 @@
     
     [self.selectedAssets removeAllObjects];
     
-    [self loadAssets];
+    //[self loadAssets];
     //[self.collectionView reloadData];
     
 }
@@ -258,16 +258,40 @@
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *image = (UIImage *) [info objectForKey:
-                                  UIImagePickerControllerOriginalImage];
+//    UIImage *image = (UIImage *) [info objectForKey:
+//                                  UIImagePickerControllerOriginalImage];
+//    
+//    [self dismissViewControllerAnimated:YES completion:^{
+//        // Do something with the image
+//        
+// 
+//    }];
+//    
+//    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
     
-    [self dismissViewControllerAnimated:YES completion:^{
-        // Do something with the image
-        
- 
-    }];
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    if( [picker sourceType] == UIImagePickerControllerSourceTypeCamera )
+    {
+        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        [library writeImageToSavedPhotosAlbum:image.CGImage orientation:(ALAssetOrientation)image.imageOrientation completionBlock:^(NSURL *assetURL, NSError *error )
+         {
+             NSLog(@"IMAGE SAVED TO PHOTO ALBUM");
+             [library assetForURL:assetURL resultBlock:^(ALAsset *asset )
+              {
+                  NSLog(@"we have our ALAsset!");
+                  [self loadAssets];
+                  [self dismissViewControllerAnimated:YES completion:nil];
+                  
+              }
+                     failureBlock:^(NSError *error )
+              {
+                  NSLog(@"Error loading asset");
+              }];
+         }];
+    }
     
-    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+
+    
 
 }
 
@@ -313,7 +337,6 @@
     
     
 }
-
 
 
 
