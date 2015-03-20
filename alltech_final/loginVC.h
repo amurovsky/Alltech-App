@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIButton *olvideMiContrasena;
 
 - (IBAction)loginButton:(id)sender;
 
@@ -29,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *correoTexField;
 
 @property (weak, nonatomic) IBOutlet UIButton *recuperarButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *regresarButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *enviadoLabel;
 

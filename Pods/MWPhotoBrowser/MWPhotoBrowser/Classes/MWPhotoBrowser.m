@@ -215,8 +215,10 @@
     
     // Navigation buttons
     if ([self.navigationController.viewControllers objectAtIndex:0] == self) {
+        
         // We're first on stack so show done button
-        _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cerrar", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)];
+        //_doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cerrar", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)];
+        _doneButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)];
         //_doneButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"returnOlvide"] style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)];
         // Set appearance
         if ([UIBarButtonItem respondsToSelector:@selector(appearance)]) {

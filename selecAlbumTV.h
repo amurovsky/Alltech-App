@@ -14,6 +14,8 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *selectAlbumTable;
 
+@property (weak, nonatomic) IBOutlet UINavigationItem *misAlbumsNavItem;
+
 - (IBAction)returnButton:(id)sender;
 
 @end

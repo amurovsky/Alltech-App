@@ -25,8 +25,7 @@
     CGSize screenSize;
     CGFloat screenWidth;
     CGFloat screenHeight;
-    
-
+    NSString *crearAlbum;
 }
 
 - (void)viewDidLoad {
@@ -55,6 +54,20 @@
     
     
     [self.selectAlbumTable setTableFooterView:[UIView new]];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    NSString *idioma = appDelegate.userSession.lenguaje;
+    if ([idioma isEqual:@"es"]) {
+        crearAlbum = @"Crear nuevo álbum";
+        self.misAlbumsNavItem.title = @"Mis Álbums";
+        
+    }else if ([idioma isEqual:@"en"]) {
+        crearAlbum = @"Create new album";
+        self.misAlbumsNavItem.title = @"My Albums";
+    }else if ([idioma isEqual:@"pt"]) {
+        crearAlbum = @"Criar novo álbum";
+        self.misAlbumsNavItem.title = @"Álbuns";
+    }
     
 }
 -(void)viewDidAppear:(BOOL)animated{
@@ -96,7 +109,7 @@
     if (indexPath.section == 0) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"crearNuevoAlbum" forIndexPath:indexPath];
 
-        cell.textLabel.text = @"Crear nuevo álbum";
+        cell.textLabel.text = crearAlbum;
         cell.imageView.image = [UIImage imageNamed:@"mas"];
 
     //CELDAS DINAMICAS
@@ -202,11 +215,11 @@
     NSIndexPath *indexPath = [self.selectAlbumTable indexPathForSelectedRow];
     
     if ([segue.identifier isEqualToString:@"crearAlbum"]) {
-        crearAlbumVC *crearAlbum = (crearAlbumVC *) segue.destinationViewController;
+        crearAlbumVC *crear= (crearAlbumVC *) segue.destinationViewController;
         
         NSMutableArray *albums =[repositoriodeAlbums sharedInstance].albums;
         Albums *album = [albums objectAtIndex:indexPath.row];
-        crearAlbum.albums = album;
+        crear.albums = album;
 
     }
 

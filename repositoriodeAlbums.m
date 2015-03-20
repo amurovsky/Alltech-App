@@ -24,6 +24,7 @@ static repositoriodeAlbums * instancia;
     return self;
 }
 
+
 -(void)leer{
     NSArray *albumsLeidos = [[NSArray alloc]initWithContentsOfFile:[self ruta]];
     if (albumsLeidos!=nil) {

@@ -33,7 +33,7 @@
     CGFloat porcentaje;
     CGFloat resultadoPorcentaje;
     AppDelegate *appDelegate;
-
+    
 
 }
 
@@ -44,7 +44,8 @@
     programaID = [[NSMutableArray alloc]init];
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     _getSessionID = appDelegate.userSession.sesionID;
-    //_uiActivator.hidden = NO;
+    
+    
     
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         NSDictionary *parameters = @{

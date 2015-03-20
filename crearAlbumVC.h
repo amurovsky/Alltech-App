@@ -21,6 +21,9 @@
 @property (strong, nonatomic) NSString *getEspecie;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolBarAlbum;
 @property (strong, nonatomic) Albums *albums;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *guardarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *enviarButton;
 
 
 - (IBAction)returnButton:(id)sender;
@@ -62,6 +65,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *descripcionTextField;
 @property (strong, nonatomic) NSArray *tituloDescripcionAlbum;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UINavigationItem *crearAlbumNavItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *crearButton;
 
 @property (weak, nonatomic) IBOutlet CSAnimationView *conteiner;
 

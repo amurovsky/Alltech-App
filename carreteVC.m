@@ -46,6 +46,7 @@
     PhotoCell *cell;
     AppDelegate *appDelegate;
     UIRefreshControl *refreshControl;
+    NSString *alertaString;
 
     
 }
@@ -55,6 +56,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _selectedAssets = [NSMutableArray array];
+    
     appDelegate = [[UIApplication sharedApplication] delegate];
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
@@ -63,16 +66,10 @@
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
     
-    //Cambiamos color del fondo de la view y del collectionview
-    //    self.view.backgroundColor = [UIColor orangeColor];
-    //    self.collectionView.backgroundColor = [UIColor orangeColor];
-    
     self.view.backgroundColor = [UIColor colorWithRed:27/255.0f green:27/255.0f blue:29/255.0f alpha:1.0f]; /*#1b1b1d*/
     self.carreteNav.barTintColor = [UIColor colorWithRed:27/255.0f green:27/255.0f blue:29/255.0f alpha:1.0f]; /*#1b1b1d*/
     self.collectionView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
     self.collectionView.allowsMultipleSelection = YES;
-
-    _selectedAssets = [NSMutableArray array];
 
     [self loadAssets];
     
@@ -82,7 +79,23 @@
     [self.collectionView addSubview:refreshControl];
     self.collectionView.alwaysBounceVertical = YES;
     
-    
+    NSString *idioma = appDelegate.userSession.lenguaje;
+    if ([idioma isEqual:@"es"]) {
+        self.usarButton.title = @"Usar";
+        self.cancelarButton.title = @"Cancelar";
+        self.seleccionaNavItem.title = @"Selecciona";
+        alertaString = @"Selecciona por lo menos una fotografía";
+    }else if ([idioma isEqual:@"en"]) {
+        self.usarButton.title = @"Use";
+        self.cancelarButton.title = @"Close";
+        self.seleccionaNavItem.title = @"Choose";
+        alertaString = @"Select at least one picture";
+    }else if ([idioma isEqual:@"pt"]) {
+        self.usarButton.title = @"Uso";
+        self.cancelarButton.title = @"desligar";
+        self.seleccionaNavItem.title = @"escolher";
+        alertaString = @"Escolha pelo menos uma foto";
+    }
 }
 
 
@@ -104,10 +117,14 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+    
+}
 -(void)viewDidAppear:(BOOL)animated{
     
     [self.selectedAssets removeAllObjects];
-   
+    
     [self loadAssets];
     //[self.collectionView reloadData];
     
@@ -194,13 +211,13 @@
     
     
     ALAsset *asset = self.assets[indexPath.row];
-    ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
-    UIImage *image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
+//    ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
+//    UIImage *image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
     // Do something with the image
     
     
     
-    [_selectedAssets addObject:asset.defaultRepresentation.url];
+    [_selectedAssets addObject:asset];
     NSLog(@"este es el array en Selected: %@",_selectedAssets);
     NSLog(@"este es el index en Selected: %@",indexPath);
     NSLog(@"esta es la ruta de la imagen seleccionada: %@",asset.defaultRepresentation.url);
@@ -213,13 +230,13 @@
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ALAsset *asset = self.assets[indexPath.row];
-    ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
-    UIImage *image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
+//    ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
+//    UIImage *image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
     // Do something with the image
     
     
     // Add the selected item into the array
-    [_selectedAssets removeObject:asset.defaultRepresentation.url];
+    [_selectedAssets removeObject:asset];
     NSLog(@"este es el array en Deselected: %@",_selectedAssets);
     NSLog(@"este es el index en Deselected: %@",indexPath);
     UICollectionViewCell *celda = [collectionView cellForItemAtIndexPath:indexPath];
@@ -306,7 +323,7 @@
     UIImagePickerController * picker = [[UIImagePickerController alloc] init];
     [picker setDelegate:self];
     [picker setSourceType:UIImagePickerControllerSourceTypeCamera];
-    //picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+    picker.modalPresentationStyle = UIModalPresentationFullScreen ;
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         
@@ -396,16 +413,16 @@
 - (IBAction)usarButton:(id)sender {
 
     if ([_selectedAssets count] == 0) {
-        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:@"Selecciona por lo menos una fotografia" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:alertaString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alerta show];
     }else{
         crearAlbumVC *crear =  [self.storyboard instantiateViewControllerWithIdentifier:@"crearAlbumVC"];
         crear.selectedImages = _selectedAssets;
         NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
         for (int i=0; i < [_selectedAssets count]; i++) {
-            ALAsset *asset = self.assets[i];
+            ALAsset *asset = self.selectedAssets[i];
             ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
-            UIImage *image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
+            UIImage *image = [UIImage imageWithCGImage:[defaultRep fullResolutionImage] scale:[defaultRep scale] orientation:0];
             [tmpArray addObject:image];
         }
         appDelegate.userSession.selectedImages = tmpArray;

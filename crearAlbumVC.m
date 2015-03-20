@@ -32,6 +32,8 @@
     previewCell *cell;
     AppDelegate *appDelegate;
     NSString *galeriaID;
+    NSString *guardarAlerta;
+    NSString *enviarAlerta;
     
 }
 
@@ -61,7 +63,29 @@
     [self.toolBarAlbum   addSubview:separador];
     [appDelegate.userSession.selectedImages removeAllObjects];
     
-    
+    NSString *idioma = appDelegate.userSession.lenguaje;
+    if ([idioma isEqual:@"es"]) {
+        
+        self.navItem.title = @"Crear Álbum";
+        self.guardarButton.title = @"Guardar";
+        self.enviarButton.title = @"Enviar";
+        guardarAlerta = @"Su album fue guardado satisfactoriamente";
+        enviarAlerta = @"Su album fue enviado a revision";
+    }else if ([idioma isEqual:@"en"]) {
+        
+        self.navItem.title = @"Create Album";
+        self.guardarButton.title = @"Save";
+        self.enviarButton.title = @"Send";
+        guardarAlerta = @"Your album was saved successfully";
+        enviarAlerta = @"Your album has been sent to review";
+    }else if ([idioma isEqual:@"pt"]) {
+        
+        self.navItem.title = @"Criar Album";
+        self.guardarButton.title = @"Salvar";
+        self.enviarButton.title = @"Enviar";
+        guardarAlerta = @"Seu álbum foi salvo com sucesso";
+        enviarAlerta = @"Seu álbum foi enviado a avaliar";
+    }
     
 }
 
@@ -117,7 +141,8 @@
     //cell.previewImg.image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
     
     if([appDelegate.userSession.selectedImages count] == 0){
-        cell.previewImg.image = [_albums.imagenes objectAtIndex:indexPath.row];
+        UIImage *image = [UIImage imageWithData:[_albums.imagenes objectAtIndex:indexPath.row]];
+        cell.previewImg.image = image;
     }else{
         cell.previewImg.image = [appDelegate.userSession.selectedImages objectAtIndex:indexPath.row];
     
@@ -168,13 +193,13 @@
     _albums.imagenes = [[NSMutableArray alloc]init];
     
     for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
-        
+       // NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
         [_albums.imagenes addObject:appDelegate.userSession.selectedImages[i]];
         
     }
     
     _albums.fechaModificacion = dateString;
-    UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"GUARDAR" message:@"Su album fue guardado con exito" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:guardarAlerta delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alerta show];
     [self.navigationController popToRootViewControllerAnimated:YES];
     
@@ -233,90 +258,77 @@
     
     NSLog(@"galeria ID: %@",appDelegate.userSession.selectedImages);
 
-    
-    for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
-        NSString *fileName = [NSString stringWithFormat:@"%ld%c%c.jpg", (long)[[NSDate date] timeIntervalSince1970], arc4random_uniform(26) + 'a', arc4random_uniform(26) + 'a'];
-        //UIImage *image = [UIImage imageNamed:@"ejemplo4"];
-        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
+    if ([_albums.imagenes count] != 0) {
+
+        for (int i = 0; i < [self.albums.imagenes count]; i++) {
+            NSString *fileName = [NSString stringWithFormat:@"%ld%c%c.jpg", (long)[[NSDate date] timeIntervalSince1970], arc4random_uniform(26) + 'a', arc4random_uniform(26) + 'a'];
+            //UIImage *image = [UIImage imageNamed:@"ejemplo4"];
+            //NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
+            
+            // setting up the request object now
+            NSURL *nsurl =[NSURL URLWithString:appDelegate.userSession.Url];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsurl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            [request setURL:nsurl];
+            [request setHTTPMethod:@"POST"];
+            
+            
+            NSString *boundary = @"---------------------------14737809831466499882746641449";
+            NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+            [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+            
+            /*
+             now lets create the body of the post
+             */
+            NSMutableData *body = [NSMutableData data];
+            
+            //sessionID
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"sessid\"\r\n\r\n%@", appDelegate.userSession.sesionID] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            //Galeria ID
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"id_gallery\"\r\n\r\n%@",@"71"] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            //titulo
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"title\"\r\n\r\n%@", @""] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            //Descripcion
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"description\"\r\n\r\n%@", @""] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            //cover
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"cover\"\r\n\r\n%@", @"0"] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            //opt
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"opt\"\r\n\r\n%@", @"new_gallery_image"] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            //Image
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"image\"; filename=\"%@\"\r\n",fileName] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[NSData dataWithData:_albums.imagenes[i]]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            
+            // setting the body of the post to the reqeust
+            [request setHTTPBody:body];
+            
+            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+            NSLog(@"Respuesta: %@",returnData);
+            
         
-        // setting up the request object now
-        NSURL *nsurl =[NSURL URLWithString:appDelegate.userSession.Url];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsurl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-        [request setURL:nsurl];
-        [request setHTTPMethod:@"POST"];
+        }
         
+        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:enviarAlerta delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alerta show];
         
-        NSString *boundary = @"---------------------------14737809831466499882746641449";
-        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-        [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    else{
         
-        /*
-         now lets create the body of the post
-         */
-        NSMutableData *body = [NSMutableData data];
-        
-        //sessionID
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"sessid\"\r\n\r\n%@", appDelegate.userSession.sesionID] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        //Galeria ID
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"id_gallery\"\r\n\r\n%@",@"71"] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        //titulo
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"title\"\r\n\r\n%@", @""] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        //Descripcion
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"description\"\r\n\r\n%@", @""] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        //cover
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"cover\"\r\n\r\n%@", @"0"] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        //opt
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"opt\"\r\n\r\n%@", @"new_gallery_image"] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        //Image
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"image\"; filename=\"%@\"\r\n",fileName] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[NSData dataWithData:imageData]];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        
-        // setting the body of the post to the reqeust
-        [request setHTTPBody:body];
-        
-        NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        NSLog(@"Respuesta: %@",returnData);
-  
+        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:@"No puedes enviar un álbum sin imagenes" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alerta show];
     
     }
  
-    //NSString *fileName = [NSString stringWithFormat:@"%ld%c%c.jpg", (long)[[NSDate date] timeIntervalSince1970], arc4random_uniform(26) + 'a', arc4random_uniform(26) + 'a'];
-    //    UIImage *image = [UIImage imageNamed:@"ejemplo4"];
-    //    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(image)];
-    //        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    //        NSDictionary *parameters = @{
-    //                                     @"sessid"          : appDelegate.userSession.sesionID,
-    //                                     @"id_gallery"      : @"51",
-    //                                     @"title"           : @"",
-    //                                     @"description"     : @"",
-    //                                     @"image"           : fileName,
-    //                                     @"cover"           : @"0",
-    //                                     @"opt"             : @"new_gallery_image"
-    //                                     };
-    //        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-    //        [manager POST:appDelegate.userSession.Url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-    //            [formData appendPartWithFormData:imageData name:@"image"];
-    //            NSLog(@"data: %@",formData);
-    //        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    //            NSLog(@"RESPUESTA: %@",responseObject);
-    //
-    //        }
-    //
-    //
-    //              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    //                  NSLog(@"Error: %@",error);
-    //              }];
-    //
-
+    
+    
 
 }
 
@@ -395,6 +407,34 @@ CGFloat screenHeight;
     _productoPV.inputView = pickerView1;
     _especiePV.inputView = pickerView1;
     [self programasRequest];
+    
+    NSString *idioma = appDelegate.userSession.lenguaje;
+    if ([idioma isEqual:@"es"]) {
+        self.programaPV.placeholder =@"Selecciona un programa";
+        self.productoPV.placeholder =@"Selecciona un producto";
+        self.especiePV.placeholder =@"Selecciona una tipo";
+        self.tituloTextField.placeholder =@"Agrega un título";
+        self.descripcionTextField.placeholder =@"Agrega una descripción";
+        self.crearAlbumNavItem.title=@"Crear Álbum";
+        self.crearButton.title=@"Crear";
+        
+    }else if ([idioma isEqual:@"en"]) {
+        self.programaPV.placeholder =@"Choose a program";
+        self.productoPV.placeholder =@"Choose a product";
+        self.especiePV.placeholder =@"Choose a type";
+        self.tituloTextField.placeholder =@"Add a title";
+        self.descripcionTextField.placeholder =@"Add a description";
+        self.crearAlbumNavItem.title=@"Create Album";
+        self.crearButton.title=@"Create";
+    }else if ([idioma isEqual:@"pt"]) {
+        self.programaPV.placeholder =@"Escolha um programa";
+        self.productoPV.placeholder =@"Escolha um produto";
+        self.especiePV.placeholder =@"Escolha um tipo";
+        self.tituloTextField.placeholder =@"Adicione um título";
+        self.descripcionTextField.placeholder =@"Adicione uma descrição";
+        self.crearAlbumNavItem.title=@"Criar Album";
+        self.crearButton.title=@"Criar";
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{

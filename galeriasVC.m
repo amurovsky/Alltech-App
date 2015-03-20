@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import <AFNetworking.h>
 #import <MBProgressHUD.h>
+#import "productosVC.h"
 
 @interface galeriasVC ()
 
@@ -35,6 +36,7 @@
     NSMutableArray *numFotos;
     AppDelegate *appDelegate;
     BOOL misAlbums;
+    NSMutableArray * galeriasTags;
 
 }
 
@@ -47,6 +49,7 @@
     albumID = [[NSMutableArray alloc]init];
     fechaPublicacion = [[NSMutableArray alloc]init];
     numFotos = [[NSMutableArray alloc]init];
+
     
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self loadRequest];
@@ -83,6 +86,17 @@
     self.nombreProductoyEspecie.text = [NSString stringWithFormat:@"%@ - %@",self.nombreProducto,self.nombreEspecie];
     
 
+    NSString *idioma = appDelegate.userSession.lenguaje;
+    if ([idioma isEqual:@"es"]) {
+        [self.segmentedControl setTitle:@"Todas" forSegmentAtIndex:0];
+        [self.segmentedControl setTitle:@"Mis Álbums" forSegmentAtIndex:1];
+    }else if ([idioma isEqual:@"en"]) {
+        [self.segmentedControl setTitle:@"All" forSegmentAtIndex:0];
+        [self.segmentedControl setTitle:@"My Albums" forSegmentAtIndex:1];
+    }else if ([idioma isEqual:@"pt"]) {
+        [self.segmentedControl setTitle:@"Todos" forSegmentAtIndex:0];
+        [self.segmentedControl setTitle:@"Meus álbuns" forSegmentAtIndex:1];
+    }
     
     //Slide-out right Menu
     
@@ -357,7 +371,12 @@
 
 
 - (IBAction)returnButton:(id)sender {
-    
+    NSString *programaID = [NSString stringWithFormat:@"%@", appDelegate.userSession.programaID];
+    if ([programaID  isEqual: @"7"]) {
+
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+    }
     [self.navigationController popViewControllerAnimated:TRUE];
     
 }

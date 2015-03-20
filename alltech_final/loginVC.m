@@ -31,11 +31,15 @@ int flagUp=0;
 int flagDown=1;
 MPMoviePlayerController *moviePlayer;
 AppDelegate *appDelegate;
+NSString *camposVacios;
+NSString *contrasenaInvalida;
+NSString *conexionPerdida;
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     // find movie file
     NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"video_iphone_1" ofType:@"mp4"];
     NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
@@ -136,7 +140,45 @@ AppDelegate *appDelegate;
     // Kick start the animation immediately
     [animationView startCanvasAnimation];
 
-    
+    appDelegate.userSession.lenguaje = @"en";
+    NSString *idioma = appDelegate.userSession.lenguaje;
+    if ([idioma isEqual:@"es"]) {
+        
+        self.userName.placeholder = @"Usuario";
+        self.password.placeholder = @"Contraseña";
+        [self.loginButton setTitle:@"Entrar" forState:UIControlStateNormal];
+        [self.olvideMiContrasena setTitle:@"Olvide mi contraseña" forState:UIControlStateNormal];
+        camposVacios = @"Los campos usuario y contraseña no pueden estar vacíos";
+        contrasenaInvalida = @"usuario o contraseña invalido";
+        conexionPerdida = @"No se puede establecer conexión con el servidor intento mas tarde ";
+        [self.recuperarButton setTitle:@"Recuperar" forState:UIControlStateNormal];
+        [self.regresarButton setTitle:@" Regresar" forState:UIControlStateNormal];
+        self.ingresaCorreoLabel.text = @"Ingresa tu correo electrónico para recuperar tu contraseña";
+    }else if ([idioma isEqual:@"en"]) {
+        
+        self.userName.placeholder = @"Username";
+        self.password.placeholder = @"Password";
+        [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
+        [self.olvideMiContrasena setTitle:@"Forgot my password" forState:UIControlStateNormal];
+        camposVacios = @"The user and password fields can not be empty";
+        contrasenaInvalida = @"Invalid username or password";
+        conexionPerdida = @"Can not connect to the server, please try later";
+        [self.recuperarButton setTitle:@"recover" forState:UIControlStateNormal];
+        [self.regresarButton setTitle:@" Back" forState:UIControlStateNormal];
+        self.ingresaCorreoLabel.text = @"Enter your email to reset your password";
+    }else if ([idioma isEqual:@"pt"]) {
+        
+        self.userName.placeholder = @"Nome de usuário";
+        self.password.placeholder = @"senha";
+        [self.loginButton setTitle:@"Conecte-Se" forState:UIControlStateNormal];
+        [self.olvideMiContrasena setTitle:@"Esqueci minha senha" forState:UIControlStateNormal];
+        camposVacios = @"Os campos usuário e senha não pode estar vazio";
+        contrasenaInvalida = @"Nome de usuário ou senha inválida";
+        conexionPerdida = @"Não é possível se conectar ao servidor , por favor, tente mais tarde";
+        [self.recuperarButton setTitle:@"Recuperar" forState:UIControlStateNormal];
+        [self.regresarButton setTitle:@" De Volta" forState:UIControlStateNormal];
+        self.ingresaCorreoLabel.text = @"Digite seu e-mail para redefinir sua senha";
+    }
     
 }
 
@@ -223,12 +265,11 @@ AppDelegate *appDelegate;
     //recogemos los datos ingresados por el usuario para despues mandarlos al servidor
     NSString *username = _userName.text;
     NSString *password = _password.text;
-    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
 
     if (_userName.text.length == 0 || _password.text.length ==0) {
         
-        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Los Campos Usuario y Contraseña no pueden estar vacios" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:camposVacios delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alerta show];
         
     }else{
@@ -246,7 +287,7 @@ AppDelegate *appDelegate;
             [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"RESPUESTA: %@",responseObject);
             if ([[responseObject objectForKey:@"error"]  isEqual: @"incorrect_access"]) {
-                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Usuario o Contraseña Invalido" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:contrasenaInvalida delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alerta show];
                 
                 
@@ -256,7 +297,6 @@ AppDelegate *appDelegate;
                 //mostramos la siguiente pantalla si la conexion fue exitosa
                 SWRevealViewController *reveal = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
                 
-                AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                 appDelegate.userSession.sesionID = [responseObject valueForKey:@"sessid"];
                 appDelegate.userSession.userID = [responseObject objectForKey:@"userid"];
                 appDelegate.userSession.lenguaje = [responseObject objectForKey:@"lang"];
@@ -289,7 +329,7 @@ AppDelegate *appDelegate;
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   
                   NSLog(@"Error: %@",error);
-                  UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No se puede establecer conexion con el servidor intentelo mas tarde" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                  UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:conexionPerdida delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                   [alerta show];
                   
               }];
@@ -354,6 +394,7 @@ AppDelegate *appDelegate;
     [_userName resignFirstResponder];
     [_password resignFirstResponder];
     [_correoTexField resignFirstResponder];
+    _correoTexField.text = @"";
 }
 
 - (IBAction)recuperarButton:(id)sender {
@@ -363,11 +404,9 @@ AppDelegate *appDelegate;
     NSLog(@"mail Encoded: %@",encoded);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
-                                 @"email"    : encoded
+                                 @"email"   : encoded,
+                                 @"opt"     : @"recover_password"
                                  };
-    [manager.requestSerializer setValue:@"sinspf34niufww44ib53ufds" forHTTPHeaderField:@"apikey"];
-    [manager.requestSerializer setValue:@"dfaiun45vfogn234@" forHTTPHeaderField:@"password"];
-    [manager.requestSerializer setValue:@"recover_password" forHTTPHeaderField:@"opt"];
     //[manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         

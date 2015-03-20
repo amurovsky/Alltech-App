@@ -35,39 +35,47 @@
     especieID = [[NSMutableArray alloc]init];
     especies = [[NSMutableArray alloc]init];
     imgEspecies = [[NSMutableArray alloc]init];
-    
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{
-                                 @"sessid"    : appDelegate.userSession.sesionID,
-                                 @"id_product": appDelegate.userSession.productoID,
-                                 @"opt"       : @"get_animals"
-                                 };
-
-    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        [self.activityIndicator startAnimating];
-        for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
-        {
-            [especies addObject:[tempDic objectForKey:@"title"]];
-            [imgEspecies addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
-                                                           [NSURL URLWithString:
-                                                            [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
-            [especieID addObject:[tempDic objectForKey:@"id"]];
-            NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
-            
-        }[self.especiesTable reloadData];
-        NSLog(@"JSON: %@",responseObject);
-        NSLog(@"array title: %@",especies);
-        [self.activityIndicator stopAnimating];
-    }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              
-              NSLog(@"Error: %@",error);
-              
-          }];
-
     
+    NSString *programaID = [NSString stringWithFormat:@"%@", appDelegate.userSession.programaID];
+    if ([programaID  isEqual: @"7"]) {
+        
+        [self.activityIndicator stopAnimating];
+       
+    }else{
+
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"sessid"    : appDelegate.userSession.sesionID,
+                                     @"id_product": appDelegate.userSession.productoID,
+                                     @"opt"       : @"get_animals"
+                                     };
+
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            [self.activityIndicator startAnimating];
+            for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
+            {
+                [especies addObject:[tempDic objectForKey:@"title"]];
+                [imgEspecies addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
+                                                               [NSURL URLWithString:
+                                                                [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
+                [especieID addObject:[tempDic objectForKey:@"id"]];
+                NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+                
+            }[self.especiesTable reloadData];
+            NSLog(@"JSON: %@",responseObject);
+            NSLog(@"array title: %@",especies);
+            [self.activityIndicator stopAnimating];
+        }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  
+                  NSLog(@"Error: %@",error);
+                  
+              }];
+
+    }
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     

@@ -496,9 +496,11 @@
                         <outlet property="ingresaCorreoLabel" destination="byU-dQ-dQF" id="BfS-Xq-mPw"/>
                         <outlet property="loginButton" destination="KxL-V9-HKy" id="tSw-YL-93X"/>
                         <outlet property="loginConteiner" destination="vM7-03-uDR" id="HCB-3h-jMN"/>
+                        <outlet property="olvideMiContrasena" destination="5pv-9g-aHv" id="33l-Yx-vtr"/>
                         <outlet property="olvideMiContrasenaBlurView" destination="kyw-au-Y9h" id="D35-bT-Sc3"/>
                         <outlet property="password" destination="vFg-Gv-4Ip" id="ING-f5-0Au"/>
                         <outlet property="recuperarButton" destination="npI-Ah-tz3" id="GfZ-vq-SFp"/>
+                        <outlet property="regresarButton" destination="SOi-mH-EMW" id="m64-OX-Ipe"/>
                         <outlet property="userName" destination="XQK-aB-MPp" id="WMU-3O-U5e"/>
                     </connections>
                 </viewController>
@@ -733,8 +735,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="n0y-jZ-r28"/>
                     <connections>
+                        <outlet property="cancelarButton" destination="XIB-Ne-PXU" id="FMn-xA-8VC"/>
                         <outlet property="carreteNav" destination="6sB-B1-19p" id="rhL-3U-dp0"/>
                         <outlet property="collectionView" destination="LtJ-C9-ZwN" id="8Ql-eC-NVp"/>
+                        <outlet property="seleccionaNavItem" destination="f55-qB-WWF" id="TPi-D3-SRD"/>
+                        <outlet property="usarButton" destination="WP7-UP-F0u" id="kXM-rE-LtI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Up7-h2-tYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -744,7 +749,7 @@
         <!--ProductosVC-->
         <scene sceneID="9Nl-mw-CDL">
             <objects>
-                <viewController modalTransitionStyle="flipHorizontal" id="xZ2-aE-sDy" customClass="productosVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="productos" modalTransitionStyle="flipHorizontal" id="xZ2-aE-sDy" customClass="productosVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7Hu-jp-KDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="Tit-rC-vYv"/>
@@ -933,7 +938,7 @@
         <!--GaleriasVC-->
         <scene sceneID="jcn-TG-mDr">
             <objects>
-                <viewController id="h9z-4w-jmW" customClass="galeriasVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="galerias" id="h9z-4w-jmW" customClass="galeriasVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aQF-pb-l3B"/>
                         <viewControllerLayoutGuide type="bottom" id="1jC-9P-LmR"/>
@@ -1272,6 +1277,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Wq4-0i-5WV"/>
                     <connections>
+                        <outlet property="misAlbumsNavItem" destination="MCa-Tt-UaZ" id="9UI-h3-ksW"/>
                         <outlet property="selectAlbumNav" destination="kUu-14-iOr" id="7Tr-hO-xdH"/>
                         <outlet property="selectAlbumTable" destination="o6H-VH-3fU" id="xZK-WX-q0B"/>
                     </connections>
@@ -1438,6 +1444,8 @@
                     <connections>
                         <outlet property="activityIndicator" destination="rVf-hI-Rao" id="qwH-HA-3NG"/>
                         <outlet property="conteiner" destination="B8F-t2-KIq" id="GcM-u5-ct2"/>
+                        <outlet property="crearAlbumNavItem" destination="5HV-wE-3SF" id="eXu-a5-rbJ"/>
+                        <outlet property="crearButton" destination="Axd-Zb-zNG" id="W0v-XN-fDj"/>
                         <outlet property="descripcionTextField" destination="wuW-GU-cXz" id="U1c-Vt-4T6"/>
                         <outlet property="especiePV" destination="hAg-XU-KsW" id="2xf-cr-9bO"/>
                         <outlet property="nuevoAlbumNav" destination="ab8-ox-9oM" id="L4g-xz-6sT"/>
@@ -1635,6 +1643,9 @@
                     <connections>
                         <outlet property="collectionView" destination="xTB-Zv-dXi" id="ZGe-w1-4g0"/>
                         <outlet property="crearAlbumNav" destination="HLR-i5-q4N" id="ELv-vX-UtC"/>
+                        <outlet property="enviarButton" destination="xPe-cz-FyD" id="ckd-vi-skL"/>
+                        <outlet property="guardarButton" destination="lyn-iz-Rbt" id="dd1-cQ-rBz"/>
+                        <outlet property="navItem" destination="ZTE-Kq-4tG" id="KIG-IL-Xf0"/>
                         <outlet property="toolBarAlbum" destination="J6U-BO-KPx" id="iLx-5t-vlX"/>
                     </connections>
                 </viewController>

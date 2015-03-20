@@ -14,6 +14,9 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *carreteNav;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *usarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelarButton;
+@property (weak, nonatomic) IBOutlet UINavigationItem *seleccionaNavItem;
 
 
 - (IBAction)camaraButton:(id)sender;

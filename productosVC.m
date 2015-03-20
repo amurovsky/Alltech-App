@@ -11,6 +11,7 @@
 #import "SWRevealViewController.h"
 #import <AFNetworking.h>
 #import "AppDelegate.h"
+#import "galeriasVC.h"
 
 
 @interface productosVC ()
@@ -33,7 +34,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     productos = [[NSMutableArray alloc]init];
     productoID = [[NSMutableArray alloc]init];
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -309,7 +309,17 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    NSLog(@"programaID %@", appDelegate.userSession.programaID);
+    NSString *programaID = [NSString stringWithFormat:@"%@", appDelegate.userSession.programaID];
+    if ([programaID  isEqual: @"7"]) {
+        galeriasVC *galerias = [self.storyboard instantiateViewControllerWithIdentifier:@"galerias"];
+        appDelegate.userSession.productoID = [productoID objectAtIndex:indexPath.row];
+        appDelegate.userSession.especieID = @"1";
+        galerias.nombrePrograma = self.nombreDelPrograma;
+        galerias.nombreProducto = [NSString stringWithFormat:@"%@", [productos objectAtIndex:indexPath.row]];
+        galerias.nombreEspecie = @"";
+        [[self navigationController ] pushViewController:galerias animated:YES];
+    }
     appDelegate.userSession.productoID = [productoID objectAtIndex:indexPath.row];
 }
 
