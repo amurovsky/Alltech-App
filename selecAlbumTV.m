@@ -121,8 +121,10 @@
         cell.textLabel.text = album.nombre;
         cell.textLabel.numberOfLines = 2;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"Ultima modificacion: %@",album.fechaModificacion];
-        cell.backgroundColor = [UIColor colorWithRed:0.969 green:0.976 blue:0.98 alpha:1]; /*#f7f9fa*/
         cell.imageView.image = [UIImage imageNamed:@"albumIcon"];
+        cell.backgroundColor = (album.sended) ? [UIColor grayColor] : [UIColor colorWithRed:0.969 green:0.976 blue:0.98 alpha:1]; /*#f7f9fa*/
+
+        
     }
     
     //Cambiar Tamaño de letra segun dispositivo

@@ -42,6 +42,7 @@ static repositoriodeAlbums * instancia;
             album.especieID = [diccionario objectForKey:@"especieID"];
             album.imagenes = [diccionario objectForKey:@"imagenes"];
             album.fechaModificacion = [diccionario objectForKey:@"fecha"];
+            album.sended = [[diccionario objectForKey:@"sended"]boolValue];
             
             [self.albums addObject:album];
         }
@@ -66,6 +67,7 @@ static repositoriodeAlbums * instancia;
                                       album.especieID, @"especieID",
                                       album.imagenes, @"imagenes",
                                       album.fechaModificacion, @"fecha",
+                                      [NSNumber numberWithBool:album.sended], @"sended",
                                       nil];
         
         [albumsAGuardar addObject:diccionario];

@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString * especieID;
 @property (nonatomic, retain) NSMutableArray * imagenes;
 @property (nonatomic, retain) NSString * fechaModificacion;
+@property BOOL sended;
 
 
 @end

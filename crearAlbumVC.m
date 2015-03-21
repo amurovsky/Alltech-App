@@ -104,7 +104,6 @@
         
         [prevImagesArray addObjectsFromArray:appDelegate.userSession.selectedImages];
     }
-    NSLog(@"tmparray completo: %@",prevImagesArray);
     [self.collectionView reloadData];
     
 }
@@ -207,14 +206,9 @@
     NSString *dateString = [dateFormat stringFromDate:today];
     
     _albums.imagenes = [[NSMutableArray alloc]init];
-    
-//    for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
-//        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
-//        //[_albums.imagenes addObject:appDelegate.userSession.selectedImages[i]];
-//        [_albums.imagenes addObject:imageData];
-//    }
     _albums.imagenes = prevImagesArray;
     _albums.fechaModificacion = dateString;
+    _albums.sended = YES;
     UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:guardarAlerta delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alerta show];
     [self.navigationController popToRootViewControllerAnimated:YES];
@@ -744,6 +738,7 @@ CGFloat screenHeight;
         album.productoID = appDelegate.userSession.productoID;
         album.especieID = appDelegate.userSession.especieID;
         album.fechaModificacion = dateString;
+        album.sended = NO;
         NSMutableArray * albums = [repositoriodeAlbums sharedInstance].albums;
         [albums addObject:album];
         
