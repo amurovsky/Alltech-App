@@ -242,7 +242,7 @@
         <!--LoginVC-->
         <scene sceneID="cAA-dN-rkg">
             <objects>
-                <viewController id="UP5-aK-xKI" customClass="loginVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginVC" id="UP5-aK-xKI" customClass="loginVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Zql-eY-7By"/>
                         <viewControllerLayoutGuide type="bottom" id="uz2-MP-ntw"/>

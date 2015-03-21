@@ -43,7 +43,7 @@
     
     margen = 60;
     
-    NSLog(@"guardado en nsuserdefaults: %@",[appDelegate.userSession.lenguajeGuardado objectForKey:@"lang"]);
+    NSLog(@"guardado en nsuserdefaults: %@",[appDelegate.userSession.settings objectForKey:@"lang"]);
    
     
     
@@ -104,8 +104,8 @@
     [self cambiarIdioma];
     self.tituloNav.title = @"definições";
     self.segundaBarraLabel.text = @"mudar idioma";
-    [appDelegate.userSession.lenguajeGuardado setObject:@"pt" forKey:@"lang"];
-    [appDelegate.userSession.lenguajeGuardado synchronize];
+    [appDelegate.userSession.settings setObject:@"pt" forKey:@"lang"];
+    [appDelegate.userSession.settings synchronize];
 }
 
 - (IBAction)inglesButton:(id)sender {
@@ -117,8 +117,8 @@
     self.tituloNav.title = @"Settings";
     self.segundaBarraLabel.text = @"Change Language";
     [self cambiarIdioma];
-    [appDelegate.userSession.lenguajeGuardado setObject:@"en" forKey:@"lang"];
-    [appDelegate.userSession.lenguajeGuardado synchronize];
+    [appDelegate.userSession.settings setObject:@"en" forKey:@"lang"];
+    [appDelegate.userSession.settings synchronize];
 }
 - (IBAction)espanolButton:(id)sender {
     [self.espanolButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
@@ -129,8 +129,8 @@
     self.tituloNav.title = @"Ajustes";
     self.segundaBarraLabel.text = @"Cambiar Idioma";
     [self cambiarIdioma];
-    [appDelegate.userSession.lenguajeGuardado setObject:@"es" forKey:@"lang"];
-    [appDelegate.userSession.lenguajeGuardado synchronize];
+    [appDelegate.userSession.settings setObject:@"es" forKey:@"lang"];
+    [appDelegate.userSession.settings synchronize];
 }
 
 -(void)cambiarIdioma{

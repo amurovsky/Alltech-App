@@ -36,6 +36,7 @@ NSString *contrasenaInvalida;
 NSString *conexionPerdida;
 
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -139,8 +140,9 @@ NSString *conexionPerdida;
     [animationView addSubview:imageView];
     // Kick start the animation immediately
     [animationView startCanvasAnimation];
-    NSLog(@"lenguaje Guardad: %@",[appDelegate.userSession.lenguajeGuardado objectForKey:@"lang"]);
-    appDelegate.userSession.lenguaje = [appDelegate.userSession.lenguajeGuardado objectForKey:@"lang"];
+    NSLog(@"lenguaje Guardad: %@",[appDelegate.userSession.settings objectForKey:@"lang"]);
+    NSLog(@"sessionID guardado %@",[appDelegate.userSession.settings objectForKey:@"sessid"]);
+    appDelegate.userSession.lenguaje = [appDelegate.userSession.settings objectForKey:@"lang"];
     NSString *idioma = appDelegate.userSession.lenguaje;
     if ([idioma isEqual:@"es"]) {
         
@@ -280,7 +282,7 @@ NSString *conexionPerdida;
                                          @"username"    : username,
                                          @"password"    : password,
                                          @"opt"         : @"login",
-                                         @"lang"        : [appDelegate.userSession.lenguajeGuardado objectForKey:@"lang"]
+                                         @"lang"        : [appDelegate.userSession.settings objectForKey:@"lang"]
                                      
                                          };
             [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
@@ -297,8 +299,9 @@ NSString *conexionPerdida;
                 NSLog(@"Este es el session ID: %@",[responseObject objectForKey:@"sessid"]);
                 //mostramos la siguiente pantalla si la conexion fue exitosa
                 SWRevealViewController *reveal = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
-                
-                appDelegate.userSession.sesionID = [responseObject valueForKey:@"sessid"];
+                [appDelegate.userSession.settings setObject:[responseObject valueForKey:@"sessid"] forKey:@"sessid"];
+                [appDelegate.userSession.settings setBool:YES forKey:@"logged"];
+                appDelegate.userSession.sesionID = [appDelegate.userSession.settings objectForKey:@"sessid"];
                 appDelegate.userSession.userID = [responseObject objectForKey:@"userid"];
                 appDelegate.userSession.lenguaje = [responseObject objectForKey:@"lang"];
                 NSLog(@"SessionID de la calse Session: %@",appDelegate.userSession.sesionID);

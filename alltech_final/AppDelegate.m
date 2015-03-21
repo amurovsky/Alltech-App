@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import <AFNetworkActivityIndicatorManager.h>
 #import "repositoriodeAlbums.h"
+#import "loginVC.h"
+#import "SWRevealViewController.h"
 @interface AppDelegate ()
 
 @end
@@ -18,6 +20,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
     self.userSession = [[session alloc]init];
@@ -25,7 +29,24 @@
     // alltech.tejuino.mx/ws
     //alltech-pics-sell.azurewebsites.net/ws
     self.userSession.Url = @"http://alltech-pics-sell.azurewebsites.net/ws";
-    self.userSession.lenguajeGuardado = [NSUserDefaults standardUserDefaults];
+    self.userSession.settings = [NSUserDefaults standardUserDefaults];
+    
+    
+//    if (![self.userSession.settings boolForKey:@"logged"])
+//    {
+//        NSLog(@"first launch");
+//        self.window.rootViewController =
+//        [[UIStoryboard storyboardWithName:@"storyboard" bundle:nil]
+//         instantiateViewControllerWithIdentifier:@"loginVC"];
+//    }
+//    else
+//    {
+//        
+//        NSLog(@"not first launch");
+//        self.window.rootViewController =
+//        [[UIStoryboard storyboardWithName:@"storyboard" bundle:nil]
+//         instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
+//    }
     
     return YES;
 }
@@ -40,7 +61,7 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     [[repositoriodeAlbums sharedInstance]guardar];
-    [self.userSession.lenguajeGuardado synchronize];
+    [self.userSession.settings synchronize];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -56,7 +77,7 @@
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
     [[repositoriodeAlbums sharedInstance]guardar];
-    [self.userSession.lenguajeGuardado synchronize];
+    [self.userSession.settings synchronize];
 }
 
 #pragma mark - Core Data stack
