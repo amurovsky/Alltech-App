@@ -40,6 +40,7 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     [[repositoriodeAlbums sharedInstance]guardar];
+    [self.userSession.lenguajeGuardado synchronize];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -55,6 +56,7 @@
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
     [[repositoriodeAlbums sharedInstance]guardar];
+    [self.userSession.lenguajeGuardado synchronize];
 }
 
 #pragma mark - Core Data stack

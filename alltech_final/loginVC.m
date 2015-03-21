@@ -139,8 +139,8 @@ NSString *conexionPerdida;
     [animationView addSubview:imageView];
     // Kick start the animation immediately
     [animationView startCanvasAnimation];
-
-    appDelegate.userSession.lenguaje = @"en";
+    NSLog(@"lenguaje Guardad: %@",[appDelegate.userSession.lenguajeGuardado objectForKey:@"lang"]);
+    appDelegate.userSession.lenguaje = [appDelegate.userSession.lenguajeGuardado objectForKey:@"lang"];
     NSString *idioma = appDelegate.userSession.lenguaje;
     if ([idioma isEqual:@"es"]) {
         
@@ -279,7 +279,8 @@ NSString *conexionPerdida;
             NSDictionary *parameters = @{
                                          @"username"    : username,
                                          @"password"    : password,
-                                         @"opt"         : @"login"
+                                         @"opt"         : @"login",
+                                         @"lang"        : [appDelegate.userSession.lenguajeGuardado objectForKey:@"lang"]
                                      
                                          };
             [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
