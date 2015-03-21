@@ -445,9 +445,18 @@
         for (int i=0; i < [_selectedAssets count]; i++) {
             ALAsset *asset = self.selectedAssets[i];
             ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
+            
+//            Byte *buffer = (Byte*)malloc(defaultRep.size);
+//            NSUInteger buffered = [defaultRep getBytes:buffer fromOffset:0.0 length:defaultRep.size error:nil];
+//            NSData *sourceData = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
+//            
+//            [tmpArray addObject:sourceData];
+            
             UIImage *image = [UIImage imageWithCGImage:[defaultRep fullResolutionImage] scale:[defaultRep scale] orientation:0];
-            [tmpArray addObject:image];
+            NSData *imagedata = [NSData dataWithData:UIImageJPEGRepresentation(image, 0.0)];
+            [tmpArray addObject:imagedata];
         }
+
         appDelegate.userSession.selectedImages = tmpArray;
         [self dismissViewControllerAnimated:YES completion:nil];
     }

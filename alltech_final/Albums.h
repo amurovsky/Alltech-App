@@ -16,6 +16,9 @@
 @property (nonatomic, retain) NSString * programa;
 @property (nonatomic, retain) NSString * producto;
 @property (nonatomic, retain) NSString * especie;
+@property (nonatomic, retain) NSString * programaID;
+@property (nonatomic, retain) NSString * productoID;
+@property (nonatomic, retain) NSString * especieID;
 @property (nonatomic, retain) NSMutableArray * imagenes;
 @property (nonatomic, retain) NSString * fechaModificacion;
 

@@ -34,6 +34,7 @@
     NSString *galeriaID;
     NSString *guardarAlerta;
     NSString *enviarAlerta;
+    NSMutableArray *prevImagesArray;
     
 }
 
@@ -47,6 +48,10 @@
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    prevImagesArray = [[NSMutableArray alloc]init];
+    if (_albums.imagenes.count != 0) {
+        [prevImagesArray addObjectsFromArray:_albums.imagenes];
+    }
     
     //ponemos fondo al View y a la barra de navegacion
     
@@ -90,6 +95,16 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    
+    if (appDelegate.userSession.selectedImages.count != 0) {
+        [prevImagesArray removeAllObjects];
+        if (_albums.imagenes.count != 0) {
+            [prevImagesArray addObjectsFromArray:_albums.imagenes];
+        }
+        
+        [prevImagesArray addObjectsFromArray:appDelegate.userSession.selectedImages];
+    }
+    NSLog(@"tmparray completo: %@",prevImagesArray);
     [self.collectionView reloadData];
     
 }
@@ -122,33 +137,34 @@
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    if ([appDelegate.userSession.selectedImages count] == 0) {
-        NSLog(@"vienes de atras count y hay :%lu imagenes",(unsigned long)[_albums.imagenes count]);
-       return [_albums.imagenes count];
-    }
-    return [appDelegate.userSession.selectedImages count];
+//    if ([appDelegate.userSession.selectedImages count] == 0) {
+//        NSLog(@"vienes de atras count y hay :%lu imagenes",(unsigned long)[_albums.imagenes count]);
+//       return [_albums.imagenes count];
+//    }
+//    return [appDelegate.userSession.selectedImages count];
+    
+    return [prevImagesArray count];
 }
 
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath  {
     
     cell = (previewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"previewCell" forIndexPath:indexPath];
+
+    
+//    if([appDelegate.userSession.selectedImages count] == 0){
+//        UIImage *image = [UIImage imageWithData:[_albums.imagenes objectAtIndex:indexPath.row]];
+//        cell.previewImg.image = image;
+//    }else{
+//        cell.previewImg.image = [appDelegate.userSession.selectedImages objectAtIndex:indexPath.row];
+//    
+//    }
     
     
-    //ALAsset *asset = self.selectedImages[indexPath.row];
-    //ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
-    //cell.backgroundColor = [UIColor clearColor];
-    //cell.previewImg.image = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:0];
+    UIImage *image = [UIImage imageWithData:[prevImagesArray objectAtIndex:indexPath.row]];
+    cell.previewImg.image = image;
+
     
-    if([appDelegate.userSession.selectedImages count] == 0){
-        UIImage *image = [UIImage imageWithData:[_albums.imagenes objectAtIndex:indexPath.row]];
-        cell.previewImg.image = image;
-    }else{
-        cell.previewImg.image = [appDelegate.userSession.selectedImages objectAtIndex:indexPath.row];
-    
-    }
-    
-        
     cell.previewImg.clipsToBounds = YES;
 
     return cell;
@@ -192,12 +208,12 @@
     
     _albums.imagenes = [[NSMutableArray alloc]init];
     
-    for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
-        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
-        //[_albums.imagenes addObject:appDelegate.userSession.selectedImages[i]];
-        [_albums.imagenes addObject:imageData];
-    }
-    
+//    for (int i = 0; i < [appDelegate.userSession.selectedImages count]; i++) {
+//        NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
+//        //[_albums.imagenes addObject:appDelegate.userSession.selectedImages[i]];
+//        [_albums.imagenes addObject:imageData];
+//    }
+    _albums.imagenes = prevImagesArray;
     _albums.fechaModificacion = dateString;
     UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:guardarAlerta delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alerta show];
@@ -222,18 +238,19 @@
 }
 
 - (IBAction)enviarButton:(id)sender {
+    
 
     
-    //[self uploadImages];
+    NSLog(@"usID: %@ nom: %@ des: %@ pID: %@ prID: %@ eID: %@",appDelegate.userSession.sesionID,self.albums.nombre,self.albums.descripcion,self.albums.programaID,self.albums.productoID,self.albums.especieID);
 
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         NSDictionary *parameters = @{
                                      @"sessid"          : appDelegate.userSession.sesionID,
                                      @"title"           : self.albums.nombre,
                                      @"description"     : self.albums.descripcion,
-                                     @"id_program"      : appDelegate.userSession.programaID,
-                                     @"id_product"      : appDelegate.userSession.productoID,
-                                     @"id_animal_type"  : appDelegate.userSession.especieID,
+                                     @"id_program"      : self.albums.programaID,
+                                     @"id_product"      : self.albums.productoID,
+                                     @"id_animal_type"  : self.albums.especieID,
                                      @"opt"             : @"new_gallery"
                                      };
 
@@ -256,11 +273,11 @@
 
 -(void)uploadImages{
     
-    NSLog(@"galeria ID: %@",appDelegate.userSession.selectedImages);
+    NSLog(@"galeria ID: %@",galeriaID);
+    
+    if ([prevImagesArray count] != 0) {
 
-    if ([_albums.imagenes count] != 0) {
-
-        for (int i = 0; i < [self.albums.imagenes count]; i++) {
+        for (int i = 0; i < [prevImagesArray count]; i++) {
             NSString *fileName = [NSString stringWithFormat:@"%ld%c%c.jpg", (long)[[NSDate date] timeIntervalSince1970], arc4random_uniform(26) + 'a', arc4random_uniform(26) + 'a'];
             //UIImage *image = [UIImage imageNamed:@"ejemplo4"];
             //NSData *imageData = [NSData dataWithData:UIImageJPEGRepresentation(appDelegate.userSession.selectedImages[i], 0.0)];
@@ -303,7 +320,7 @@
             //Image
             [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"image\"; filename=\"%@\"\r\n",fileName] dataUsingEncoding:NSUTF8StringEncoding]];
             [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-            [body appendData:[NSData dataWithData:_albums.imagenes[i]]];
+            [body appendData:[NSData dataWithData:prevImagesArray[i]]];
             [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
             
             // setting the body of the post to the reqeust
@@ -723,8 +740,10 @@ CGFloat screenHeight;
         album.programa = _programaPV.text;
         album.producto = _productoPV.text;
         album.especie = _especiePV.text;
+        album.programaID = appDelegate.userSession.programaID;
+        album.productoID = appDelegate.userSession.productoID;
+        album.especieID = appDelegate.userSession.especieID;
         album.fechaModificacion = dateString;
-        
         NSMutableArray * albums = [repositoriodeAlbums sharedInstance].albums;
         [albums addObject:album];
         

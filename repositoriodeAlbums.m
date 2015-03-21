@@ -37,6 +37,9 @@ static repositoriodeAlbums * instancia;
             album.programa = [diccionario objectForKey:@"programa"];
             album.producto = [diccionario objectForKey:@"producto"];
             album.especie = [diccionario objectForKey:@"especie"];
+            album.programaID = [diccionario objectForKey:@"programaID"];
+            album.productoID = [diccionario objectForKey:@"productoID"];
+            album.especieID = [diccionario objectForKey:@"especieID"];
             album.imagenes = [diccionario objectForKey:@"imagenes"];
             album.fechaModificacion = [diccionario objectForKey:@"fecha"];
             
@@ -58,6 +61,9 @@ static repositoriodeAlbums * instancia;
                                       album.programa, @"programa",
                                       album.producto, @"producto",
                                       album.especie, @"especie",
+                                      album.programaID, @"programaID",
+                                      album.productoID, @"productoID",
+                                      album.especieID, @"especieID",
                                       album.imagenes, @"imagenes",
                                       album.fechaModificacion, @"fecha",
                                       nil];
