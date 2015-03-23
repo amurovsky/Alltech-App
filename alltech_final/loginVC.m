@@ -275,14 +275,19 @@ NSString *conexionPerdida;
         [alerta show];
         
     }else{
-       
+        
+        NSString *lang;
+        if ([[appDelegate.userSession.settings objectForKey:@"lang"] length] == 0 ) {
+            lang = @"en";
+        }else lang = [appDelegate.userSession.settings objectForKey:@"lang"];
 
+        
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             NSDictionary *parameters = @{
                                          @"username"    : username,
                                          @"password"    : password,
                                          @"opt"         : @"login",
-                                         @"lang"        : [appDelegate.userSession.settings objectForKey:@"lang"]
+                                         @"lang"        : lang
                                      
                                          };
             [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
