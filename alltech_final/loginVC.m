@@ -34,6 +34,7 @@ AppDelegate *appDelegate;
 NSString *camposVacios;
 NSString *contrasenaInvalida;
 NSString *conexionPerdida;
+NSString *correoInvalido;
 
 
 
@@ -156,6 +157,7 @@ NSString *conexionPerdida;
         [self.recuperarButton setTitle:@"Recuperar" forState:UIControlStateNormal];
         [self.regresarButton setTitle:@" Regresar" forState:UIControlStateNormal];
         self.ingresaCorreoLabel.text = @"Ingresa tu correo electrónico para recuperar tu contraseña";
+        correoInvalido = @"Correo Inválido";
     }else if ([idioma isEqual:@"en"]) {
         
         self.userName.placeholder = @"Username";
@@ -168,6 +170,7 @@ NSString *conexionPerdida;
         [self.recuperarButton setTitle:@"recover" forState:UIControlStateNormal];
         [self.regresarButton setTitle:@" Back" forState:UIControlStateNormal];
         self.ingresaCorreoLabel.text = @"Enter your email to reset your password";
+        correoInvalido = @"invalid email";
     }else if ([idioma isEqual:@"pt"]) {
         
         self.userName.placeholder = @"Nome de usuário";
@@ -180,6 +183,7 @@ NSString *conexionPerdida;
         [self.recuperarButton setTitle:@"Recuperar" forState:UIControlStateNormal];
         [self.regresarButton setTitle:@" De Volta" forState:UIControlStateNormal];
         self.ingresaCorreoLabel.text = @"Digite seu e-mail para redefinir sua senha";
+        correoInvalido = @"E-mail inválido";
     }
     
 }
@@ -427,6 +431,12 @@ NSString *conexionPerdida;
             _enviadoLabel.hidden = NO;
             _enviadoCorreoLabel.hidden = NO;
             _enviadoCorreoLabel.text = _correoTexField.text;
+        }
+        if ([[responseObject objectForKey:@"error"]  isEqual: @"El usuario no existe."]){
+        
+            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:correoInvalido delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alerta show];
+        
         }
         
     }
