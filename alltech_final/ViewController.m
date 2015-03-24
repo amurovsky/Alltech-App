@@ -13,6 +13,7 @@
 #import <AFNetworking.h>
 #import "AppDelegate.h"
 #import <MBProgressHUD.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 
 @interface ViewController () <UIGestureRecognizerDelegate, SWRevealViewControllerDelegate>
@@ -64,9 +65,10 @@
                 {
                     [_programas addObject: [_getprograms objectForKey:@"title"]];
                     
-                    [imgProgramas addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
-                                                                    [NSURL URLWithString:
-                                                                     [NSString stringWithFormat:@"%@",[_getprograms valueForKey:@"image"]]]]]];
+//                    [imgProgramas addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
+//                                                                    [NSURL URLWithString:
+//                                                                     [NSString stringWithFormat:@"%@",[_getprograms valueForKey:@"image"]]]]]];
+                    [imgProgramas addObject:[_getprograms valueForKey:@"image"]];
                     
                     [programaID addObject:[_getprograms valueForKey:@"id"]];
                     
@@ -332,9 +334,15 @@
         cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
     }
 
-    imgView.image = [imgProgramas objectAtIndex:indexPath.row];
+    [imgView sd_setImageWithURL:[imgProgramas objectAtIndex:indexPath.row]
+                      placeholderImage:[UIImage imageNamed:@"photo.jpg"]];
+    
+    //imgView.image = [imgProgramas objectAtIndex:indexPath.row];
+    
+    
     //imgView.image = [UIImage imageNamed:[imgProgramas objectAtIndex:indexPath.row] ];
     //imgView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[imgProgramas objectAtIndex:indexPath.row]]]];
+    
     imgView.contentMode = UIViewContentModeScaleAspectFit;
     imgView.layer.cornerRadius = imgView.frame.size.width/2;
     imgView.clipsToBounds = YES;

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "productosVC.h"
 
-@interface ViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>
+@interface ViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *programasTable;
 @property (weak, nonatomic) IBOutlet UINavigationBar *programasNav;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightMenu;
