@@ -14,6 +14,7 @@
 #import <MBProgressHUD.h>
 #import "productosVC.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "loginVC.h"
 
 @interface galeriasVC ()
 
@@ -128,15 +129,20 @@
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         NSLog(@"RESPUESTA: %@",responseObject);
+        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alerta show];
+            [self presentViewController:login animated:YES completion:nil];
+        }
+
         [_activityIndicator startAnimating];
         for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
         {
             if (misAlbums == YES) {
                 if ([[tempDic objectForKey:@"owner"]  isEqual: appDelegate.userSession.userID]) {
                     [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
-//                    [imgAlbums addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
-//                                                                 [NSURL URLWithString:
-//                                                                  [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
                     [imgAlbums addObject:[tempDic objectForKey:@"image"]];
                     [descAlbums addObject:[tempDic objectForKey:@"description"]];
                     [albumID addObject:[tempDic objectForKey:@"id"]];
@@ -147,9 +153,6 @@
             }else{
                 
                 [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
-//                [imgAlbums addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
-//                                                             [NSURL URLWithString:
-//                                                              [NSString stringWithFormat:@"%@",[tempDic valueForKey:@"image"]]]]]];
                 [imgAlbums addObject:[tempDic objectForKey:@"image"]];
                 [descAlbums addObject:[tempDic objectForKey:@"description"]];
                 [albumID addObject:[tempDic objectForKey:@"id"]];
@@ -265,6 +268,14 @@
                                  };
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alerta show];
+            [self presentViewController:login animated:YES completion:nil];
+        }
+
         NSLog(@"RESPUESTA gallery images: %@",responseObject);
         for(NSDictionary *tempDic in [responseObject objectForKey:@"images"])
         {

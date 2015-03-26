@@ -70,6 +70,8 @@
 		EA81B9261A82C7C100D77DEC /* loginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA81B9211A82C7C100D77DEC /* loginVC.m */; };
 		EA81B9281A82C7C100D77DEC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA81B9251A82C7C100D77DEC /* ViewController.m */; };
 		EA81B92E1A82E42600D77DEC /* productosVC.m in Sources */ = {isa = PBXBuildFile; fileRef = EA81B92D1A82E42600D77DEC /* productosVC.m */; };
+		EA88944E1AC470D100FFC1AC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA88944D1AC470D100FFC1AC /* SystemConfiguration.framework */; };
+		EA8894521AC4717F00FFC1AC /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8894511AC4717F00FFC1AC /* Reachability.m */; };
 		EA8B603E1A93BB7D00CA6059 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA8B603D1A93BB7D00CA6059 /* AssetsLibrary.framework */; };
 		EA8B60421A93EEFA00CA6059 /* sideMenu3.png in Resources */ = {isa = PBXBuildFile; fileRef = EA8B60411A93EEFA00CA6059 /* sideMenu3.png */; };
 		EA8E6E781A83CB4F00B2CDCC /* return.png in Resources */ = {isa = PBXBuildFile; fileRef = EA8E6E771A83CB4F00B2CDCC /* return.png */; };
@@ -179,6 +181,9 @@
 		EA81B9251A82C7C100D77DEC /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		EA81B92C1A82E42600D77DEC /* productosVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = productosVC.h; sourceTree = "<group>"; };
 		EA81B92D1A82E42600D77DEC /* productosVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = productosVC.m; sourceTree = "<group>"; };
+		EA88944D1AC470D100FFC1AC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		EA8894501AC4717F00FFC1AC /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		EA8894511AC4717F00FFC1AC /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		EA8B603D1A93BB7D00CA6059 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		EA8B60411A93EEFA00CA6059 /* sideMenu3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sideMenu3.png; sourceTree = "<group>"; };
 		EA8E6E771A83CB4F00B2CDCC /* return.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = return.png; sourceTree = "<group>"; };
@@ -194,6 +199,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA88944E1AC470D100FFC1AC /* SystemConfiguration.framework in Frameworks */,
 				EA43C8081A9B8627007465AB /* AVFoundation.framework in Frameworks */,
 				EA43C8041A9B80A5007465AB /* MediaPlayer.framework in Frameworks */,
 				EA8B603E1A93BB7D00CA6059 /* AssetsLibrary.framework in Frameworks */,
@@ -214,6 +220,7 @@
 		A6FDB59C9108DE29750C909F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA88944D1AC470D100FFC1AC /* SystemConfiguration.framework */,
 				EA43C8071A9B8627007465AB /* AVFoundation.framework */,
 				EA43C8031A9B80A5007465AB /* MediaPlayer.framework */,
 				EA8B603D1A93BB7D00CA6059 /* AssetsLibrary.framework */,
@@ -254,6 +261,7 @@
 		EA81B86D1A829E2500D77DEC /* alltech_final */ = {
 			isa = PBXGroup;
 			children = (
+				EA88944F1AC4715C00FFC1AC /* Reachability */,
 				EA81B8971A829E6F00D77DEC /* SWRevealViewController */,
 				EA2B68441AA78D17000BB7FC /* session.h */,
 				EA2B68451AA78D17000BB7FC /* session.m */,
@@ -393,6 +401,15 @@
 			path = IMG;
 			sourceTree = "<group>";
 		};
+		EA88944F1AC4715C00FFC1AC /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				EA8894501AC4717F00FFC1AC /* Reachability.h */,
+				EA8894511AC4717F00FFC1AC /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
 		EAC2275B1AC0914200F68BCF /* Video */ = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +474,7 @@
 					};
 					EA81B8861A829E2600D77DEC = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = BP6E7887YV;
 						TestTargetID = EA81B86A1A829E2500D77DEC;
 					};
 				};
@@ -590,6 +608,7 @@
 				EA81B92E1A82E42600D77DEC /* productosVC.m in Sources */,
 				EA81B9261A82C7C100D77DEC /* loginVC.m in Sources */,
 				EA33493D1A94EF320084FAFF /* carreteVC.m in Sources */,
+				EA8894521AC4717F00FFC1AC /* Reachability.m in Sources */,
 				EA81B8741A829E2500D77DEC /* AppDelegate.m in Sources */,
 				EA3F6BB01A968D0F00B4FC81 /* idiomaVC.m in Sources */,
 				EA43C80F1A9B9AB0007465AB /* crearAlbumVC.m in Sources */,
@@ -681,6 +700,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "d9624e1e-d51f-4fc0-8170-1bd05ee0b5b7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -716,6 +736,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "d9624e1e-d51f-4fc0-8170-1bd05ee0b5b7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -728,7 +749,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Gerardo Torres Amezcua (BP6E7887YV)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = alltech_final/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -745,7 +766,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Gerardo Torres Amezcua (BP6E7887YV)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = alltech_final/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -760,6 +781,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -771,6 +794,7 @@
 				INFOPLIST_FILE = alltech_finalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = AlltechTests;
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alltech.app/Alltech";
 			};
 			name = Debug;
@@ -779,6 +803,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -786,6 +812,7 @@
 				INFOPLIST_FILE = alltech_finalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = AlltechTests;
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alltech.app/Alltech";
 			};
 			name = Release;

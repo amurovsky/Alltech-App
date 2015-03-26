@@ -42,6 +42,8 @@ NSString *correoInvalido;
     [super viewDidLoad];
     
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    
     // find movie file
     NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"video_iphone_1" ofType:@"mp4"];
     NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
@@ -144,8 +146,12 @@ NSString *correoInvalido;
     NSLog(@"lenguaje Guardad: %@",[appDelegate.userSession.settings objectForKey:@"lang"]);
     NSLog(@"sessionID guardado %@",[appDelegate.userSession.settings objectForKey:@"sessid"]);
     appDelegate.userSession.lenguaje = [appDelegate.userSession.settings objectForKey:@"lang"];
-    NSString *idioma = appDelegate.userSession.lenguaje;
-    if ([idioma isEqual:@"es"]) {
+    
+    if (appDelegate.userSession.lenguaje == nil) {
+        appDelegate.userSession.lenguaje = @"en";
+    }
+    
+    if ([appDelegate.userSession.lenguaje isEqual:@"es"]) {
         
         self.userName.placeholder = @"Usuario";
         self.password.placeholder = @"Contraseña";
@@ -158,7 +164,7 @@ NSString *correoInvalido;
         [self.regresarButton setTitle:@" Regresar" forState:UIControlStateNormal];
         self.ingresaCorreoLabel.text = @"Ingresa tu correo electrónico para recuperar tu contraseña";
         correoInvalido = @"Correo Inválido";
-    }else if ([idioma isEqual:@"en"]) {
+    }else if ([appDelegate.userSession.lenguaje isEqual:@"en"]) {
         
         self.userName.placeholder = @"Username";
         self.password.placeholder = @"Password";
@@ -171,7 +177,7 @@ NSString *correoInvalido;
         [self.regresarButton setTitle:@" Back" forState:UIControlStateNormal];
         self.ingresaCorreoLabel.text = @"Enter your email to reset your password";
         correoInvalido = @"invalid email";
-    }else if ([idioma isEqual:@"pt"]) {
+    }else if ([appDelegate.userSession.lenguaje isEqual:@"pt"]) {
         
         self.userName.placeholder = @"Nome de usuário";
         self.password.placeholder = @"senha";
@@ -212,6 +218,19 @@ NSString *correoInvalido;
 
 }
 
+
+-(void)viewDidAppear:(BOOL)animated{
+
+    if ([appDelegate.userSession.settings boolForKey:@"logged"])
+    {
+        NSLog(@"Logged");
+        appDelegate.userSession.sesionID = [appDelegate.userSession.settings objectForKey:@"sessid"];
+        [moviePlayer stop];
+        [self performSegueWithIdentifier: @"logged" sender: self];
+    }
+
+
+}
 
 
 
@@ -445,12 +464,12 @@ NSString *correoInvalido;
               NSLog(@"Error: %@",error);
               
           }];
-    
-    
-    
 
-    
-    
 }
 
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+
+   
+}
 @end

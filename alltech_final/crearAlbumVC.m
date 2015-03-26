@@ -18,6 +18,7 @@
 #import "Albums.h"
 #import "repositoriodeAlbums.h"
 #import <MBProgressHUD.h>
+#import "loginVC.h"
 
 @interface crearAlbumVC ()
 
@@ -249,6 +250,14 @@
 
         [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
         [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+           
+            if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+                loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+                [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alerta show];
+                [self presentViewController:login animated:YES completion:nil];
+            }
 
         NSLog(@"RESPUESTA: %@",responseObject);
         galeriaID = [responseObject objectForKey:@"id_gallery"];
@@ -618,6 +627,14 @@ CGFloat screenHeight;
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
 
+        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alerta show];
+            [self presentViewController:login animated:YES completion:nil];
+        }
+
         for(NSDictionary *tmpDic in [responseObject objectForKey:@"programs"])
         {
             [programas addObject: [tmpDic objectForKey:@"title"]];
@@ -652,6 +669,14 @@ CGFloat screenHeight;
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         
+        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alerta show];
+            [self presentViewController:login animated:YES completion:nil];
+        }
+
         for(NSDictionary *tempDic in [responseObject objectForKey:@"products"])
         {
             [productos addObject: [tempDic objectForKey:@"title"]];
@@ -684,6 +709,14 @@ CGFloat screenHeight;
                                  };
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+
+        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alerta show];
+            [self presentViewController:login animated:YES completion:nil];
+        }
 
         for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
         {

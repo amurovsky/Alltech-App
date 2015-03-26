@@ -11,6 +11,7 @@
 #import "repositoriodeAlbums.h"
 #import "loginVC.h"
 #import "SWRevealViewController.h"
+#import "ViewController.h"
 @interface AppDelegate ()
 
 @end
@@ -32,29 +33,7 @@
     self.userSession.settings = [NSUserDefaults standardUserDefaults];
     
     
-//    if (![self.userSession.settings boolForKey:@"logged"])
-//    {
-//        NSLog(@"first launch");
-////        loginVC *login = [[loginVC alloc] init];
-////        UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:login];
-////        [self.window.rootViewController presentViewController:navCon animated:YES completion:nil];ç
-//        
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        loginVC *login =[storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-//        [self.window.rootViewController.navigationController pushViewController:login animated:YES];
-//    }
-//    else
-//    {
-//        
-//        NSLog(@"not first launch");
-////        SWRevealViewController *reveal = [[SWRevealViewController alloc] init];
-////        UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:reveal];
-////        [self.window.rootViewController presentViewController:navCon animated:YES completion:nil];
-//        
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        SWRevealViewController *reveal=[storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
-//        [self.window.rootViewController.navigationController pushViewController:reveal animated:YES];
-//    }
+
     
 
     

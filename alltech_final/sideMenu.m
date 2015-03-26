@@ -9,6 +9,7 @@
 #import "sideMenu.h"
 #import "SWRevealViewController.h"
 #import "selecAlbumTV.h"
+#import "AppDelegate.h"
 
 @interface sideMenu ()
 
@@ -22,6 +23,7 @@
     CGFloat screenHeight;
     BOOL hidden;
     UIView *statusbarBackground;
+    AppDelegate *appDelegate;
 }
 
 - (void)viewDidLoad {
@@ -29,6 +31,8 @@
     
     hidden = YES;
 
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
     screenBound = [[UIScreen mainScreen] bounds];
@@ -110,7 +114,7 @@
     [self.revealViewController.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     
     
-    statusbarBackground = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 600, 22)];
+    statusbarBackground = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth , 22)];
     statusbarBackground.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fondoSideMenu"]];
     [self.revealViewController.view addSubview:statusbarBackground];
     statusbarBackground.alpha = 0;
@@ -239,6 +243,10 @@
     if ([segue.identifier isEqualToString:@"mostrarSelecAlbum"]) {
         selecAlbumTV * selecAlbum = segue.destinationViewController;
         [self.navigationController presentViewController:selecAlbum animated:YES completion:nil];
+    }else if ([segue.identifier isEqualToString:@"logOut"]){
+        
+        [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+    
     }
     
 }

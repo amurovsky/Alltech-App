@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import <AFNetworking.h>
 #import "SWRevealViewController.h"
+#import "loginVC.h"
 
 @interface idiomaVC (){
 
@@ -48,6 +49,7 @@
     
     
     [self.view addSubview:check];
+    check.hidden = YES;
     
     
 }
@@ -56,16 +58,19 @@
     NSString *lenguaje = appDelegate.userSession.lenguaje;
     if ([lenguaje  isEqual: @"es"]){
         [self.espanolButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        check.hidden = NO;
         check.center = CGPointMake(self.espanolButton.bounds.size.width - margen, self.espanolButton.center.y);
         self.tituloNav.title = @"Ajustes";
         self.segundaBarraLabel.text = @"Cambiar Idioma";
     }else if ([lenguaje  isEqual: @"en"]){
         [self.ingelsButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        check.hidden = NO;
         check.center = CGPointMake(self.ingelsButton.bounds.size.width - margen, self.ingelsButton.center.y);
         self.tituloNav.title = @"Settings";
         self.segundaBarraLabel.text = @"Change Language";
     }else if ([lenguaje  isEqual: @"pt"]){
         [self.portuguesButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        check.hidden = NO;
         check.center = CGPointMake(self.portuguesButton.bounds.size.width - margen, self.portuguesButton.center.y);
         self.tituloNav.title = @"definições";
         self.segundaBarraLabel.text = @"mudar idioma";
@@ -100,6 +105,7 @@
     [self.espanolButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.ingelsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     appDelegate.userSession.lenguaje = @"pt";
+    check.hidden = NO;
     check.center = CGPointMake(self.portuguesButton.bounds.size.width - margen, self.portuguesButton.center.y);
     [self cambiarIdioma];
     self.tituloNav.title = @"definições";
@@ -113,6 +119,7 @@
     [self.espanolButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.portuguesButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     appDelegate.userSession.lenguaje = @"en";
+    check.hidden = NO;
     check.center = CGPointMake(self.ingelsButton.bounds.size.width - margen, self.ingelsButton.center.y);
     self.tituloNav.title = @"Settings";
     self.segundaBarraLabel.text = @"Change Language";
@@ -125,6 +132,7 @@
     [self.portuguesButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.ingelsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     appDelegate.userSession.lenguaje = @"es";
+    check.hidden = NO;
     check.center = CGPointMake(self.espanolButton.bounds.size.width - margen, self.espanolButton.center.y);
     self.tituloNav.title = @"Ajustes";
     self.segundaBarraLabel.text = @"Cambiar Idioma";
@@ -148,6 +156,14 @@
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         
         NSLog(@"JSON: %@",responseObject);
+        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alerta show];
+            [self presentViewController:login animated:YES completion:nil];
+        }
+
         
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {

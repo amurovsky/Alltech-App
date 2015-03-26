@@ -12,6 +12,7 @@
 #import <AFNetworking.h>
 #import "galeriasVC.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "loginVC.h"
 
 @interface especiesVC ()
 
@@ -55,6 +56,14 @@
 
         [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
         [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+                loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+                [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alerta show];
+                [self presentViewController:login animated:YES completion:nil];
+            }
+
             [self.activityIndicator startAnimating];
             for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
             {
@@ -176,6 +185,10 @@
 
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -223,16 +236,15 @@
     // ipad 2, ipad mini, ipad retina
     if (screenWidth == 768 && screenHeight == 1024) {
         
-        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 18, 69, 69)];
-        itemSize = CGSizeMake(70, 70);
+        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(30, 18, 69, 69)];
+        itemSize = CGSizeMake(100, 70);
         cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:25.0];
     }
     
     // iphone 6 plus
     if (screenWidth == 414 && screenHeight == 736) {
-        
-        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 49, 49)];
-        itemSize = CGSizeMake(40, 40);
+        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(60, 15, 49, 49)];
+        itemSize = CGSizeMake(100, 80);
         cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
 
     }
@@ -249,8 +261,8 @@
     // iphone 5, 5c, 5s, touch 5
     else if (screenWidth == 320 && screenHeight == 568){
         
-        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 10, 40, 40)];
-        itemSize = CGSizeMake(50, 50);
+        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(30, 10, 40, 40)];
+        itemSize = CGSizeMake(60, 50);
         cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
 
         
@@ -258,8 +270,8 @@
     // iphone 4, 4s, touch 4
     else if (screenWidth == 320 && screenHeight == 480){
         
-        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
-        itemSize = CGSizeMake(30, 30);
+        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(35, 10, 40, 40)];
+        itemSize = CGSizeMake(65, 30);
         cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
         
     }
@@ -279,7 +291,6 @@
     
     
     cell.textLabel.text = [especies objectAtIndex:indexPath.row];
-    
     // cambiamos el color de la celda a transparente
     cell.backgroundColor = [UIColor clearColor];
 
