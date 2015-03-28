@@ -126,7 +126,9 @@
         [headerView addSubview:lineView];
         headerView.tituloAlbumLabel.text = _albums.nombre;
         headerView.descripcionLabel.text = _albums.descripcion;
+        headerView.descripcionLabel.numberOfLines = 4;
         headerView.filtradoLabel.text = [NSString stringWithFormat:@"%@/ %@/ %@",_albums.programa,_albums.producto,_albums.especie];
+        NSLog(@"Descripcion: %@",_albums.descripcion);
     }
     
     

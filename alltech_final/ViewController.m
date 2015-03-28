@@ -14,7 +14,9 @@
 #import "AppDelegate.h"
 #import <MBProgressHUD.h>
 #import <SDWebImage/UIImageView+WebCache.h>
-
+#import "loginVC.h"
+#import "Reachability.h"
+#import "galeriasVC.h"
 
 @interface ViewController () <UIGestureRecognizerDelegate, SWRevealViewControllerDelegate>
 
@@ -34,6 +36,8 @@
     CGFloat porcentaje;
     CGFloat resultadoPorcentaje;
     AppDelegate *appDelegate;
+    BOOL internet;
+    NSMutableDictionary *programasGuardados;
     
 
 }
@@ -41,68 +45,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _programas = [[NSMutableArray alloc]init];
-    imgProgramas = [[NSMutableArray alloc]init];
-    programaID = [[NSMutableArray alloc]init];
-    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    _getSessionID = appDelegate.userSession.sesionID;
-    
-    
-    
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        NSDictionary *parameters = @{
-                                     @"sessid"  : _getSessionID,
-                                     @"opt"     : @"get_programs"
-                                     };
-
-        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            
-            [_uiActivator startAnimating];
-
-
-                for(_getprograms in [responseObject objectForKey:@"programs"])
-                {
-                    [_programas addObject: [_getprograms objectForKey:@"title"]];
-                    
-//                    [imgProgramas addObject:[UIImage imageWithData:[NSData dataWithContentsOfURL:
-//                                                                    [NSURL URLWithString:
-//                                                                     [NSString stringWithFormat:@"%@",[_getprograms valueForKey:@"image"]]]]]];
-                    [imgProgramas addObject:[_getprograms valueForKey:@"image"]];
-                    
-                    [programaID addObject:[_getprograms valueForKey:@"id"]];
-                    
-                    NSLog(@"imagenes : %@",imgProgramas);
-                    
-                }
-
-                //Getting Images from Url
-        //        for(int i = 0; i < [imgProgramas count]; i++)
-        //        {
-        //            UIImage * image = [UIImage imageWithData:[NSData dataWithContentsOfURL:
-        //                                                      [NSURL URLWithString:[imgProgramas objectAtIndex:i]]]];
-        //            
-        //            //After converted, replace the same array with the new UIImage Object
-        //            [imgProgramas replaceObjectAtIndex:i withObject: image];
-        //            NSLog(@"arreglo con imagenes %@",imgProgramas);
-        //        }
-                [self.programasTable reloadData];
-                NSLog(@"JSON: %@",responseObject);
-                NSLog(@"array title: %@",_programas);
-                NSLog(@"array imagen: %@",imgProgramas);
-                
-           
-                    [_uiActivator stopAnimating];
-          
-        }
-              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  
-                  NSLog(@"Error: %@",error);
-                
-              }];
-
-    
-    
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
     screenBound = [[UIScreen mainScreen] bounds];
@@ -110,7 +52,102 @@
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
     
+    _programas = [[NSMutableArray alloc]init];
+    imgProgramas = [[NSMutableArray alloc]init];
+    programaID = [[NSMutableArray alloc]init];
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
     
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    
+    if(status == NotReachable)
+    {
+        internet = NO;
+        //No internet
+        NSLog(@"No Internet");
+        [_uiActivator stopAnimating];
+//        [_programas addObject:@"Programas Offline"];
+//        UILabel *offline = [[UILabel  alloc]init];
+//        [offline setFrame:CGRectMake(0, screenHeight - 40, screenWidth, 20)];
+//        offline.textAlignment = NSTextAlignmentCenter;
+//        offline.text = @"OFFLINE MODE";
+//        offline.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
+//        [self.view insertSubview:offline aboveSubview:self.programasTable];
+        programasGuardados = [appDelegate.userSession.settings objectForKey:@"programas"];
+        for (NSDictionary *tempDic in programasGuardados) {
+            [_programas addObject: [tempDic objectForKey:@"title"]];
+            
+            [imgProgramas addObject:[tempDic valueForKey:@"image"]];
+            
+            [programaID addObject:[tempDic valueForKey:@"id"]];
+        }
+        
+    }else{
+        internet = YES;
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"sessid"  : appDelegate.userSession.sesionID,
+                                     @"opt"     : @"get_programs"
+                                     };
+
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            programasGuardados = [responseObject objectForKey:@"programs"];
+            if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+                loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+                [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alerta show];
+                [self presentViewController:login animated:YES completion:nil];
+            }
+            if (![[responseObject objectForKey:@"programs"] count] == [[appDelegate.userSession.settings objectForKey:@"programas"] count]) {
+                //comparamos el diccionario guardado con el de respuesta si son iguales carga el guardado si no carga la actualizacion del server
+                [_uiActivator startAnimating];
+
+                for(NSDictionary *tempDic in [responseObject objectForKey:@"programs"])
+                {
+                    [_programas addObject: [tempDic objectForKey:@"title"]];
+
+                    [imgProgramas addObject:[tempDic valueForKey:@"image"]];
+                    
+                    [programaID addObject:[tempDic valueForKey:@"id"]];
+                    
+                    NSLog(@"imagenes : %@",imgProgramas);
+                    
+                }
+                [appDelegate.userSession.settings setObject:programasGuardados forKey:@"programas"];
+                [self.programasTable reloadData];
+                NSLog(@"JSON: %@",responseObject);
+                NSLog(@"array title: %@",_programas);
+                NSLog(@"array imagen: %@",imgProgramas);
+            
+                [_uiActivator stopAnimating];
+            }else{
+                [_uiActivator stopAnimating];
+                programasGuardados = [appDelegate.userSession.settings objectForKey:@"programas"];
+                for (NSDictionary *tempDic in programasGuardados) {
+                    [_programas addObject: [tempDic objectForKey:@"title"]];
+                    [imgProgramas addObject:[tempDic valueForKey:@"image"]];
+                    [programaID addObject:[tempDic valueForKey:@"id"]];
+                    
+                    NSLog(@"imagenes : %@",imgProgramas);
+                }[self.programasTable reloadData];
+                
+            }
+            
+        }
+        
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  
+                  NSLog(@"Error: %@",error);
+                
+              }];
+        
+    }
+
+
     // Poner logo de Altech en barra de navegacion
     
     UIImage *image = [UIImage imageNamed:@"alltech_logo_naranja"];
@@ -305,8 +342,8 @@
     // iphone 6 plus
     if (screenWidth == 414 && screenHeight == 736) {
         
-        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 15, 49, 49)];
-        itemSize = CGSizeMake(40, 40);
+        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(20, 15, 49, 49)];
+        itemSize = CGSizeMake(60 , 40);
         cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:19.0];
 
     }
@@ -322,20 +359,21 @@
     // iphone 5, 5c, 5s, touch 5
     else if (screenWidth == 320 && screenHeight == 568){
         
-        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
-        itemSize = CGSizeMake(30, 30);
+        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(10, 10, 40, 40)];
+        itemSize = CGSizeMake(40, 30);
         cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
     }
     // iphone 4, 4s, touch 4
     else if (screenWidth == 320 && screenHeight == 480){
         
-        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(0, 10, 40, 40)];
-        itemSize = CGSizeMake(30, 30);
+        imgView = [ [UIImageView alloc ]initWithFrame:CGRectMake(10, 10, 40, 40)];
+        itemSize = CGSizeMake(40, 30);
         cell.textLabel.font=[UIFont fontWithName:@"Aileron-Thin" size:17.0];
     }
-
+    
     [imgView sd_setImageWithURL:[imgProgramas objectAtIndex:indexPath.row]
-                      placeholderImage:[UIImage imageNamed:@"photo.jpg"]];
+                   placeholderImage:[UIImage imageNamed:@"photo.jpg"]];
+
     
     //imgView.image = [imgProgramas objectAtIndex:indexPath.row];
     
@@ -367,20 +405,31 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSString *segueName = nil;
+    if (internet == YES) {
+        segueName = @"mostrarProductos";
+        appDelegate.userSession.programaID = [programaID objectAtIndex:indexPath.row];
+    }else segueName = @"galeriasOffline";
     
-    appDelegate.userSession.programaID = [programaID objectAtIndex:indexPath.row];
+    
+    [self performSegueWithIdentifier: segueName sender: self];
+
+    
 }
 
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSIndexPath *indexPath = [self.programasTable indexPathForSelectedRow];
-
+    NSString *nombreDelPrograma = [NSString stringWithFormat:@"%@", [_programas objectAtIndex:indexPath.row]];
     if ([segue.identifier isEqualToString:@"mostrarProductos"]) {
         productosVC * productosController = segue.destinationViewController;
-        NSString *nombreDelPrograma = [NSString stringWithFormat:@"%@", [_programas objectAtIndex:indexPath.row]];
+        
         productosController.nombreDelPrograma = nombreDelPrograma;
         
+    }else if ([segue.identifier isEqualToString:@"galeriasOffline"]){
+        galeriasVC * galerias = segue.destinationViewController;
+        galerias.nombrePrograma = nombreDelPrograma;
     }
     
 }

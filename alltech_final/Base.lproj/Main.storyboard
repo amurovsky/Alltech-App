@@ -192,9 +192,6 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aw8-Nk-vmL" id="ypl-EO-i7j">
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="xZ2-aE-sDy" kind="show" identifier="mostrarProductos" id="PjM-3R-qHl"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -233,6 +230,8 @@
                         <outlet property="programasTable" destination="zJC-Cm-m80" id="KJs-1O-7fS"/>
                         <outlet property="rightMenu" destination="BjR-ne-OEY" id="BqS-i7-fDJ"/>
                         <outlet property="uiActivator" destination="0WG-mR-Dew" id="vyb-9m-4Jm"/>
+                        <segue destination="xZ2-aE-sDy" kind="show" identifier="mostrarProductos" id="Fbw-tO-ArS"/>
+                        <segue destination="h9z-4w-jmW" kind="show" identifier="galeriasOffline" id="8kE-fL-jcz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uk9-Kw-wz8" sceneMemberID="firstResponder"/>
@@ -348,7 +347,7 @@
                                             </constraint>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <state key="normal" title="   Regresar" image="returnOlvide.png">
+                                        <state key="normal" title="   Regresar" image="back">
                                             <color key="titleColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -413,12 +412,6 @@
                                             <action selector="recuperarButton:" destination="UP5-aK-xKI" eventType="touchUpInside" id="QQi-kF-bmX"/>
                                         </connections>
                                     </button>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SE HA ENVIADO UN CORRE  CON TU CONTRASEÑA A:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="biu-DK-zRc">
-                                        <rect key="frame" x="145" y="130" width="310" height="70"/>
-                                        <fontDescription key="fontDescription" name="Aileron-Bold" family="Aileron" pointSize="16"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpe-4B-QpG">
                                         <rect key="frame" x="203" y="220" width="194" height="40"/>
                                         <constraints>
@@ -448,6 +441,12 @@
                                                 <include reference="M4a-qE-jsw"/>
                                             </mask>
                                         </variation>
+                                    </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SE HA ENVIADO UN CORRE  CON TU CONTRASEÑA A:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="biu-DK-zRc">
+                                        <rect key="frame" x="145" y="130" width="310" height="70"/>
+                                        <fontDescription key="fontDescription" name="Aileron-Bold" family="Aileron" pointSize="16"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1539,17 +1538,16 @@
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="programa/producto/especie" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Bx-Nr-yvf">
-                                            <rect key="frame" x="0.0" y="117" width="560" height="13"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
+                                            <rect key="frame" x="0.0" y="109" width="560" height="18"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                             <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="heightClass=regular-widthClass=regular">
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                             </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999973" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="560" translatesAutoresizingMaskIntoConstraints="NO" id="Hqn-VP-SLu">
-                                            <rect key="frame" x="0.0" y="54" width="560" height="66"/>
-                                            <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent viverra, lorem in rhoncus imperdiet, velit felis mollis tellus, lacinia fringilla lorem odio ac dolor. Vivamus bibendum vel odio sit amet ultricies. Pellentesque risus augue, elementum at nisi eu, pulvinar mattis magna. Fusce id diam quis urna vehicula hendrerit. Integer consectetur, diam vel consequat tincidunt, lectus nibh dignissim nibh, eu consectetur urna mauris et velit. Quisque et enim aliquet, venenatis magna et, pulvinar enim. Maecenas quis leo a sem rhoncus viverra eget ac enim. Phasellus ultricies, dui sed rutrum cursus, turpis sapien consequat lorem, at malesuada mi risus eu justo. Praesent porttitor iaculis tellus, sed auctor nisl facilisis sit amet. Praesent sed ornare ipsum. In non sagittis ipsum. Morbi quis augue a dolor auctor placerat et ac massa.</string>
+                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999973" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent viverra, lorem in rhoncus imperdiet, velit" lineBreakMode="wordWrap" baselineAdjustment="none" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="560" translatesAutoresizingMaskIntoConstraints="NO" id="Hqn-VP-SLu">
+                                            <rect key="frame" x="0.0" y="54" width="560" height="14"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1578,7 +1576,7 @@
                                             <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                         </constraint>
                                         <constraint firstItem="Hqn-VP-SLu" firstAttribute="top" secondItem="bVu-wv-1F1" secondAttribute="bottom" constant="2" id="lor-Jf-sGd"/>
-                                        <constraint firstAttribute="bottom" secondItem="1Bx-Nr-yvf" secondAttribute="bottom" id="o3d-ki-miQ"/>
+                                        <constraint firstAttribute="bottom" secondItem="1Bx-Nr-yvf" secondAttribute="bottom" constant="3" id="o3d-ki-miQ"/>
                                         <constraint firstItem="DGN-82-K92" firstAttribute="top" secondItem="jhH-co-NIF" secondAttribute="top" constant="8" id="pd3-N4-5SF"/>
                                         <constraint firstItem="bVu-wv-1F1" firstAttribute="width" secondItem="Hqn-VP-SLu" secondAttribute="width" id="vHz-Jf-I2g"/>
                                         <constraint firstItem="DGN-82-K92" firstAttribute="leading" secondItem="jhH-co-NIF" secondAttribute="leading" id="y8t-kO-Lrv">
@@ -1668,6 +1666,7 @@
     </scenes>
     <resources>
         <image name="albums" width="40" height="38"/>
+        <image name="back" width="13" height="22"/>
         <image name="boton_2x.png" width="900" height="193"/>
         <image name="camara_bco" width="37" height="30"/>
         <image name="campo_texto_2x.png" width="900" height="192"/>
@@ -1677,7 +1676,6 @@
         <image name="menu.png" width="45" height="31"/>
         <image name="numeroDeFotos.png" width="85" height="85"/>
         <image name="return.png" width="25" height="43"/>
-        <image name="returnOlvide.png" width="12" height="21"/>
         <image name="selectedFrame" width="122" height="122"/>
         <image name="separatorCell.png" width="687" height="2"/>
         <image name="separatorSideMenu.png" width="128" height="2"/>
@@ -1685,6 +1683,6 @@
         <image name="sideMenu3.png" width="67" height="72"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ect-6L-ghO"/>
+        <segue reference="8kE-fL-jcz"/>
     </inferredMetricsTieBreakers>
 </document>

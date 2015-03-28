@@ -15,6 +15,7 @@
 #import "productosVC.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "loginVC.h"
+#import "Reachability.h"
 
 @interface galeriasVC ()
 
@@ -39,6 +40,9 @@
     AppDelegate *appDelegate;
     BOOL misAlbums;
     NSMutableArray * galeriasTags;
+    NetworkStatus status;
+    NSMutableDictionary *albumsGuardados;
+    UIView *conteiner;
 
 }
 
@@ -51,13 +55,8 @@
     albumID = [[NSMutableArray alloc]init];
     fechaPublicacion = [[NSMutableArray alloc]init];
     numFotos = [[NSMutableArray alloc]init];
-
-    
+    albumsGuardados = [[NSMutableDictionary alloc]init];
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [self loadRequest];
-    [self.collectionView setDelegate:self];
-    [self.collectionView setDataSource:self];
-    
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
@@ -65,6 +64,52 @@
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
+    
+    //agregamos vista para cuando no exista album
+    conteiner = [[UIView alloc]init];
+    conteiner.backgroundColor = [UIColor clearColor];
+    conteiner.frame = CGRectMake(screenWidth/2 - 100, screenHeight/2 - 100, 200, 200);
+    [self.view addSubview:conteiner];
+    UIImageView *empty =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"emptyAlbum"]];
+    empty.frame = CGRectMake(conteiner.bounds.size.width/2- 72, conteiner.bounds.size.height/2- 90, 144, 112);
+    UILabel *emptyLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, empty.bounds.origin.y + 140, conteiner.bounds.size.width, 22)];
+    emptyLabel.textAlignment = NSTextAlignmentCenter;
+    emptyLabel.text = @"This Album is empty.";
+    emptyLabel.textColor = [UIColor whiteColor];
+    emptyLabel.font = [UIFont fontWithName:@"Helvetica Bold" size:20];
+    [conteiner addSubview:emptyLabel];
+    [conteiner addSubview:empty];
+    conteiner.hidden = YES;
+    
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    
+    status = [reachability currentReachabilityStatus];
+    
+    if(status == NotReachable)
+    {
+        NSLog(@"Offline");
+        [_activityIndicator stopAnimating];
+        albumsGuardados = [appDelegate.userSession.settings objectForKey:self.nombrePrograma];
+        for (NSDictionary *tempDic in albumsGuardados) {
+            [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
+            [imgAlbums addObject:[tempDic objectForKey:@"image"]];
+            [descAlbums addObject:[tempDic objectForKey:@"description"]];
+            [albumID addObject:[tempDic objectForKey:@"id"]];
+            [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
+            [numFotos addObject:[tempDic objectForKey:@"num_images"]];
+        }
+        if (albums.count == 0) {
+            conteiner.hidden = NO;
+        }
+        
+    }else [self loadRequest];
+    
+    [self.collectionView setDelegate:self];
+    [self.collectionView setDataSource:self];
+    
+    
+
     
     if (screenWidth ==768) {
         porcentaje = 15;
@@ -128,7 +173,9 @@
                                  };
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        NSLog(@"RESPUESTA: %@",responseObject);
+        //NSLog(@"RESPUESTA: %@",responseObject);
+        albumsGuardados = [responseObject objectForKey:@"galleries"];
+        NSLog(@"Albums Guardados: %@",albumsGuardados);
         if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
             loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
             [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
@@ -138,6 +185,7 @@
         }
 
         [_activityIndicator startAnimating];
+    
         for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
         {
             if (misAlbums == YES) {
@@ -150,20 +198,26 @@
                     [numFotos addObject:[tempDic objectForKey:@"num_images"]];
                 }
                     
-            }else{
+                }else{
                 
-                [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
-                [imgAlbums addObject:[tempDic objectForKey:@"image"]];
-                [descAlbums addObject:[tempDic objectForKey:@"description"]];
-                [albumID addObject:[tempDic objectForKey:@"id"]];
-                [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
-                [numFotos addObject:[tempDic objectForKey:@"num_images"]];
-                
-            }
-            
-            
-        }[self.collectionView reloadData];
-        // NSLog(@"JSON: %@",responseObject);
+                    [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
+                    [imgAlbums addObject:[tempDic objectForKey:@"image"]];
+                    [descAlbums addObject:[tempDic objectForKey:@"description"]];
+                    [albumID addObject:[tempDic objectForKey:@"id"]];
+                    [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
+                    [numFotos addObject:[tempDic objectForKey:@"num_images"]];
+                    
+                }
+        }
+        if (![[responseObject objectForKey:@"galleries"] count] == [[appDelegate.userSession.settings objectForKey:self.nombrePrograma] count] && [[responseObject objectForKey:@"galleries"]count] !=0) {
+            [appDelegate.userSession.settings setObject:albumsGuardados forKey:self.nombrePrograma];
+        }
+        if ([[responseObject objectForKey:@"galleries"]count] == 0) {
+            conteiner.hidden = NO;
+        }
+
+        
+        [self.collectionView reloadData];
         [_activityIndicator stopAnimating];
         
     }
@@ -259,42 +313,48 @@
 
     photosURL = [[NSMutableArray alloc] init];
     
+    if(status != NotReachable)
+    {
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"sessid"    : appDelegate.userSession.sesionID,
+                                     @"id_gallery": [albumID objectAtIndex:indexPath.row],
+                                     @"opt"       : @"get_gallery_images"
+                                     };
+        [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
+        [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+                loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+                [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alerta show];
+                [self presentViewController:login animated:YES completion:nil];
+            }
 
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{
-                                 @"sessid"    : appDelegate.userSession.sesionID,
-                                 @"id_gallery": [albumID objectAtIndex:indexPath.row],
-                                 @"opt"       : @"get_gallery_images"
-                                 };
-    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
-    [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
-            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
-            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alerta show];
-            [self presentViewController:login animated:YES completion:nil];
+            NSLog(@"RESPUESTA gallery images: %@",responseObject);
+            for(NSDictionary *tempDic in [responseObject objectForKey:@"images"])
+            {
+                //[albums addObject:[tempDic objectForKey:@"title"]];
+                [photosURL addObject:[tempDic objectForKey:@"image"]];
+                NSLog(@"imagen es: %@", [tempDic valueForKey:@"image"]);
+                
+            }NSLog(@"arreglo de url %@",photosURL);
+            [self mostrarGaleria];
+            NSLog(@"albumID: %@",[albumID objectAtIndex:indexPath.row]);
+            [appDelegate.userSession.settings setObject:photosURL forKey:[[albumID objectAtIndex:indexPath.row]stringValue]];
+            // NSLog(@"JSON: %@",responseObject);
+            // NSLog(@"array title: %@",especies);
         }
-
-        NSLog(@"RESPUESTA gallery images: %@",responseObject);
-        for(NSDictionary *tempDic in [responseObject objectForKey:@"images"])
-        {
-            //[albums addObject:[tempDic objectForKey:@"title"]];
-            [photosURL addObject:[tempDic objectForKey:@"image"]];
-            //[descAlbums addObject:[tempDic objectForKey:@"description"]];
-            NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
-            NSLog(@"imagen es: %@", [tempDic valueForKey:@"image"]);
-            
-        }NSLog(@"arreglo de url %@",photosURL);
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  
+                  NSLog(@"Error: %@",error);
+                  
+              }];
+    }else{
+        photosURL = [appDelegate.userSession.settings objectForKey:[[albumID objectAtIndex:indexPath.row]stringValue]];
         [self mostrarGaleria];
-        // NSLog(@"JSON: %@",responseObject);
-        // NSLog(@"array title: %@",especies);
+    
     }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              
-              NSLog(@"Error: %@",error);
-              
-          }];
 
 
 
