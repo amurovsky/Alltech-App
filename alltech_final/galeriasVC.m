@@ -98,12 +98,16 @@
             [albumID addObject:[tempDic objectForKey:@"id"]];
             [fechaPublicacion addObject:[tempDic objectForKey:@"published_at"]];
             [numFotos addObject:[tempDic objectForKey:@"num_images"]];
+            self.nombreProductoyEspecie.text = @"";
         }
         if (albums.count == 0) {
             conteiner.hidden = NO;
         }
         
-    }else [self loadRequest];
+    }else {
+        [self loadRequest];
+        self.nombreProductoyEspecie.text = [NSString stringWithFormat:@"%@ - %@",self.nombreProducto,self.nombreEspecie];
+    }
     
     [self.collectionView setDelegate:self];
     [self.collectionView setDataSource:self];
@@ -130,7 +134,7 @@
     //cambiar texto de las etiquetas de la barra de navegacion (Programa, Producto, Especie)
     self.nombredelPrograma.text = self.nombrePrograma;
     self.nombredelPrograma.adjustsFontSizeToFitWidth = YES;
-    self.nombreProductoyEspecie.text = [NSString stringWithFormat:@"%@ - %@",self.nombreProducto,self.nombreEspecie];
+
     
 
     NSString *idioma = appDelegate.userSession.lenguaje;
