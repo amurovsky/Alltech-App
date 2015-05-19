@@ -545,10 +545,13 @@ CGFloat screenHeight;
     if (row != 0) {
         if ([_programaPV isFirstResponder]) {
             _programaPV.text = programas[row];
+            _productoPV.text = @"";
+            _especiePV.text = @"";
             appDelegate.userSession.programaID = programaID[row-1];
             [self productosRequest];
         }else if ([_productoPV isFirstResponder]){
             _productoPV.text = productos[row];
+            _especiePV.text = @"";
             appDelegate.userSession.productoID = productoID[row-1];
             [self EspeciesRequest];
         }else if ([_especiePV isFirstResponder]){
@@ -621,6 +624,8 @@ CGFloat screenHeight;
 
 -(void)programasRequest{
 
+   
+        
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
                                  @"sessid"  : appDelegate.userSession.sesionID,
@@ -629,25 +634,33 @@ CGFloat screenHeight;
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
 
-        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
-            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
-            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alerta show];
-            [self presentViewController:login animated:YES completion:nil];
-        }
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            // Do something...
+            sleep(1);
+            if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+                loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+                [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alerta show];
+                [self presentViewController:login animated:YES completion:nil];
+            }
 
-        for(NSDictionary *tmpDic in [responseObject objectForKey:@"programs"])
-        {
-            [programas addObject: [tmpDic objectForKey:@"title"]];
-            [programaID addObject:[tmpDic valueForKey:@"id"]];
-            NSLog(@"title es: %@", [tmpDic valueForKey:@"title"]);
+            for(NSDictionary *tmpDic in [responseObject objectForKey:@"programs"])
+            {
+                [programas addObject: [tmpDic objectForKey:@"title"]];
+                [programaID addObject:[tmpDic valueForKey:@"id"]];
+                NSLog(@"title es: %@", [tmpDic valueForKey:@"title"]);
+                
+                
+            }[programas insertObject:choose atIndex:0];
+            NSLog(@"1: %@ 2: %@",programas[0],programas[1]);
+            NSLog(@"Count: %lu",(unsigned long)[programas count]);
             
-            
-        }[programas insertObject:choose atIndex:0];
-        NSLog(@"1: %@ 2: %@",programas[0],programas[1]);
-        NSLog(@"Count: %lu",(unsigned long)[programas count]);
-
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        });
         
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -655,11 +668,12 @@ CGFloat screenHeight;
               NSLog(@"Error: %@",error);
               
           }];
-
+    
     
 }
 
 -(void)productosRequest{
+    
     
     [productos removeAllObjects];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -671,25 +685,34 @@ CGFloat screenHeight;
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         
-        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
-            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
-            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alerta show];
-            [self presentViewController:login animated:YES completion:nil];
-        }
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            sleep(1);
+        
+            if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+                loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+                [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alerta show];
+                [self presentViewController:login animated:YES completion:nil];
+            }
 
-        for(NSDictionary *tempDic in [responseObject objectForKey:@"products"])
-        {
-            [productos addObject: [tempDic objectForKey:@"title"]];
-            [productoID addObject: [tempDic objectForKey:@"id"]];
-            NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+            for(NSDictionary *tempDic in [responseObject objectForKey:@"products"])
+            {
+                [productos addObject: [tempDic objectForKey:@"title"]];
+                [productoID addObject: [tempDic objectForKey:@"id"]];
+                NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+                
+            }
+            NSLog(@"JSON: %@",responseObject);
+            NSLog(@"array title: %@",productos);
+            NSLog(@"array ID: %@",productoID);
+            [productos insertObject:choose atIndex:0];
             
-        }
-        NSLog(@"JSON: %@",responseObject);
-        NSLog(@"array title: %@",productos);
-        NSLog(@"array ID: %@",productoID);
-        [productos insertObject:choose atIndex:0];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        });
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
@@ -712,24 +735,33 @@ CGFloat screenHeight;
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
     [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
 
-        if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
-            loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
-            [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
-            UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alerta show];
-            [self presentViewController:login animated:YES completion:nil];
-        }
-
-        for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
-        {
-            [especies addObject:[tempDic objectForKey:@"title"]];
-            [especieID addObject:[tempDic objectForKey:@"id"]];
-            NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            sleep(1);
             
-        }
-        NSLog(@"JSON: %@",responseObject);
-        NSLog(@"array title: %@",especies);
-        [especies insertObject:choose atIndex:0];
+            if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
+                loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+                [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
+                UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Session Expired" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alerta show];
+                [self presentViewController:login animated:YES completion:nil];
+            }
+
+            for(NSDictionary *tempDic in [responseObject objectForKey:@"animals"])
+            {
+                [especies addObject:[tempDic objectForKey:@"title"]];
+                [especieID addObject:[tempDic objectForKey:@"id"]];
+                NSLog(@"title es: %@", [tempDic valueForKey:@"title"]);
+                
+            }
+            NSLog(@"JSON: %@",responseObject);
+            NSLog(@"array title: %@",especies);
+            [especies insertObject:choose atIndex:0];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        });
     }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               
