@@ -94,6 +94,7 @@
 
         [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
         [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSLog(@"Respuesta Programas: %@",responseObject);
             programasGuardados = [responseObject objectForKey:@"programs"];
             if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
                 loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
@@ -102,8 +103,10 @@
                 [alerta show];
                 [self presentViewController:login animated:YES completion:nil];
             }
-            if (![[responseObject objectForKey:@"programs"] count] == [[appDelegate.userSession.settings objectForKey:@"programas"] count]) {
+            //zxxif (![[responseObject objectForKey:@"programs"] count] == [[appDelegate.userSession.settings objectForKey:@"programas"] count]) {
                 //comparamos el diccionario guardado con el de respuesta si son iguales carga el guardado si no carga la actualizacion del server
+                NSLog(@"Entro a Diferente server y guardado");
+                NSLog(@"Idioma: %@",[appDelegate.userSession.settings objectForKey:@"lang"]);
                 [_uiActivator startAnimating];
 
                 for(NSDictionary *tempDic in [responseObject objectForKey:@"programs"])
@@ -124,18 +127,18 @@
                 NSLog(@"array imagen: %@",imgProgramas);
             
                 [_uiActivator stopAnimating];
-            }else{
-                [_uiActivator stopAnimating];
-                programasGuardados = [appDelegate.userSession.settings objectForKey:@"programas"];
-                for (NSDictionary *tempDic in programasGuardados) {
-                    [_programas addObject: [tempDic objectForKey:@"title"]];
-                    [imgProgramas addObject:[tempDic valueForKey:@"image"]];
-                    [programaID addObject:[tempDic valueForKey:@"id"]];
-                    
-                    NSLog(@"imagenes : %@",imgProgramas);
-                }[self.programasTable reloadData];
-                
-            }
+//            }else{
+//                [_uiActivator stopAnimating];
+//                programasGuardados = [appDelegate.userSession.settings objectForKey:@"programas"];
+//                for (NSDictionary *tempDic in programasGuardados) {
+//                    [_programas addObject: [tempDic objectForKey:@"title"]];
+//                    [imgProgramas addObject:[tempDic valueForKey:@"image"]];
+//                    [programaID addObject:[tempDic valueForKey:@"id"]];
+//                    
+//                    NSLog(@"imagenes : %@",imgProgramas);
+//                }[self.programasTable reloadData];
+//                
+//            }
             
         }
         

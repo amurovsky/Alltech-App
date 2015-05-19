@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UP5-aK-xKI">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Aileron-Bold.otf">
@@ -1503,7 +1503,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="290" height="258"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="44" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ejemplo3.png" translatesAutoresizingMaskIntoConstraints="NO" id="szE-hx-4Jt">
+                                                <imageView userInteractionEnabled="NO" tag="44" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="szE-hx-4Jt">
                                                     <rect key="frame" x="0.0" y="0.0" width="290" height="248"/>
                                                 </imageView>
                                             </subviews>
@@ -1670,7 +1670,6 @@
         <image name="boton_2x.png" width="900" height="193"/>
         <image name="camara_bco" width="37" height="30"/>
         <image name="campo_texto_2x.png" width="900" height="192"/>
-        <image name="ejemplo3.png" width="563" height="437"/>
         <image name="icono_pass_2x.png" width="50" height="75"/>
         <image name="marcoAlbum.png" width="648" height="725"/>
         <image name="menu.png" width="45" height="31"/>
@@ -1683,6 +1682,6 @@
         <image name="sideMenu3.png" width="67" height="72"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8kE-fL-jcz"/>
+        <segue reference="ect-6L-ghO"/>
     </inferredMetricsTieBreakers>
 </document>

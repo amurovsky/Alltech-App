@@ -143,12 +143,13 @@ NSString *correoInvalido;
     [animationView addSubview:imageView];
     // Kick start the animation immediately
     [animationView startCanvasAnimation];
-    NSLog(@"lenguaje Guardad: %@",[appDelegate.userSession.settings objectForKey:@"lang"]);
+    NSLog(@"lenguaje Guardado: %@",[appDelegate.userSession.settings objectForKey:@"lang"]);
     NSLog(@"sessionID guardado %@",[appDelegate.userSession.settings objectForKey:@"sessid"]);
     appDelegate.userSession.lenguaje = [appDelegate.userSession.settings objectForKey:@"lang"];
     
     if (appDelegate.userSession.lenguaje == nil) {
         appDelegate.userSession.lenguaje = @"en";
+        [appDelegate.userSession.settings setObject:@"en" forKey:@"lang"];
     }
     
     if ([appDelegate.userSession.lenguaje isEqual:@"es"]) {

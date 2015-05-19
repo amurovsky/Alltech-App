@@ -452,7 +452,9 @@
 //            
 //            [tmpArray addObject:sourceData];
             
-            UIImage *image = [UIImage imageWithCGImage:[defaultRep fullResolutionImage] scale:[defaultRep scale] orientation:0];
+            UIImage *image =[UIImage imageWithCGImage:[defaultRep fullScreenImage]scale:[defaultRep scale] orientation:0];
+            //[UIImage imageWithCGImage:[defaultRep fullResolutionImage]scale:[defaultRep scale] orientation:UIImageOrientationUp];
+            //[UIImage imageWithCGImage:[defaultRep fullResolutionImage] scale:[defaultRep scale] orientation:0];
             NSData *imagedata = [NSData dataWithData:UIImageJPEGRepresentation(image, 0.0)];
             [tmpArray addObject:imagedata];
         }

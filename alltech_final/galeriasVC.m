@@ -57,6 +57,7 @@
     numFotos = [[NSMutableArray alloc]init];
     albumsGuardados = [[NSMutableDictionary alloc]init];
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    NSString *emptyAlbum;
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
@@ -64,6 +65,21 @@
     screenSize = screenBound.size;
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
+    
+    NSString *idioma = appDelegate.userSession.lenguaje;
+    if ([idioma isEqual:@"es"]) {
+        [self.segmentedControl setTitle:@"Todas" forSegmentAtIndex:0];
+        [self.segmentedControl setTitle:@"Mis Álbums" forSegmentAtIndex:1];
+        emptyAlbum = @"Álbum Vacío.";
+    }else if ([idioma isEqual:@"en"]) {
+        [self.segmentedControl setTitle:@"All" forSegmentAtIndex:0];
+        [self.segmentedControl setTitle:@"My Albums" forSegmentAtIndex:1];
+        emptyAlbum = @"This Album is empty.";
+    }else if ([idioma isEqual:@"pt"]) {
+        [self.segmentedControl setTitle:@"Todos" forSegmentAtIndex:0];
+        [self.segmentedControl setTitle:@"Meus álbuns" forSegmentAtIndex:1];
+        emptyAlbum = @"álbum vazio.";
+    }
     
     //agregamos vista para cuando no exista album
     conteiner = [[UIView alloc]init];
@@ -74,7 +90,7 @@
     empty.frame = CGRectMake(conteiner.bounds.size.width/2- 72, conteiner.bounds.size.height/2- 90, 144, 112);
     UILabel *emptyLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, empty.bounds.origin.y + 140, conteiner.bounds.size.width, 22)];
     emptyLabel.textAlignment = NSTextAlignmentCenter;
-    emptyLabel.text = @"This Album is empty.";
+    emptyLabel.text = emptyAlbum;
     emptyLabel.textColor = [UIColor whiteColor];
     emptyLabel.font = [UIFont fontWithName:@"Helvetica Bold" size:20];
     [conteiner addSubview:emptyLabel];
@@ -100,6 +116,7 @@
             [numFotos addObject:[tempDic objectForKey:@"num_images"]];
             self.nombreProductoyEspecie.text = @"";
         }
+        _segmentedControl.hidden = true;
         if (albums.count == 0) {
             conteiner.hidden = NO;
         }
@@ -137,17 +154,7 @@
 
     
 
-    NSString *idioma = appDelegate.userSession.lenguaje;
-    if ([idioma isEqual:@"es"]) {
-        [self.segmentedControl setTitle:@"Todas" forSegmentAtIndex:0];
-        [self.segmentedControl setTitle:@"Mis Álbums" forSegmentAtIndex:1];
-    }else if ([idioma isEqual:@"en"]) {
-        [self.segmentedControl setTitle:@"All" forSegmentAtIndex:0];
-        [self.segmentedControl setTitle:@"My Albums" forSegmentAtIndex:1];
-    }else if ([idioma isEqual:@"pt"]) {
-        [self.segmentedControl setTitle:@"Todos" forSegmentAtIndex:0];
-        [self.segmentedControl setTitle:@"Meus álbuns" forSegmentAtIndex:1];
-    }
+
     
     //Slide-out right Menu
     

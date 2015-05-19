@@ -36,6 +36,7 @@
     NSString *guardarAlerta;
     NSString *enviarAlerta;
     NSMutableArray *prevImagesArray;
+    NSString *loaderText;
     
 }
 
@@ -70,6 +71,7 @@
     [appDelegate.userSession.selectedImages removeAllObjects];
     
     NSString *idioma = appDelegate.userSession.lenguaje;
+    
     if ([idioma isEqual:@"es"]) {
         
         self.navItem.title = @"Crear Álbum";
@@ -77,6 +79,7 @@
         self.enviarButton.title = @"Enviar";
         guardarAlerta = @"Su album fue guardado satisfactoriamente";
         enviarAlerta = @"Su album fue enviado a revision";
+        loaderText = @"Subiendo Imagenes...";
     }else if ([idioma isEqual:@"en"]) {
         
         self.navItem.title = @"Create Album";
@@ -84,6 +87,7 @@
         self.enviarButton.title = @"Send";
         guardarAlerta = @"Your album was saved successfully";
         enviarAlerta = @"Your album has been sent to review";
+        loaderText = @"Uploading Images...";
     }else if ([idioma isEqual:@"pt"]) {
         
         self.navItem.title = @"Criar Album";
@@ -91,6 +95,7 @@
         self.enviarButton.title = @"Enviar";
         guardarAlerta = @"Seu álbum foi salvo com sucesso";
         enviarAlerta = @"Seu álbum foi enviado a avaliar";
+        loaderText = @"imagens de upload...";
     }
     
 }
@@ -237,8 +242,12 @@
     
 
     [self.view setUserInteractionEnabled:NO];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = loaderText;
+    //[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     NSLog(@"usID: %@ nom: %@ des: %@ pID: %@ prID: %@ eID: %@",appDelegate.userSession.sesionID,self.albums.nombre,self.albums.descripcion,self.albums.programaID,self.albums.productoID,self.albums.especieID);
-
+    
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         NSDictionary *parameters = @{
                                      @"sessid"          : appDelegate.userSession.sesionID,
@@ -252,7 +261,7 @@
 
         [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"application/json"];
         [manager POST:appDelegate.userSession.Url parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-           
+
             if ([[responseObject objectForKey:@"error"] isEqualToString:@"session_expired"]) {
                 loginVC *login = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
                 [appDelegate.userSession.settings setBool:NO forKey:@"logged"];
@@ -278,7 +287,6 @@
 -(void)uploadImages{
     
     NSLog(@"galeria ID: %@",galeriaID);
-    
     if ([prevImagesArray count] != 0) {
 
         for (int i = 0; i < [prevImagesArray count]; i++) {
@@ -336,8 +344,10 @@
         
         }
         
+        
         UIAlertView *alerta = [[UIAlertView alloc]initWithTitle:@"" message:enviarAlerta delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alerta show];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         _albums.sended = YES;
         [self.view setUserInteractionEnabled:YES];
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -433,12 +443,15 @@ CGFloat screenHeight;
     
     [toolBar setBackgroundColor:[UIColor clearColor]];
     UIBarButtonItem *flex = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *barButtonReload = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                     target:self action:@selector(reloadButton:)];
     UIBarButtonItem *barButtonDone = [[UIBarButtonItem alloc] initWithTitle:@"OK"
                                                                       style:UIBarButtonItemStylePlain target:self action:@selector(doneButton:)];
     UIBarButtonItem *space = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     space.width = 10;
-    toolBar.items = @[flex,barButtonDone,space];
+    toolBar.items = @[barButtonReload,flex,barButtonDone,space];
     barButtonDone.tintColor=[UIColor orangeColor];
+    barButtonReload.tintColor=[UIColor orangeColor];
     _programaPV.inputView = pickerView1;
     _productoPV.inputView = pickerView1;
     _especiePV.inputView = pickerView1;
@@ -487,6 +500,9 @@ CGFloat screenHeight;
     }
 }
 
+-(void)reloadButton:(id)sender{
+    [pickerView1 reloadAllComponents];
+}
 -(void)doneButton:(id)sender
 {
     if ([_programaPV isFirstResponder]) {
@@ -503,6 +519,7 @@ CGFloat screenHeight;
     }
     
     
+    
 }
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
 
@@ -511,14 +528,16 @@ CGFloat screenHeight;
 }
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-
+    NSInteger numberOfRows = 0;
     if ([_programaPV isFirstResponder]) {
-        return [programas count];
+        numberOfRows = [programas count];
     }else if ([_productoPV isFirstResponder]){
-        return [productos count];
+        numberOfRows = [productos count];
     }else if ([_especiePV isFirstResponder]){
-        return [especies count];
-    } return 0;
+        numberOfRows = [especies count];
+    }
+    
+    return numberOfRows;
 }
 
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
@@ -545,8 +564,8 @@ CGFloat screenHeight;
     if (row != 0) {
         if ([_programaPV isFirstResponder]) {
             _programaPV.text = programas[row];
-            _productoPV.text = @"";
-            _especiePV.text = @"";
+            _productoPV.text = nil;
+            _especiePV.text = nil;
             appDelegate.userSession.programaID = programaID[row-1];
             [self productosRequest];
         }else if ([_productoPV isFirstResponder]){
@@ -566,9 +585,8 @@ CGFloat screenHeight;
     if (textField == _programaPV || textField == _productoPV || textField == _especiePV) {
         [self.conteiner setUserInteractionEnabled:NO];
     }
-    [textField isFirstResponder];
-    [pickerView1 reloadAllComponents];
-
+    
+    
     return YES;
 
 }
@@ -579,7 +597,8 @@ CGFloat screenHeight;
     if ( screenWidth == 320 ) {
         [self animateTextField:textField up:YES];
     }
-    
+    [textField isFirstResponder];
+    [pickerView1 reloadAllComponents];
 
 }
 
@@ -588,7 +607,6 @@ CGFloat screenHeight;
     if (screenWidth == 320) {
         [self animateTextField:textField up:NO];
     }
-
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
