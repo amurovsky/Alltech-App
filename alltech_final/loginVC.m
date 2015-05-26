@@ -95,8 +95,8 @@ NSString *correoInvalido;
         _ingresaCorreoLabel.font = [UIFont fontWithName:@"Aileron-Bold" size:30.0];
         _enviadoLabel.font = [UIFont fontWithName:@"Aileron-Bold" size:30.0];
         _enviadoCorreoLabel.font = [UIFont fontWithName:@"Aileron-Bold" size:30.0];
-        _correoTexField.font = [UIFont fontWithName:@"Aileron-Bold" size:22.0];
-        [_recuperarButton.titleLabel setFont:[UIFont fontWithName:@"Aileron-Bold" size:25.0]];
+        _correoTexField.font = [UIFont fontWithName:@"Aileron-Bold" size:30.0];
+        [_recuperarButton.titleLabel setFont:[UIFont fontWithName:@"Aileron-Bold" size:30.0]];
         
         imageView.frame = CGRectMake(0, 20, screenWidth, 80);
         
@@ -160,11 +160,10 @@ NSString *correoInvalido;
         [self.olvideMiContrasena setTitle:@"Olvide mi contraseña" forState:UIControlStateNormal];
         camposVacios = @"Los campos usuario y contraseña no pueden estar vacíos";
         contrasenaInvalida = @"usuario o contraseña invalido";
-        conexionPerdida = @"No se puede establecer conexión con el servidor intente mas tarde ";
+        conexionPerdida = @"No se puede establecer conexión con el servidor intento mas tarde ";
         [self.recuperarButton setTitle:@"Recuperar" forState:UIControlStateNormal];
         [self.regresarButton setTitle:@" Regresar" forState:UIControlStateNormal];
         self.ingresaCorreoLabel.text = @"Ingresa tu correo electrónico para recuperar tu contraseña";
-        self.enviadoLabel.text = @"SE HA ENVIADO UN CORREO CON TU CONTRASEÑA A:";
         correoInvalido = @"Correo Inválido";
     }else if ([appDelegate.userSession.lenguaje isEqual:@"en"]) {
         
@@ -174,11 +173,10 @@ NSString *correoInvalido;
         [self.olvideMiContrasena setTitle:@"Forgot my password" forState:UIControlStateNormal];
         camposVacios = @"The user and password fields can not be empty";
         contrasenaInvalida = @"Invalid username or password";
-        conexionPerdida = @"Can not connect to the server, please try again later";
+        conexionPerdida = @"Can not connect to the server, please try later";
         [self.recuperarButton setTitle:@"recover" forState:UIControlStateNormal];
         [self.regresarButton setTitle:@" Back" forState:UIControlStateNormal];
         self.ingresaCorreoLabel.text = @"Enter your email to reset your password";
-        self.enviadoLabel.text = @"WE HAVE SENT AN EMAIL WITH YOUR PASSWORD TO:";
         correoInvalido = @"invalid email";
     }else if ([appDelegate.userSession.lenguaje isEqual:@"pt"]) {
         
@@ -192,7 +190,6 @@ NSString *correoInvalido;
         [self.recuperarButton setTitle:@"Recuperar" forState:UIControlStateNormal];
         [self.regresarButton setTitle:@" De Volta" forState:UIControlStateNormal];
         self.ingresaCorreoLabel.text = @"Digite seu e-mail para redefinir sua senha";
-        self.enviadoLabel.text = @"FOI ENVIADO UM EMAIL COM SUA SENHA PARA:";
         correoInvalido = @"E-mail inválido";
     }
     
