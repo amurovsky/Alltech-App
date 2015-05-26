@@ -38,6 +38,8 @@
     productos = [[NSMutableArray alloc]init];
     productoID = [[NSMutableArray alloc]init];
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    _programaID = [NSString stringWithFormat:@"%@", appDelegate.userSession.programaID];
+    NSLog(@"Programa ID: %@",_programaID);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSDictionary *parameters = @{
                                  @"sessid"    : appDelegate.userSession.sesionID,
@@ -72,7 +74,6 @@
               NSLog(@"Error: %@",error);
               
           }];
-    
     
     //Inicializamos las variables para recoger las dimensiones de la pantalla
     
@@ -215,7 +216,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 
 {
-    
     static NSString *simpleTableIdentifier = @"SimpleTableItem";
     
     

@@ -37,6 +37,7 @@
     NSMutableArray *fechaPublicacion;
     NSMutableArray *photosURL;
     NSMutableArray *numFotos;
+    NSString *descPhotos;
     AppDelegate *appDelegate;
     BOOL misAlbums;
     NSMutableArray * galeriasTags;
@@ -350,6 +351,7 @@
                 NSLog(@"imagen es: %@", [tempDic valueForKey:@"image"]);
                 
             }NSLog(@"arreglo de url %@",photosURL);
+            descPhotos = [descAlbums objectAtIndex:indexPath.row];
             [self mostrarGaleria];
             NSLog(@"albumID: %@",[albumID objectAtIndex:indexPath.row]);
             [appDelegate.userSession.settings setObject:photosURL forKey:[[albumID objectAtIndex:indexPath.row]stringValue]];
@@ -379,6 +381,7 @@
     for (int i=0; i< photosURL.count; i++) {
         NSLog(@"Url de la imagen: %@ Index: %i",[photosURL objectAtIndex:i],i);
         photo = [MWPhoto photoWithURL:[NSURL URLWithString:[photosURL objectAtIndex:i]]];
+        photo.caption = descPhotos;
         [photos addObject:photo];
     }
     

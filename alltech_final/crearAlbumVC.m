@@ -469,7 +469,7 @@ CGFloat screenHeight;
     if ([idioma isEqual:@"es"]) {
         self.programaPV.placeholder =@"Selecciona un programa";
         self.productoPV.placeholder =@"Selecciona un producto";
-        self.especiePV.placeholder =@"Selecciona una tipo";
+        self.especiePV.placeholder =@"Selecciona una Especie";
         self.tituloTextField.placeholder =@"Agrega un título";
         self.descripcionTextField.placeholder =@"Agrega una descripción";
         self.crearAlbumNavItem.title=@"Crear Álbum";
@@ -480,7 +480,7 @@ CGFloat screenHeight;
     }else if ([idioma isEqual:@"en"]) {
         self.programaPV.placeholder =@"Choose a program";
         self.productoPV.placeholder =@"Choose a product";
-        self.especiePV.placeholder =@"Choose a type";
+        self.especiePV.placeholder =@"Choose a species";
         self.tituloTextField.placeholder =@"Add a title";
         self.descripcionTextField.placeholder =@"Add a description";
         self.crearAlbumNavItem.title=@"Create Album";
@@ -490,7 +490,7 @@ CGFloat screenHeight;
     }else if ([idioma isEqual:@"pt"]) {
         self.programaPV.placeholder =@"Escolha um programa";
         self.productoPV.placeholder =@"Escolha um produto";
-        self.especiePV.placeholder =@"Escolha um tipo";
+        self.especiePV.placeholder =@"Escolha um espécies";
         self.tituloTextField.placeholder =@"Adicione um título";
         self.descripcionTextField.placeholder =@"Adicione uma descrição";
         self.crearAlbumNavItem.title=@"Criar Album";
