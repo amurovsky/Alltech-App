@@ -201,6 +201,7 @@
         for(NSDictionary *tempDic in [responseObject objectForKey:@"galleries"])
         {
             if (misAlbums == YES) {
+                NSLog(@"Estamos en mis Albums y este es mi userID: %@ ", appDelegate.userSession.userID);
                 if ([[tempDic objectForKey:@"owner"]  isEqual: appDelegate.userSession.userID]) {
                     [albums addObject:[NSString stringWithFormat:@"Álbum: %@",[tempDic objectForKey:@"title"]]];
                     [imgAlbums addObject:[tempDic objectForKey:@"image"]];

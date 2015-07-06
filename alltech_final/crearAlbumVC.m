@@ -386,7 +386,6 @@ NSMutableArray *especies;
 NSMutableArray *programaID;
 NSMutableArray *productoID;
 NSMutableArray *especieID;
-UIView *blockView;
 NSString *choose;
 NSString *alertaVacios;
 
@@ -434,14 +433,17 @@ CGFloat screenHeight;
     _tituloTextField.delegate = self;
     _descripcionTextField.delegate = self;
     pickerView1.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"fondo"]];
+    if (screenHeight == 480){
+        NSLog(@"Estamos en un iphone 4s");
+        CGRect pickerFrame = pickerView1.frame;
+        pickerFrame.size.height = 162;
+        pickerView1.frame = pickerFrame;
+    }
+    // si selecciono
     
     UIToolbar *toolBar= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.width,44)];
     [toolBar setBarStyle:UIBarStyleDefault];
-    [toolBar setBackgroundImage:[UIImage new]
-                  forToolbarPosition:UIToolbarPositionAny
-                          barMetrics:UIBarMetricsDefault];
-    
-    [toolBar setBackgroundColor:[UIColor clearColor]];
+    [toolBar setBackgroundImage:[UIImage imageNamed:@"fondo"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     UIBarButtonItem *flex = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *barButtonReload = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                      target:self action:@selector(reloadButton:)];
@@ -508,16 +510,14 @@ CGFloat screenHeight;
     if ([_programaPV isFirstResponder]) {
         _productoPV.enabled = YES;
         [_programaPV resignFirstResponder];
-        [self.conteiner setUserInteractionEnabled:YES];
     }else if ([_productoPV isFirstResponder]){
         _especiePV.enabled = YES;
         [_productoPV resignFirstResponder];
-        [self.conteiner setUserInteractionEnabled:YES];
     }else if ([_especiePV isFirstResponder]){
         [_especiePV resignFirstResponder];
-        [self.conteiner setUserInteractionEnabled:YES];
     }
     
+    [self.conteiner setUserInteractionEnabled:YES];
     
     
 }
@@ -567,6 +567,11 @@ CGFloat screenHeight;
             _productoPV.text = nil;
             _especiePV.text = nil;
             appDelegate.userSession.programaID = programaID[row-1];
+            NSString *idPrograma = [NSString stringWithFormat:@"%@", appDelegate.userSession.programaID];
+            if ([idPrograma  isEqual: @"7"]) {
+                _especiePV.hidden = true;
+            }else _especiePV.hidden = false;
+            
             [self productosRequest];
         }else if ([_productoPV isFirstResponder]){
             _productoPV.text = productos[row];
@@ -613,6 +618,7 @@ CGFloat screenHeight;
     
     [self.tituloTextField resignFirstResponder];
     [self.descripcionTextField resignFirstResponder];
+    [self.conteiner setUserInteractionEnabled:YES];
 
 }
 
@@ -620,13 +626,14 @@ CGFloat screenHeight;
     
     [self.tituloTextField resignFirstResponder];
     [self.descripcionTextField resignFirstResponder];
+    [self.conteiner setUserInteractionEnabled:YES];
     return YES;
     
 }
 
 -(void)animateTextField:(UITextField*)textField up:(BOOL)up
 {
-    const int movementDistance = 150; // tweak as needed
+    const int movementDistance = (screenHeight == 480) ? 180 : 150; // tweak as needed
     const float movementDuration = 0.3f; // tweak as needed
     
     int movement = (up ? movementDistance : -movementDistance);
@@ -802,6 +809,10 @@ CGFloat screenHeight;
 }
 
 - (IBAction)crearButton:(id)sender {
+    NSString *idPrograma = [NSString stringWithFormat:@"%@", appDelegate.userSession.programaID];
+    if ([idPrograma  isEqual: @"7"]) {
+        _especiePV.text = @" ";
+    }
     
     if (_programaPV.text.length !=0 && _productoPV.text.length !=0 && _especiePV.text.length !=0 && _tituloTextField.text.length !=0 && _descripcionTextField.text.length !=0 ) {
         

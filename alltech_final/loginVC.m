@@ -229,6 +229,7 @@ NSString *correoInvalido;
     {
         NSLog(@"Logged");
         appDelegate.userSession.sesionID = [appDelegate.userSession.settings objectForKey:@"sessid"];
+        appDelegate.userSession.userID = [appDelegate.userSession.settings objectForKey:@"userid"];
         [moviePlayer stop];
         [self performSegueWithIdentifier: @"logged" sender: self];
     }
@@ -332,9 +333,10 @@ NSString *correoInvalido;
                 //mostramos la siguiente pantalla si la conexion fue exitosa
                 SWRevealViewController *reveal = [self.storyboard instantiateViewControllerWithIdentifier:@"SWRevealViewController"];
                 [appDelegate.userSession.settings setObject:[responseObject valueForKey:@"sessid"] forKey:@"sessid"];
+                [appDelegate.userSession.settings setObject:[responseObject valueForKey:@"userid"] forKey:@"userid"];
                 [appDelegate.userSession.settings setBool:YES forKey:@"logged"];
                 appDelegate.userSession.sesionID = [appDelegate.userSession.settings objectForKey:@"sessid"];
-                appDelegate.userSession.userID = [responseObject objectForKey:@"userid"];
+                appDelegate.userSession.userID = [appDelegate.userSession.settings objectForKey:@"userid"];
                 appDelegate.userSession.lenguaje = [responseObject objectForKey:@"lang"];
                 NSLog(@"SessionID de la calse Session: %@",appDelegate.userSession.sesionID);
                 NSLog(@"UserID de la calse Session: %@",appDelegate.userSession.userID);

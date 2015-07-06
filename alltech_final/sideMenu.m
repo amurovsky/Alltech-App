@@ -43,7 +43,7 @@
     
     CGRect frameIpad = CGRectMake(90, 25, 60, 60);
     CGRect frameIphone = CGRectMake(85, 15, 40, 40);
-    CGRect frameIphoneCh = CGRectMake(85, 15, 30, 30);
+    CGRect frameIphoneCh = CGRectMake(85, 10, 30, 30);
     
     // ipad
     if (screenWidth == 768 && screenHeight == 1024) {
@@ -86,7 +86,7 @@
         [_separatorImg[2] setFrame:CGRectMake(75, 63, 60, 1)];
     }// iphone 4, 4s, touch 4
     else if (screenWidth == 320 && screenHeight == 480){
-        
+        NSLog(@"Estamos en un iphone 4s");
         _camaraImg.frame = frameIphoneCh;
         _idiomaImg.frame = frameIphoneCh;
         _logoutImg.frame = frameIphoneCh;
