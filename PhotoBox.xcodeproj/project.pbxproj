@@ -135,7 +135,7 @@
 		EA477FD31A8915A100C0F56E /* marcoAlbum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marcoAlbum.png; sourceTree = "<group>"; };
 		EA616C191A9796B80041D90B /* selecAlbumTV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = selecAlbumTV.h; sourceTree = "<group>"; };
 		EA616C1A1A9796B80041D90B /* selecAlbumTV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = selecAlbumTV.m; sourceTree = "<group>"; };
-		EA81B86B1A829E2500D77DEC /* Alltech.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alltech.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA81B86B1A829E2500D77DEC /* PhotoBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA81B86F1A829E2500D77DEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA81B8701A829E2500D77DEC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA81B8721A829E2500D77DEC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -144,7 +144,7 @@
 		EA81B87C1A829E2500D77DEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA81B87E1A829E2500D77DEC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EA81B8811A829E2500D77DEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		EA81B8871A829E2600D77DEC /* AlltechTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlltechTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA81B8871A829E2600D77DEC /* PhotoBoxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoBoxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA81B88C1A829E2600D77DEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA81B88D1A829E2600D77DEC /* alltech_finalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = alltech_finalTests.m; sourceTree = "<group>"; };
 		EA81B8981A829E6F00D77DEC /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -252,8 +252,8 @@
 		EA81B86C1A829E2500D77DEC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EA81B86B1A829E2500D77DEC /* Alltech.app */,
-				EA81B8871A829E2600D77DEC /* AlltechTests.xctest */,
+				EA81B86B1A829E2500D77DEC /* PhotoBox.app */,
+				EA81B8871A829E2600D77DEC /* PhotoBoxTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -422,9 +422,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EA81B86A1A829E2500D77DEC /* Alltech */ = {
+		EA81B86A1A829E2500D77DEC /* PhotoBox */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EA81B8911A829E2600D77DEC /* Build configuration list for PBXNativeTarget "Alltech" */;
+			buildConfigurationList = EA81B8911A829E2600D77DEC /* Build configuration list for PBXNativeTarget "PhotoBox" */;
 			buildPhases = (
 				77FAB1E97693F06FE6D95FE0 /* Check Pods Manifest.lock */,
 				EA81B8671A829E2500D77DEC /* Sources */,
@@ -436,14 +436,14 @@
 			);
 			dependencies = (
 			);
-			name = Alltech;
+			name = PhotoBox;
 			productName = alltech_final;
-			productReference = EA81B86B1A829E2500D77DEC /* Alltech.app */;
+			productReference = EA81B86B1A829E2500D77DEC /* PhotoBox.app */;
 			productType = "com.apple.product-type.application";
 		};
-		EA81B8861A829E2600D77DEC /* AlltechTests */ = {
+		EA81B8861A829E2600D77DEC /* PhotoBoxTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EA81B8941A829E2600D77DEC /* Build configuration list for PBXNativeTarget "AlltechTests" */;
+			buildConfigurationList = EA81B8941A829E2600D77DEC /* Build configuration list for PBXNativeTarget "PhotoBoxTests" */;
 			buildPhases = (
 				EA81B8831A829E2600D77DEC /* Sources */,
 				EA81B8841A829E2600D77DEC /* Frameworks */,
@@ -454,9 +454,9 @@
 			dependencies = (
 				EA81B8891A829E2600D77DEC /* PBXTargetDependency */,
 			);
-			name = AlltechTests;
+			name = PhotoBoxTests;
 			productName = alltech_finalTests;
-			productReference = EA81B8871A829E2600D77DEC /* AlltechTests.xctest */;
+			productReference = EA81B8871A829E2600D77DEC /* PhotoBoxTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -470,7 +470,7 @@
 				TargetAttributes = {
 					EA81B86A1A829E2500D77DEC = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = BP6E7887YV;
+						DevelopmentTeam = W8875RF2PM;
 					};
 					EA81B8861A829E2600D77DEC = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -479,7 +479,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EA81B8661A829E2500D77DEC /* Build configuration list for PBXProject "Alltech" */;
+			buildConfigurationList = EA81B8661A829E2500D77DEC /* Build configuration list for PBXProject "PhotoBox" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -492,8 +492,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EA81B86A1A829E2500D77DEC /* Alltech */,
-				EA81B8861A829E2600D77DEC /* AlltechTests */,
+				EA81B86A1A829E2500D77DEC /* PhotoBox */,
+				EA81B8861A829E2600D77DEC /* PhotoBoxTests */,
 			);
 		};
 /* End PBXProject section */
@@ -636,7 +636,7 @@
 /* Begin PBXTargetDependency section */
 		EA81B8891A829E2600D77DEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = EA81B86A1A829E2500D77DEC /* Alltech */;
+			target = EA81B86A1A829E2500D77DEC /* PhotoBox */;
 			targetProxy = EA81B8881A829E2600D77DEC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -749,13 +749,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = alltech_final/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = Alltech;
-				PROVISIONING_PROFILE = "";
+				PRODUCT_NAME = PhotoBox;
+				PROVISIONING_PROFILE = "ea881f33-69e7-4011-afc7-bed651c78b75";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -766,13 +766,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = alltech_final/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = Alltech;
-				PROVISIONING_PROFILE = "";
+				PRODUCT_NAME = PhotoBox;
+				PROVISIONING_PROFILE = "ea881f33-69e7-4011-afc7-bed651c78b75";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -793,9 +793,9 @@
 				);
 				INFOPLIST_FILE = alltech_finalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = AlltechTests;
+				PRODUCT_NAME = PhotoBoxTests;
 				PROVISIONING_PROFILE = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alltech.app/Alltech";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PhotoBox.app/PhotoBox";
 			};
 			name = Debug;
 		};
@@ -811,16 +811,16 @@
 				);
 				INFOPLIST_FILE = alltech_finalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = AlltechTests;
+				PRODUCT_NAME = PhotoBoxTests;
 				PROVISIONING_PROFILE = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alltech.app/Alltech";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PhotoBox.app/PhotoBox";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EA81B8661A829E2500D77DEC /* Build configuration list for PBXProject "Alltech" */ = {
+		EA81B8661A829E2500D77DEC /* Build configuration list for PBXProject "PhotoBox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EA81B88F1A829E2600D77DEC /* Debug */,
@@ -829,7 +829,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EA81B8911A829E2600D77DEC /* Build configuration list for PBXNativeTarget "Alltech" */ = {
+		EA81B8911A829E2600D77DEC /* Build configuration list for PBXNativeTarget "PhotoBox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EA81B8921A829E2600D77DEC /* Debug */,
@@ -838,7 +838,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EA81B8941A829E2600D77DEC /* Build configuration list for PBXNativeTarget "AlltechTests" */ = {
+		EA81B8941A829E2600D77DEC /* Build configuration list for PBXNativeTarget "PhotoBoxTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EA81B8951A829E2600D77DEC /* Debug */,

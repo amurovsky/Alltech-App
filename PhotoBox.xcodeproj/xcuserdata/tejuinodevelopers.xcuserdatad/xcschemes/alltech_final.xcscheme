@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EA81B86A1A829E2500D77DEC"
-               BuildableName = "Alltech.app"
-               BlueprintName = "Alltech"
-               ReferencedContainer = "container:Alltech.xcodeproj">
+               BuildableName = "Alltech PhotoBox.app"
+               BlueprintName = "PhotoBox"
+               ReferencedContainer = "container:Alltech PhotoBox.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EA81B8861A829E2600D77DEC"
-               BuildableName = "AlltechTests.xctest"
-               BlueprintName = "AlltechTests"
-               ReferencedContainer = "container:Alltech.xcodeproj">
+               BuildableName = "Alltech PhotoBoxTests.xctest"
+               BlueprintName = "Alltech PhotoBoxTests"
+               ReferencedContainer = "container:Alltech PhotoBox.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EA81B8861A829E2600D77DEC"
-               BuildableName = "AlltechTests.xctest"
-               BlueprintName = "AlltechTests"
-               ReferencedContainer = "container:Alltech.xcodeproj">
+               BuildableName = "Alltech PhotoBoxTests.xctest"
+               BlueprintName = "Alltech PhotoBoxTests"
+               ReferencedContainer = "container:Alltech PhotoBox.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EA81B86A1A829E2500D77DEC"
-            BuildableName = "Alltech.app"
-            BlueprintName = "Alltech"
-            ReferencedContainer = "container:Alltech.xcodeproj">
+            BuildableName = "PhotoBox.app"
+            BlueprintName = "PhotoBox"
+            ReferencedContainer = "container:PhotoBox.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EA81B86A1A829E2500D77DEC"
-            BuildableName = "Alltech.app"
-            BlueprintName = "Alltech"
-            ReferencedContainer = "container:Alltech.xcodeproj">
+            BuildableName = "PhotoBox.app"
+            BlueprintName = "PhotoBox"
+            ReferencedContainer = "container:PhotoBox.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EA81B86A1A829E2500D77DEC"
-            BuildableName = "Alltech.app"
-            BlueprintName = "Alltech"
-            ReferencedContainer = "container:Alltech.xcodeproj">
+            BuildableName = "Alltech PhotoBox.app"
+            BlueprintName = "PhotoBox"
+            ReferencedContainer = "container:Alltech PhotoBox.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
